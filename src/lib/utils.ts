@@ -1,6 +1,16 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { createSafeActionClient } from "next-safe-action";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
+
+export const actionClient = createSafeActionClient({
+  async handleServerError(e) {
+    console.log(">>>ERROR<<<", e);
+    return {
+      message: "알 수 없는 에러 발생",
+    };
+  },
+});

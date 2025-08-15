@@ -5,6 +5,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "MyFee Backoffice",
@@ -24,6 +25,7 @@ export default function RootLayout({
         {user ? (
           <ThemeProvider defaultTheme="system" attribute="class">
             <SidebarProvider>
+              <Toaster position="bottom-center" duration={2000} />
               <Sidebar />
               <main className="w-full">
                 <Header />

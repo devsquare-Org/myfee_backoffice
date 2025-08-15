@@ -17,7 +17,7 @@ export const ROUTES = {
   },
   NOTIFICATION: {
     path: "/notification",
-    label: "알림 발송",
+    label: "푸시 알림",
   },
   COUPON: {
     path: "/coupon",
