@@ -20,7 +20,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import SendDialog from "@/app/notification/_components/send-dialog";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function NotificationSend() {
   const [isSubmit, setIsSubmit] = useState(false);
@@ -116,17 +116,17 @@ export default function NotificationSend() {
             render={({ field }) => (
               <FormItem className="mb-6">
                 <FormLabel>광고 알림 여부</FormLabel>
-                <div className="border p-4 rounded-md flex items-center justify-between gap-2">
-                  <p className="text-xs text-muted-foreground">
-                    이 옵션을 활성화하면 광고 알림으로 발송됩니다.
-                  </p>
+                <FormLabel className="border p-4 rounded-md flex items-center justify-between gap-2 cursor-pointer">
+                  <FormLabel className="text-xs text-muted-foreground cursor-pointer">
+                    이 옵션을 체크하면 광고 알림으로 발송됩니다.
+                  </FormLabel>
                   <FormControl>
-                    <Switch
+                    <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                </div>
+                </FormLabel>
               </FormItem>
             )}
           />
