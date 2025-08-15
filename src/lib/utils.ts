@@ -10,7 +10,7 @@ export const actionClient = createSafeActionClient({
   async handleServerError(e) {
     console.log(">>>ERROR<<<", e);
     return {
-      message: "알 수 없는 에러 발생",
+      message: e.message,
     };
   },
 });

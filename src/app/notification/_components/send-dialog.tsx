@@ -14,6 +14,7 @@ import { LoaderCircle } from "lucide-react";
 type SendDialogProps = {
   title: string;
   content: string;
+  isAd: boolean;
   loading: boolean;
   disabled: boolean;
   onValidate: () => Promise<boolean>;
@@ -22,6 +23,7 @@ type SendDialogProps = {
 export default function SendDialog({
   title,
   content,
+  isAd,
   loading,
   disabled,
   onValidate,
@@ -58,6 +60,8 @@ export default function SendDialog({
         <Input value={title} disabled />
         <Label>내용</Label>
         <Input value={content} disabled />
+        <Label>광고 알림 여부</Label>
+        <Input value={isAd ? "광고" : "일반"} disabled />
         <div className="grid grid-cols-2 gap-2 mt-4">
           <Button
             className="w-full"

@@ -20,6 +20,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import SendDialog from "@/app/notification/_components/send-dialog";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 export default function NotificationSend() {
   const [isSubmit, setIsSubmit] = useState(false);
@@ -28,7 +29,7 @@ export default function NotificationSend() {
     onSuccess: ({ data }) => {
       toast.success(data.message);
       form.reset();
-      form.setFocus("title");
+      setIsSubmit(false);
     },
     onError: ({ error: { serverError } }) => {
       toast.error(serverError?.message);
@@ -40,6 +41,7 @@ export default function NotificationSend() {
     defaultValues: {
       title: "",
       content: "",
+      isAd: false,
     },
   });
 
@@ -53,6 +55,7 @@ export default function NotificationSend() {
 
   useEffect(() => {
     submitRef.current?.click();
+    setIsSubmit(false);
   }, [isSubmit]);
 
   return (
@@ -107,14 +110,33 @@ export default function NotificationSend() {
             )}
           />
 
+          <FormField
+            control={form.control}
+            name="isAd"
+            render={({ field }) => (
+              <FormItem className="mb-6">
+                <FormLabel>광고 알림 여부</FormLabel>
+                <div className="border p-4 rounded-md flex items-center justify-between gap-2">
+                  <p className="text-xs text-muted-foreground">
+                    이 옵션을 활성화하면 광고 알림으로 발송됩니다.
+                  </p>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </div>
+              </FormItem>
+            )}
+          />
+
           <Button
             ref={submitRef}
             className="sr-only"
             variant="default"
             type="submit"
-            disabled={
-              !form.formState.isDirty || !form.formState.isValid || isExecuting
-            }
+            disabled={!form.formState.isValid || isExecuting}
           >
             push notification
           </Button>
@@ -122,10 +144,11 @@ export default function NotificationSend() {
       </Form>
       <SendDialog
         loading={isExecuting}
-        disabled={!form.formState.isDirty || !form.formState.isValid}
+        disabled={!form.formState.isValid}
         setIsSubmit={setIsSubmit}
         title={form.getValues("title")}
         content={form.getValues("content")}
+        isAd={form.getValues("isAd")}
         onValidate={handleValidate}
       />
     </>

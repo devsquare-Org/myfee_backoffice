@@ -21,7 +21,7 @@ export default async function Notification() {
         <TabsContent value="send" className="max-w-xl">
           <NotificationSend />
         </TabsContent>
-        <TabsContent value="history" className="max-w-3xl">
+        <TabsContent value="history" className="max-w-4xl">
           <NotificationHistory notificationHistory={notificationHistory.data} />
         </TabsContent>
       </Tabs>

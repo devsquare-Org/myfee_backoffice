@@ -9,6 +9,7 @@ export const notificationFormSchema = z.object({
     .string()
     .min(5, "5자 이상 입력해주세요.")
     .max(40, "40자 이하로 입력해주세요."),
+  isAd: z.boolean(),
 });
 
 export const notificationHistorySchema = z.array(
@@ -18,5 +19,6 @@ export const notificationHistorySchema = z.array(
     content: z.string(),
     createdAt: z.string(),
     adminId: z.string(),
+    isAd: z.boolean(),
   })
 );

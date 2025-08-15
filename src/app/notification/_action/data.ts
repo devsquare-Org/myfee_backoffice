@@ -14,6 +14,7 @@ export async function fetchNotificationHistory(): Promise<{
       content: "오늘 단 하루! 전상품 무료배송 이벤트 진행 중, 지금 서두르세요!",
       createdAt: "2025-01-01 12:00:00",
       adminId: "sole",
+      isAd: true,
     },
     {
       id: "2",
@@ -21,6 +22,7 @@ export async function fetchNotificationHistory(): Promise<{
       content: "오늘 단 하루! 전상품 무료배송 이벤트 진행 중, 지금 서두르세요!",
       createdAt: "2025-01-02 12:00:00",
       adminId: "sole",
+      isAd: false,
     },
   ] as z.infer<typeof notificationHistorySchema>;
 
