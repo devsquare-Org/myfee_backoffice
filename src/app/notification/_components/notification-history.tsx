@@ -28,6 +28,7 @@ export default function NotificationHistory({
               <TableHead>제목</TableHead>
               <TableHead>내용</TableHead>
               <TableHead>발송일시</TableHead>
+              <TableHead>관리자 아이디</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -36,6 +37,7 @@ export default function NotificationHistory({
                 <TableCell>{notification.title}</TableCell>
                 <TableCell>{notification.content}</TableCell>
                 <TableCell>{notification.createdAt}</TableCell>
+                <TableCell>{notification.adminId}</TableCell>
               </TableRow>
             ))}
           </TableBody>

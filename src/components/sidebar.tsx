@@ -10,14 +10,46 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { ROUTES } from "@/lib/routes-config";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-
-const items = ROUTES;
+import { ROUTES } from "@/lib/routes-config";
+import { Bell, CheckCircle, Home, List, Tickets, User } from "lucide-react";
+import Link from "next/link";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const menu = [
+    {
+      label: "대시보드",
+      icon: Home,
+      path: ROUTES.DASHBOARD,
+    },
+    {
+      label: "챌린지 관리",
+      icon: List,
+      path: ROUTES.CHALLENGE_LIST,
+    },
+    {
+      label: "챌린지 인증 관리",
+      icon: CheckCircle,
+      path: ROUTES.CHALLENGE_REVIEW_LIST,
+    },
+    {
+      label: "유저 관리",
+      icon: User,
+      path: ROUTES.USER_LIST,
+    },
+    {
+      label: "푸시 알림",
+      icon: Bell,
+      path: ROUTES.NOTIFICATION,
+    },
+    {
+      label: "쿠폰 관리",
+      icon: Tickets,
+      path: ROUTES.COUPON,
+    },
+  ];
 
   return (
     <SahdcnSidebar>
@@ -26,8 +58,8 @@ export function Sidebar() {
           <SidebarGroupLabel>MyFee Backoffice</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {Object.entries(items).map(([key, value]) => (
-                <SidebarMenuItem key={key}>
+              {menu.map((value) => (
+                <SidebarMenuItem key={value.path}>
                   <SidebarMenuButton
                     asChild
                     className={cn(
@@ -35,9 +67,10 @@ export function Sidebar() {
                       pathname === value.path && "bg-border text-primary"
                     )}
                   >
-                    <a href={value.path}>
+                    <Link href={value.path}>
+                      <value.icon className="w-4 h-4 mr-2" />
                       <span className="font-medium">{value.label}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

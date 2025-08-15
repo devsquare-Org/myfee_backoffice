@@ -12,8 +12,22 @@ import { ChevronRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-function getRouteByPath(path: string) {
-  return Object.values(ROUTES).find((route) => route.path === `/${path}`);
+// 경로에 따른 라벨 매핑
+const ROUTE_LABELS: Record<string, string> = {
+  "/": "대시보드",
+  "/challenge-list": "챌린지 관리",
+  "/challenge-review-list": "챌린지 리뷰 관리",
+  "/user-list": "유저 관리",
+  "/notification": "푸시 알림",
+  "/coupon": "쿠폰 관리",
+};
+
+function getRouteInfo(path: string) {
+  const fullPath = `/${path}`;
+  return {
+    path: ROUTE_LABELS[fullPath] ? fullPath : "#",
+    label: ROUTE_LABELS[fullPath] || "Not Found",
+  };
 }
 
 export function Header() {
@@ -36,14 +50,14 @@ export function Header() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <Link
-                href={ROUTES.DASHBOARD.path}
+                href={ROUTES.DASHBOARD}
                 className={
-                  pathname === ROUTES.DASHBOARD.path
+                  pathname === ROUTES.DASHBOARD
                     ? "font-medium text-foreground"
                     : "text-muted-foreground hover:text-foreground transition-colors"
                 }
               >
-                {ROUTES.DASHBOARD.label}
+                {ROUTE_LABELS[ROUTES.DASHBOARD]}
               </Link>
               {displayPaths.length > 0 && (
                 <ChevronRight className="h-4 w-4 ml-1.5" />
@@ -51,21 +65,19 @@ export function Header() {
             </BreadcrumbItem>
 
             {displayPaths.map((path: string, index: number) => {
-              const route = getRouteByPath(path);
-              const href = route?.path || "#";
-              const label = route?.label || "Not Found";
+              const routeInfo = getRouteInfo(path);
 
               return (
                 <BreadcrumbItem key={`${path}-${index}`}>
                   <Link
-                    href={href}
+                    href={routeInfo.path}
                     className={
                       index === displayPaths.length - 1
                         ? "font-medium text-foreground"
                         : "text-muted-foreground hover:text-foreground transition-colors"
                     }
                   >
-                    {label}
+                    {routeInfo.label}
                   </Link>
                   {index < displayPaths.length - 1 && (
                     <ChevronRight className="h-4 w-4 ml-1.5" />

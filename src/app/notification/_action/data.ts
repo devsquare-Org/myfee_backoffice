@@ -7,19 +7,20 @@ export async function fetchNotificationHistory(): Promise<{
   data: z.infer<typeof notificationHistorySchema>;
   message: string;
 }> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
   const data = [
     {
       id: "1",
       title: "마이피 런칭 기념, 전상품 무료배송 진행!",
       content: "오늘 단 하루! 전상품 무료배송 이벤트 진행 중, 지금 서두르세요!",
       createdAt: "2025-01-01 12:00:00",
+      adminId: "sole",
     },
     {
       id: "2",
       title: "마이피 런칭 기념, 전상품 무료배송 진행!",
       content: "오늘 단 하루! 전상품 무료배송 이벤트 진행 중, 지금 서두르세요!",
       createdAt: "2025-01-02 12:00:00",
+      adminId: "sole",
     },
   ] as z.infer<typeof notificationHistorySchema>;
 

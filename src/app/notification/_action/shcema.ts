@@ -17,5 +17,6 @@ export const notificationHistorySchema = z.array(
     title: z.string(),
     content: z.string(),
     createdAt: z.string(),
+    adminId: z.string(),
   })
 );
