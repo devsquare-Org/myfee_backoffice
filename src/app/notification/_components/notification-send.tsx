@@ -116,7 +116,7 @@ export default function NotificationSend() {
             render={({ field }) => (
               <FormItem className="mb-6">
                 <FormLabel>광고 알림 여부</FormLabel>
-                <FormLabel className="border p-4 rounded-md flex items-center justify-between gap-2 cursor-pointer">
+                <FormLabel className="border px-3 py-1 h-9 rounded-md dark:bg-input/30 flex items-center justify-between gap-2 cursor-pointer">
                   <FormLabel className="text-xs text-muted-foreground cursor-pointer">
                     이 옵션을 체크하면 광고 알림으로 발송됩니다.
                   </FormLabel>
