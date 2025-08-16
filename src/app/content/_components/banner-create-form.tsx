@@ -20,6 +20,7 @@ import { bannerCreateAction } from "@/app/content/_action/action";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import CreateDialog from "@/app/content/_components/create-dialog";
+import Link from "next/link";
 
 // 클라이언트용 스키마 (리졸버용)
 const clientSchema = z.object({
@@ -38,6 +39,7 @@ const clientSchema = z.object({
 export default function BannerCreateForm() {
   const [isSubmit, setIsSubmit] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [clipboardUrl, setClipboardUrl] = useState<string | null>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { execute, isExecuting } = useAction(bannerCreateAction, {
@@ -64,6 +66,18 @@ export default function BannerCreateForm() {
     imageFile: undefined as File | undefined,
     linkUrl: "",
   };
+
+  // 클립보드 URL을 input에 적용하는 함수
+  function applyClipboardUrl() {
+    if (clipboardUrl) {
+      form.setValue("linkUrl", clipboardUrl, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+      setClipboardUrl(null);
+    }
+  }
 
   const form = useForm<z.infer<typeof clientSchema>>({
     resolver: zodResolver(clientSchema),
@@ -118,6 +132,24 @@ export default function BannerCreateForm() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
+  // 컴포넌트 마운트 시 클립보드 확인
+  useEffect(() => {
+    async function checkClipboardOnMount() {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        const clipboardText = await navigator.clipboard.readText();
+        const urlPattern = /https:\/\/[^\s]+/g;
+        const urls = clipboardText.match(urlPattern);
+
+        if (urls && urls.length > 0) {
+          const extractedUrl = urls[0];
+          setClipboardUrl(extractedUrl); // 바로 input에 넣지 않고 미리보기로 설정
+        }
+      }
+    }
+
+    checkClipboardOnMount();
+  }, []);
+
   // 컴포넌트 언마운트 시 URL 정리
   useEffect(() => {
     return () => {
@@ -168,10 +200,19 @@ export default function BannerCreateForm() {
                     <FormLabel>링크</FormLabel>
                   )}
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="링크를 입력해주세요. (http:// 또는 https:// 포함)"
-                    />
+                    <div className="space-y-2">
+                      <Input
+                        {...field}
+                        placeholder="링크를 입력해주세요. (http:// 또는 https:// 포함)"
+                      />
+                      {clipboardUrl && (
+                        <ClipboardUrlPreview
+                          url={clipboardUrl}
+                          onApply={applyClipboardUrl}
+                          onDismiss={() => setClipboardUrl(null)}
+                        />
+                      )}
+                    </div>
                   </FormControl>
                 </FormItem>
               </div>
@@ -289,5 +330,51 @@ function BannerImageUploadButton({
         </div>
       </FormLabel>
     </FormItem>
+  );
+}
+
+// 클립보드 URL 미리보기 컴포넌트
+function ClipboardUrlPreview({
+  url,
+  onApply,
+  onDismiss,
+}: {
+  url: string;
+  onApply: () => void;
+  onDismiss: () => void;
+}) {
+  return (
+    <div className="flex items-center gap-2 p-2 bg-muted/80 rounded-md border border-dashed">
+      <div className="flex-1 min-w-0 pl-2">
+        <p className="text-xs text-muted-foreground">
+          클립보드에서 발견한 링크
+        </p>
+        <p className="text-sm font-medium text-muted-foreground">
+          <Link href={url} target="_blank" className="hover:underline">
+            {url}
+          </Link>
+        </p>
+      </div>
+      <div className="flex gap-1">
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          onClick={onApply}
+          className="h-7 px-2 text-xs"
+        >
+          사용
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={onDismiss}
+          className="h-7 w-7 p-0"
+        >
+          <X className="w-3 h-3" />
+        </Button>
+      </div>
+    </div>
   );
 }
