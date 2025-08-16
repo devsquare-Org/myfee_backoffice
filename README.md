@@ -10,4 +10,4 @@ Deploy Url: https://myfee-backoffice.vercel.app
 - [ ] 유저 관리
 - [x] 푸시 알림
 - [ ] 쿠폰 관리
-- [ ] 콘텐츠 관리
+- [x] 콘텐츠 관리
