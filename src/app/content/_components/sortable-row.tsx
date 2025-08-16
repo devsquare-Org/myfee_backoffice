@@ -85,14 +85,16 @@ export function SortableRow({ banner }: { banner: Banner }) {
         </Tooltip>
       </TableCell>
       <TableCell className="font-medium">{banner.title}</TableCell>
-      <TableCell>
-        <Link
-          target="_blank"
-          href={banner.linkUrl}
-          className="text-blue-600 hover:underline"
-        >
-          {banner.linkUrl}
-        </Link>
+      <TableCell className="max-w-[200px]">
+        <div className="truncate">
+          <Link
+            target="_blank"
+            href={banner.linkUrl}
+            className="text-blue-600 hover:underline"
+          >
+            {banner.linkUrl}
+          </Link>
+        </div>
       </TableCell>
       <TableCell>{banner.createdAt}</TableCell>
       <TableCell>{banner.updatedAt}</TableCell>

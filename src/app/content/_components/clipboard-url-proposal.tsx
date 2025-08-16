@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function ClipboardUrlPreview({
+export default function ClipboardUrlProposal({
   setValue,
 }: {
   setValue: (
@@ -69,7 +69,7 @@ export default function ClipboardUrlPreview({
               <p className="text-xs text-muted-foreground">
                 클립보드에서 발견한 링크
               </p>
-              <p className="text-sm font-medium text-muted-foreground">
+              <p className="text-sm font-medium text-muted-foreground break-all">
                 <Link
                   href={clipboardUrl}
                   target="_blank"

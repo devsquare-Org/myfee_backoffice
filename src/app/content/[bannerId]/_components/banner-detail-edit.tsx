@@ -12,10 +12,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { bannerDetailSchema } from "@/app/content/_action/schema";
 import BannerImagePreview from "@/app/content/_components/banner-image-preview";
-import ClipboardUrlPreview from "@/app/content/_components/clipboard-url-preview";
 import BannerConfirmDialog from "@/app/content/_components/banner-confirm-dialog";
 import { CustomAlert } from "@/components/custom-alert";
 import CustomFormLabel from "@/components/custom-form-label";
+import ClipboardUrlProposal from "@/app/content/_components/clipboard-url-proposal";
 
 // 클라이언트용 스키마 (리졸버용)
 const clientSchema = z.object({
@@ -151,7 +151,7 @@ export default function BannerDetailEdit({ data }: Props) {
                           {...field}
                           placeholder="링크를 입력해주세요. (http:// 또는 https:// 포함)"
                         />
-                        <ClipboardUrlPreview
+                        <ClipboardUrlProposal
                           setValue={(name, value, options) =>
                             form.setValue(name as "linkUrl", value, options)
                           }
