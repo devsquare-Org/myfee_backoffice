@@ -25,6 +25,15 @@ const ROUTE_LABELS: Record<string, string> = {
 
 function getRouteInfo(path: string) {
   const fullPath = `/${path}`;
+
+  // "detail"은 모든 상세 페이지에서 공통으로 사용
+  if (path === "detail") {
+    return {
+      path: "#",
+      label: "상세",
+    };
+  }
+
   return {
     path: ROUTE_LABELS[fullPath] ? fullPath : "#",
     label: ROUTE_LABELS[fullPath] || "Not Found",
@@ -35,7 +44,12 @@ export function Header() {
   const pathname = usePathname();
   const paths = pathname.split("/").filter(Boolean);
   const displayPaths = [...paths];
-  const detailPage = ["user-list", "challenge-list", "challenge-review-list"];
+  const detailPage = [
+    "user-list",
+    "challenge-list",
+    "challenge-review-list",
+    "content",
+  ];
 
   detailPage.forEach((page) => {
     if (pathname.startsWith(`/${page}/`) && paths.length > 1) {

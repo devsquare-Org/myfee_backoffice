@@ -20,7 +20,7 @@ export function CustomAlert({
   className,
 }: CustomAlertProps) {
   return (
-    <div className={cn("grid w-full max-w-xl items-start gap-4", className)}>
+    <div className={cn("grid w-full items-start gap-4", className)}>
       {type === "default" && (
         <DefaultAlert title={title} description={description} />
       )}

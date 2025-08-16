@@ -77,7 +77,10 @@ export function Sidebar() {
                     asChild
                     className={cn(
                       "transition-colors rounded-md hover:bg-border hover:text-primary text-sm",
-                      pathname === value.path && "bg-border text-primary"
+                      (value.path === ROUTES.DASHBOARD
+                        ? pathname === value.path
+                        : pathname.includes(value.path)) &&
+                        "bg-border text-primary"
                     )}
                   >
                     <Link href={value.path}>
