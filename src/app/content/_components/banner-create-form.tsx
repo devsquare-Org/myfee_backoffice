@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { bannerCreateAction } from "@/app/content/_action/action";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -207,13 +208,31 @@ export default function BannerCreateForm() {
                           {...field}
                           placeholder="링크를 입력해주세요. (http:// 또는 https:// 포함)"
                         />
-                        {clipboardUrl && (
-                          <ClipboardUrlPreview
-                            url={clipboardUrl}
-                            onApply={applyClipboardUrl}
-                            onDismiss={() => setClipboardUrl(null)}
-                          />
-                        )}
+                        <AnimatePresence>
+                          {clipboardUrl && (
+                            <motion.div
+                              layout
+                              initial={{ opacity: 1, y: 0, height: "auto" }}
+                              animate={{ opacity: 1, y: 0, height: "auto" }}
+                              exit={{
+                                opacity: 0,
+                                y: -20,
+                                height: 0,
+                                marginTop: 0,
+                                marginBottom: 0,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                              }}
+                              transition={{ duration: 0.1, ease: "easeOut" }}
+                            >
+                              <ClipboardUrlPreview
+                                url={clipboardUrl}
+                                onApply={applyClipboardUrl}
+                                onDismiss={() => setClipboardUrl(null)}
+                              />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </FormControl>
                   </FormItem>

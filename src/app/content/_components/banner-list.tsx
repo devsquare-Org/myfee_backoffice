@@ -34,6 +34,7 @@ import { Alert } from "@/components/ui/alert";
 import { Flag } from "lucide-react";
 import { AlertTitle } from "@/components/ui/alert";
 import { useAction } from "next-safe-action/hooks";
+import { AnimatePresence, motion } from "framer-motion";
 
 type BannerListProps = {
   bannerList: z.infer<typeof bannerListSchema>;
@@ -106,29 +107,51 @@ export default function BannerList({ bannerList }: BannerListProps) {
 
   return (
     <div className="space-y-4">
-      {hasChanges && (
-        <Alert className="flex items-center gap-2 justify-between">
-          <div className="flex items-center gap-2">
-            <Flag size={16} />
-            <AlertTitle>
-              배너 순서가 변경되었습니다. 저장하시겠습니까?
-            </AlertTitle>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleResetOrder}
-              disabled={isExecuting}
-            >
-              취소
-            </Button>
-            <Button size="sm" onClick={handleSaveOrder} disabled={isExecuting}>
-              {isExecuting ? <Loader2 className="" /> : "저장"}
-            </Button>
-          </div>
-        </Alert>
-      )}
+      <AnimatePresence>
+        {hasChanges && (
+          <motion.div
+            layout
+            initial={{ opacity: 0, y: 0, height: 20 }}
+            animate={{ opacity: 1, y: 0, height: "auto" }}
+            exit={{
+              opacity: 0,
+              y: -20,
+              height: 0,
+              marginTop: 0,
+              marginBottom: 0,
+              paddingTop: 0,
+              paddingBottom: 0,
+            }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            <Alert className="flex items-center gap-2 justify-between">
+              <div className="flex items-center gap-2">
+                <Flag size={16} />
+                <AlertTitle>
+                  배너 순서가 변경되었습니다. 저장하시겠습니까?
+                </AlertTitle>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleResetOrder}
+                  disabled={isExecuting}
+                >
+                  취소
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleSaveOrder}
+                  disabled={isExecuting}
+                >
+                  {isExecuting ? <Loader2 className="" /> : "저장"}
+                </Button>
+              </div>
+            </Alert>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <DndContext
         sensors={sensors}
