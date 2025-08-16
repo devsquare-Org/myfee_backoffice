@@ -14,7 +14,9 @@ export default function BannerImageUploadButton({
       >
         <Upload className="w-8 h-8 text-muted-foreground" />
         <div className="text-center">
-          <p className="text-sm font-medium">이미지를 선택해주세요</p>
+          <p className="text-xs text-muted-foreground font-medium">
+            이미지를 선택해주세요
+          </p>
           <p className="text-xs text-muted-foreground mt-1">
             PNG, JPG, GIF (최대 5MB)
           </p>

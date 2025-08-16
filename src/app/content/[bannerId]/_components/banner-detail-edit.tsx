@@ -111,7 +111,18 @@ export default function BannerDetailEdit({ data }: Props) {
   }
 
   async function handleValidate() {
-    return await form.trigger();
+    const isValid = await form.trigger();
+
+    // 이미지가 없는 경우 커스텀 에러 설정
+    if (!previewUrl) {
+      form.setError("imageFile", {
+        type: "manual",
+        message: "이미지를 첨부해주세요.",
+      });
+      return false;
+    }
+
+    return isValid;
   }
 
   function handleFileChange(file: File | undefined) {
@@ -129,6 +140,9 @@ export default function BannerDetailEdit({ data }: Props) {
         shouldDirty: true,
         shouldTouch: true,
       });
+
+      // 이미지 에러 클리어
+      form.clearErrors("imageFile");
     }
   }
 
@@ -149,6 +163,12 @@ export default function BannerDetailEdit({ data }: Props) {
 
     // 폼의 dirty 상태를 수동으로 설정 (이미지 제거도 변경사항으로 간주)
     form.setValue("title", form.getValues("title"), { shouldDirty: true });
+
+    // 이미지 제거 시 바로 에러 메시지 표시
+    form.setError("imageFile", {
+      type: "manual",
+      message: "이미지를 첨부해주세요.",
+    });
   }
 
   // 컴포넌트 마운트 시 클립보드 확인
@@ -291,11 +311,13 @@ export default function BannerDetailEdit({ data }: Props) {
         </Form>
         <BannerConfirmDialog
           loading={isExecuting}
-          disabled={!form.formState.isValid || !form.formState.isDirty}
+          disabled={
+            !form.formState.isValid || !form.formState.isDirty || !previewUrl
+          }
           setIsSubmit={setIsSubmit}
           title={form.getValues("title")}
           link={form.getValues("linkUrl")}
-          previewUrl={previewUrl!}
+          previewUrl={previewUrl || ""}
           onValidate={handleValidate}
           mode="edit"
         />
