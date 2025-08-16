@@ -2,27 +2,20 @@
 
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+
 import { Button } from "@/components/ui/button";
 import { bannerCreateAction } from "@/app/content/_action/action";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import BannerImagePreview from "@/app/content/_components/banner-image-preview";
-import BannerImageUploadButton from "@/app/content/_components/banner-image-upload-button";
 import ClipboardUrlPreview from "@/app/content/_components/clipboard-url-preview";
 import BannerConfirmDialog from "@/app/content/_components/banner-confirm-dialog";
 import { CustomAlert } from "@/components/custom-alert";
+import CustomFormLabel from "@/components/custom-form-label";
 
 // 클라이언트용 스키마 (리졸버용)
 const clientSchema = z.object({
@@ -41,21 +34,16 @@ const clientSchema = z.object({
 export default function BannerCreateForm() {
   const [isSubmit, setIsSubmit] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [clipboardUrl, setClipboardUrl] = useState<string | null>(null);
+
   const submitRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { execute, isExecuting } = useAction(bannerCreateAction, {
     onSuccess: ({ data }) => {
       toast.success(data.message);
       form.reset();
-
-      // 미리보기 초기화
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-        setPreviewUrl(null);
-      }
-
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      URL.revokeObjectURL(previewUrl!);
+      setPreviewUrl(null);
+      fileInputRef.current!.value = "";
       setIsSubmit(false);
     },
     onError: ({ error: { serverError } }) => {
@@ -63,53 +51,30 @@ export default function BannerCreateForm() {
     },
   });
 
-  const defaultValues = {
-    title: "",
-    imageFile: undefined as File | undefined,
-    linkUrl: "",
-  };
-
-  // 클립보드 URL을 input에 적용하는 함수
-  function applyClipboardUrl() {
-    if (clipboardUrl) {
-      form.setValue("linkUrl", clipboardUrl, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-      });
-      setClipboardUrl(null);
-    }
-  }
-
   const form = useForm<z.infer<typeof clientSchema>>({
     resolver: zodResolver(clientSchema),
-    defaultValues,
     mode: "onChange",
+    defaultValues: {
+      title: "",
+      imageFile: undefined as File | undefined,
+      linkUrl: "",
+    },
   });
 
   function onSubmit() {
     if (isSubmit) {
       const formData = new FormData();
       const values = form.getValues();
-
       formData.append("title", values.title);
       formData.append("linkUrl", values.linkUrl);
-      if (values.imageFile) formData.append("imageFile", values.imageFile);
+      formData.append("imageFile", values.imageFile);
 
       execute(formData);
     }
   }
 
-  async function handleValidate() {
-    return await form.trigger();
-  }
-
   function handleFileChange(file: File | undefined) {
     if (file) {
-      // 이전 미리보기 URL 정리
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-
-      // 새 미리보기 URL 생성
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
       form.setValue("imageFile", file, {
@@ -121,38 +86,16 @@ export default function BannerCreateForm() {
   }
 
   function handleRemoveImage() {
-    // 미리보기 URL 정리
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-      setPreviewUrl(null);
-    }
-
-    // 폼 값 초기화
+    URL.revokeObjectURL(previewUrl!);
+    setPreviewUrl(null);
     form.resetField("imageFile");
-
-    // 파일 입력 초기화
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    fileInputRef.current!.value = "";
+    form.setError("imageFile", {
+      type: "manual",
+      message: "이미지를 첨부해주세요.",
+    });
   }
 
-  // 컴포넌트 마운트 시 클립보드 확인
-  useEffect(() => {
-    async function checkClipboardOnMount() {
-      if (navigator.clipboard && navigator.clipboard.readText) {
-        const clipboardText = await navigator.clipboard.readText();
-        const urlPattern = /https:\/\/[^\s]+/g;
-        const urls = clipboardText.match(urlPattern);
-
-        if (urls && urls.length > 0) {
-          const extractedUrl = urls[0];
-          setClipboardUrl(extractedUrl); // 바로 input에 넣지 않고 미리보기로 설정
-        }
-      }
-    }
-
-    checkClipboardOnMount();
-  }, []);
-
-  // 컴포넌트 언마운트 시 URL 정리
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -175,11 +118,10 @@ export default function BannerCreateForm() {
               render={({ field }) => (
                 <div className="mb-4">
                   <FormItem>
-                    {form.formState.errors.title ? (
-                      <FormMessage />
-                    ) : (
-                      <FormLabel>제목</FormLabel>
-                    )}
+                    <CustomFormLabel error={form.formState.errors.title}>
+                      제목
+                    </CustomFormLabel>
+
                     <FormControl>
                       <Input
                         {...field}
@@ -197,42 +139,21 @@ export default function BannerCreateForm() {
               render={({ field }) => (
                 <div className="mb-4">
                   <FormItem>
-                    {form.formState.errors.linkUrl ? (
-                      <FormMessage />
-                    ) : (
-                      <FormLabel>링크</FormLabel>
-                    )}
+                    <CustomFormLabel error={form.formState.errors.linkUrl}>
+                      링크
+                    </CustomFormLabel>
+
                     <FormControl>
                       <div className="space-y-2">
                         <Input
                           {...field}
                           placeholder="링크를 입력해주세요. (http:// 또는 https:// 포함)"
                         />
-                        <AnimatePresence>
-                          {clipboardUrl && (
-                            <motion.div
-                              layout
-                              initial={{ opacity: 1, y: 0, height: "auto" }}
-                              animate={{ opacity: 1, y: 0, height: "auto" }}
-                              exit={{
-                                opacity: 0,
-                                y: -20,
-                                height: 0,
-                                marginTop: 0,
-                                marginBottom: 0,
-                                paddingTop: 0,
-                                paddingBottom: 0,
-                              }}
-                              transition={{ duration: 0.1, ease: "easeOut" }}
-                            >
-                              <ClipboardUrlPreview
-                                url={clipboardUrl}
-                                onApply={applyClipboardUrl}
-                                onDismiss={() => setClipboardUrl(null)}
-                              />
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        <ClipboardUrlPreview
+                          setValue={(name, value, options) =>
+                            form.setValue(name as "linkUrl", value, options)
+                          }
+                        />
                       </div>
                     </FormControl>
                   </FormItem>
@@ -245,22 +166,18 @@ export default function BannerCreateForm() {
               name="imageFile"
               render={({ field: { name, onBlur } }) => (
                 <div className="mb-6">
-                  {form.formState.errors.imageFile ? (
-                    <FormMessage className="mb-2" />
-                  ) : (
-                    <FormLabel className="mb-2">배너 이미지</FormLabel>
-                  )}
+                  <CustomFormLabel
+                    error={form.formState.errors.imageFile}
+                    className="mb-2"
+                  >
+                    배너 이미지
+                  </CustomFormLabel>
 
-                  {previewUrl ? (
-                    // 미리보기가 있을 때
-                    <BannerImagePreview
-                      previewUrl={previewUrl}
-                      handleRemoveImage={handleRemoveImage}
-                    />
-                  ) : (
-                    // 미리보기가 없을 때
-                    <BannerImageUploadButton fileInputRef={fileInputRef} />
-                  )}
+                  <BannerImagePreview
+                    previewUrl={previewUrl}
+                    handleRemoveImage={handleRemoveImage}
+                    fileInputRef={fileInputRef}
+                  />
 
                   <FormControl>
                     <Input
@@ -295,7 +212,7 @@ export default function BannerCreateForm() {
           title={form.getValues("title")}
           link={form.getValues("linkUrl")}
           previewUrl={previewUrl!}
-          onValidate={handleValidate}
+          onValidate={() => form.trigger()}
         />
       </div>
       <CustomAlert

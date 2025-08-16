@@ -11,7 +11,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -21,6 +20,7 @@ import SendDialog from "@/app/notification/_components/send-dialog";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import CustomFormLabel from "@/components/custom-form-label";
 
 export default function NotificationSend() {
   const [isSubmit, setIsSubmit] = useState(false);
@@ -70,11 +70,10 @@ export default function NotificationSend() {
               render={({ field }) => (
                 <div className="mb-4">
                   <FormItem>
-                    {form.formState.errors.title ? (
-                      <FormMessage />
-                    ) : (
-                      <FormLabel>제목</FormLabel>
-                    )}
+                    <CustomFormLabel error={form.formState.errors.title}>
+                      제목
+                    </CustomFormLabel>
+
                     <FormControl>
                       <Input
                         {...field}
@@ -92,11 +91,10 @@ export default function NotificationSend() {
               render={({ field }) => (
                 <div className="mb-4">
                   <FormItem>
-                    {form.formState.errors.content ? (
-                      <FormMessage />
-                    ) : (
-                      <FormLabel>내용</FormLabel>
-                    )}
+                    <CustomFormLabel error={form.formState.errors.content}>
+                      내용
+                    </CustomFormLabel>
+
                     <FormControl>
                       <Input
                         {...field}

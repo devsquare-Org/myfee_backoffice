@@ -2,14 +2,7 @@
 
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
@@ -19,11 +12,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { bannerDetailSchema } from "@/app/content/_action/schema";
 import BannerImagePreview from "@/app/content/_components/banner-image-preview";
-import BannerImageUploadButton from "@/app/content/_components/banner-image-upload-button";
 import ClipboardUrlPreview from "@/app/content/_components/clipboard-url-preview";
 import BannerConfirmDialog from "@/app/content/_components/banner-confirm-dialog";
 import { CustomAlert } from "@/components/custom-alert";
-import { AnimatePresence, motion } from "framer-motion";
+import CustomFormLabel from "@/components/custom-form-label";
 
 // 클라이언트용 스키마 (리졸버용)
 const clientSchema = z.object({
@@ -47,93 +39,46 @@ type Props = {
 export default function BannerDetailEdit({ data }: Props) {
   const [isSubmit, setIsSubmit] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(data.image);
-  const [clipboardUrl, setClipboardUrl] = useState<string | null>(null);
+
   const submitRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { execute, isExecuting } = useAction(bannerUpdateAction, {
     onSuccess: ({ data }) => {
       toast.success(data.message);
+      form.reset();
       setIsSubmit(false);
-
-      // 폼 상태 초기화 (isDirty를 false로 만들기 위해)
-      const currentValues = form.getValues();
-      form.reset({
-        title: currentValues.title,
-        linkUrl: currentValues.linkUrl,
-        imageFile: undefined, // 파일은 항상 undefined로 초기화
-      });
-
-      // 파일 입력 초기화
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      fileInputRef.current!.value = "";
     },
     onError: ({ error: { serverError } }) => {
       toast.error(serverError?.message);
     },
   });
 
-  const defaultValues = {
-    title: data.title,
-    imageFile: undefined as File | undefined,
-    linkUrl: data.linkUrl,
-  };
-
-  // 클립보드 URL을 input에 적용하는 함수
-  function applyClipboardUrl() {
-    if (clipboardUrl) {
-      form.setValue("linkUrl", clipboardUrl, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-      });
-      setClipboardUrl(null);
-    }
-  }
-
   const form = useForm<z.infer<typeof clientSchema>>({
     resolver: zodResolver(clientSchema),
-    defaultValues,
     mode: "onChange",
+    defaultValues: {
+      title: data.title,
+      imageFile: undefined as File | undefined,
+      linkUrl: data.linkUrl,
+    },
   });
 
   function onSubmit() {
     if (isSubmit) {
       const formData = new FormData();
       const values = form.getValues();
-
       formData.append("id", data.id);
       formData.append("title", values.title);
       formData.append("linkUrl", values.linkUrl);
-      if (values.imageFile) formData.append("imageFile", values.imageFile);
+      formData.append("imageFile", values.imageFile!);
 
       execute(formData);
     }
   }
 
-  async function handleValidate() {
-    const isValid = await form.trigger();
-
-    // 이미지가 없는 경우 커스텀 에러 설정
-    if (!previewUrl) {
-      form.setError("imageFile", {
-        type: "manual",
-        message: "이미지를 첨부해주세요.",
-      });
-      return false;
-    }
-
-    return isValid;
-  }
-
   function handleFileChange(file: File | undefined) {
     if (file) {
-      // 이전 미리보기 URL 정리 (기존 이미지가 아닌 경우)
-      if (previewUrl && previewUrl !== data.image) {
-        URL.revokeObjectURL(previewUrl);
-      }
-
-      // 새 미리보기 URL 생성
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
       form.setValue("imageFile", file, {
@@ -141,63 +86,24 @@ export default function BannerDetailEdit({ data }: Props) {
         shouldDirty: true,
         shouldTouch: true,
       });
-
-      // 이미지 에러 클리어
-      form.clearErrors("imageFile");
     }
   }
 
   function handleRemoveImage() {
-    // 미리보기 URL 정리 (기존 이미지가 아닌 경우)
-    if (previewUrl && previewUrl !== data.image) {
-      URL.revokeObjectURL(previewUrl);
-    }
-
-    // 미리보기 제거 (null로 설정하여 업로드 버튼 표시)
     setPreviewUrl(null);
-
-    // 폼 값 초기화
     form.resetField("imageFile");
-
-    // 파일 입력 초기화
-    if (fileInputRef.current) fileInputRef.current.value = "";
-
-    // 폼의 dirty 상태를 수동으로 설정 (이미지 제거도 변경사항으로 간주)
-    form.setValue("title", form.getValues("title"), { shouldDirty: true });
-
-    // 이미지 제거 시 바로 에러 메시지 표시
+    fileInputRef.current!.value = "";
     form.setError("imageFile", {
       type: "manual",
       message: "이미지를 첨부해주세요.",
     });
   }
 
-  // 컴포넌트 마운트 시 클립보드 확인
-  useEffect(() => {
-    async function checkClipboardOnMount() {
-      if (navigator.clipboard && navigator.clipboard.readText) {
-        const clipboardText = await navigator.clipboard.readText();
-        const urlPattern = /https:\/\/[^\s]+/g;
-        const urls = clipboardText.match(urlPattern);
-
-        if (urls && urls.length > 0) {
-          const extractedUrl = urls[0];
-          setClipboardUrl(extractedUrl); // 바로 input에 넣지 않고 미리보기로 설정
-        }
-      }
-    }
-
-    checkClipboardOnMount();
-  }, []);
-
-  // 컴포넌트 언마운트 시 URL 정리
   useEffect(() => {
     return () => {
-      if (previewUrl && previewUrl !== data.image) {
-        URL.revokeObjectURL(previewUrl);
-      }
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
     };
-  }, [previewUrl, data.image]);
+  }, [previewUrl]);
 
   useEffect(() => {
     submitRef.current?.click();
@@ -215,11 +121,9 @@ export default function BannerDetailEdit({ data }: Props) {
               render={({ field }) => (
                 <div className="mb-4">
                   <FormItem>
-                    {form.formState.errors.title ? (
-                      <FormMessage />
-                    ) : (
-                      <FormLabel>제목</FormLabel>
-                    )}
+                    <CustomFormLabel error={form.formState.errors.title}>
+                      제목
+                    </CustomFormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -237,42 +141,21 @@ export default function BannerDetailEdit({ data }: Props) {
               render={({ field }) => (
                 <div className="mb-4">
                   <FormItem>
-                    {form.formState.errors.linkUrl ? (
-                      <FormMessage />
-                    ) : (
-                      <FormLabel>링크</FormLabel>
-                    )}
+                    <CustomFormLabel error={form.formState.errors.linkUrl}>
+                      링크
+                    </CustomFormLabel>
+
                     <FormControl>
                       <div className="space-y-2">
                         <Input
                           {...field}
                           placeholder="링크를 입력해주세요. (http:// 또는 https:// 포함)"
                         />
-                        <AnimatePresence>
-                          {clipboardUrl && (
-                            <motion.div
-                              layout
-                              initial={{ opacity: 1, y: 0, height: "auto" }}
-                              animate={{ opacity: 1, y: 0, height: "auto" }}
-                              exit={{
-                                opacity: 0,
-                                y: -20,
-                                height: 0,
-                                marginTop: 0,
-                                marginBottom: 0,
-                                paddingTop: 0,
-                                paddingBottom: 0,
-                              }}
-                              transition={{ duration: 0.1, ease: "easeOut" }}
-                            >
-                              <ClipboardUrlPreview
-                                url={clipboardUrl}
-                                onApply={applyClipboardUrl}
-                                onDismiss={() => setClipboardUrl(null)}
-                              />
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        <ClipboardUrlPreview
+                          setValue={(name, value, options) =>
+                            form.setValue(name as "linkUrl", value, options)
+                          }
+                        />
                       </div>
                     </FormControl>
                   </FormItem>
@@ -285,21 +168,18 @@ export default function BannerDetailEdit({ data }: Props) {
               name="imageFile"
               render={({ field: { name, onBlur } }) => (
                 <div className="mb-6">
-                  {form.formState.errors.imageFile ? (
-                    <FormMessage className="mb-2" />
-                  ) : (
-                    <FormLabel className="mb-2">배너 이미지</FormLabel>
-                  )}
-                  {previewUrl ? (
-                    // 미리보기가 있을 때
-                    <BannerImagePreview
-                      previewUrl={previewUrl}
-                      handleRemoveImage={handleRemoveImage}
-                    />
-                  ) : (
-                    // 미리보기가 없을 때
-                    <BannerImageUploadButton fileInputRef={fileInputRef} />
-                  )}
+                  <CustomFormLabel
+                    error={form.formState.errors.imageFile}
+                    className="mb-2"
+                  >
+                    배너 이미지
+                  </CustomFormLabel>
+
+                  <BannerImagePreview
+                    previewUrl={previewUrl}
+                    handleRemoveImage={handleRemoveImage}
+                    fileInputRef={fileInputRef}
+                  />
 
                   <FormControl>
                     <Input
@@ -336,37 +216,43 @@ export default function BannerDetailEdit({ data }: Props) {
           title={form.getValues("title")}
           link={form.getValues("linkUrl")}
           previewUrl={previewUrl || ""}
-          onValidate={handleValidate}
+          onValidate={() => form.trigger()}
           mode="edit"
         />
       </div>
-      <div>
-        <CustomAlert
-          className="mb-4 col-span-1"
-          title="배너 생성 및 수정 일시"
-          description={
-            <ul className="flex flex-col gap-1 mt-2 list-disc list-outside">
-              <li>최소 생성일: {data.createdAt}</li>
-              <li>마지막 수정일: {data.updatedAt}</li>
-            </ul>
-          }
-          type="default"
-        />
-        <CustomAlert
-          className="mb-4 col-span-1"
-          title="배너 수정 주의사항"
-          description={
-            <ul className="flex flex-col gap-1 mt-2 list-disc list-outside">
-              <li>배너는 추가 즉시 반영됩니다.</li>
-              <li>제목은 3글자 이상 입력해주세요.</li>
-              <li>배너 이미지는 5MB 이하여야 합니다.</li>
-              <li>이미지 파일만 업로드 가능합니다.</li>
-              <li>링크는 가급적 붙여넣기를 사용해주세요.</li>
-            </ul>
-          }
-          type="destructive"
-        />
-      </div>
+      <AlertArea data={data} />
+    </div>
+  );
+}
+
+function AlertArea({ data }: { data: z.infer<typeof bannerDetailSchema> }) {
+  return (
+    <div>
+      <CustomAlert
+        className="mb-4 col-span-1"
+        title="배너 생성 및 수정 일시"
+        description={
+          <ul className="flex flex-col gap-1 mt-2 list-disc list-outside">
+            <li>최초 생성일: {data.createdAt}</li>
+            <li>마지막 수정일: {data.updatedAt}</li>
+          </ul>
+        }
+        type="default"
+      />
+      <CustomAlert
+        className="mb-4 col-span-1"
+        title="배너 수정 주의사항"
+        description={
+          <ul className="flex flex-col gap-1 mt-2 list-disc list-outside">
+            <li>배너는 추가 즉시 반영됩니다.</li>
+            <li>제목은 3글자 이상 입력해주세요.</li>
+            <li>배너 이미지는 5MB 이하여야 합니다.</li>
+            <li>이미지 파일만 업로드 가능합니다.</li>
+            <li>링크는 가급적 붙여넣기를 사용해주세요.</li>
+          </ul>
+        }
+        type="destructive"
+      />
     </div>
   );
 }
