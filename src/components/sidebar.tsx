@@ -13,7 +13,15 @@ import {
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/lib/routes-config";
-import { Bell, CheckCircle, Home, List, Tickets, User } from "lucide-react";
+import {
+  Bell,
+  CheckCircle,
+  Home,
+  List,
+  SquareMousePointer,
+  Tickets,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 
 export function Sidebar() {
@@ -48,6 +56,11 @@ export function Sidebar() {
       label: "쿠폰 관리",
       icon: Tickets,
       path: ROUTES.COUPON,
+    },
+    {
+      label: "콘텐츠 관리",
+      icon: SquareMousePointer,
+      path: ROUTES.CONTENT,
     },
   ];
 

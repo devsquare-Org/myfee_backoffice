@@ -5,4 +5,5 @@ export const ROUTES = {
   USER_LIST: "/user-list",
   NOTIFICATION: "/notification",
   COUPON: "/coupon",
+  CONTENT: "/content",
 } as const;
