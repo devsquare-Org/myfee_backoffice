@@ -73,12 +73,12 @@ export default function NotificationSend() {
             name="title"
             render={({ field }) => (
               <div className="mb-4">
-                {form.formState.errors.title ? (
-                  <FormMessage className="mb-2" />
-                ) : (
-                  <FormLabel className="mb-2">제목</FormLabel>
-                )}
-                <FormItem className="mb-2">
+                <FormItem>
+                  {form.formState.errors.title ? (
+                    <FormMessage />
+                  ) : (
+                    <FormLabel>제목</FormLabel>
+                  )}
                   <FormControl>
                     <Input
                       {...field}
@@ -95,17 +95,19 @@ export default function NotificationSend() {
             name="content"
             render={({ field }) => (
               <div className="mb-4">
-                {form.formState.errors.content ? (
-                  <FormMessage className="mb-2" />
-                ) : (
-                  <FormLabel className="mb-2">내용</FormLabel>
-                )}
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder="5자 이상 40자 이하로 입력해주세요."
-                  />
-                </FormControl>
+                <FormItem>
+                  {form.formState.errors.content ? (
+                    <FormMessage />
+                  ) : (
+                    <FormLabel>내용</FormLabel>
+                  )}
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="5자 이상 40자 이하로 입력해주세요."
+                    />
+                  </FormControl>
+                </FormItem>
               </div>
             )}
           />
