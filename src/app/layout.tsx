@@ -6,6 +6,7 @@ import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
+import DeviceBlocker from "@/components/device-blocker";
 
 export const metadata: Metadata = {
   title: "MyFee Backoffice",
@@ -25,12 +26,14 @@ export default function RootLayout({
         {user ? (
           <ThemeProvider defaultTheme="system" attribute="class">
             <SidebarProvider>
-              <Toaster position="bottom-center" duration={2000} />
-              <Sidebar />
-              <main className="w-full">
-                <Header />
-                <div className="p-8">{children}</div>
-              </main>
+              <DeviceBlocker supported="fromDesktop">
+                <Toaster position="bottom-center" duration={2000} />
+                <Sidebar />
+                <main className="w-full">
+                  <Header />
+                  <div className="p-8">{children}</div>
+                </main>
+              </DeviceBlocker>
             </SidebarProvider>
           </ThemeProvider>
         ) : (
