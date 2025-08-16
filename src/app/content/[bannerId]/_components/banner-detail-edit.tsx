@@ -71,7 +71,7 @@ export default function BannerDetailEdit({ data }: Props) {
       formData.append("id", data.id);
       formData.append("title", values.title);
       formData.append("linkUrl", values.linkUrl);
-      formData.append("imageFile", values.imageFile!);
+      if (values.imageFile) formData.append("imageFile", values.imageFile);
 
       execute(formData);
     }
