@@ -19,6 +19,11 @@ import { Button } from "@/components/ui/button";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type Banner = z.infer<typeof bannerListSchema>[0];
 
@@ -54,15 +59,30 @@ export function SortableRow({ banner }: { banner: Banner }) {
         </div>
       </TableCell>
       <TableCell>
-        <div className="w-12 h-8 bg-gray-200 rounded-sm flex items-center justify-center overflow-hidden">
-          <Image
-            src={banner.image}
-            alt={banner.title}
-            width={64}
-            height={48}
-            className="object-cover"
-          />
-        </div>
+        <Tooltip delayDuration={600}>
+          <TooltipTrigger asChild>
+            <div className="w-12 h-8 rounded-sm flex items-center justify-center overflow-hidden cursor-pointer">
+              <Image
+                src={banner.image}
+                alt={banner.title}
+                width={48}
+                height={32}
+                className="object-cover w-full h-full"
+              />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent className="p-2" side="top" sideOffset={10}>
+            <div className="relative">
+              <Image
+                src={banner.image}
+                alt={banner.title}
+                width={200}
+                height={150}
+                className="object-cover rounded-md"
+              />
+            </div>
+          </TooltipContent>
+        </Tooltip>
       </TableCell>
       <TableCell className="font-medium">{banner.title}</TableCell>
       <TableCell>
