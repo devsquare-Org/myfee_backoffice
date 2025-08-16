@@ -20,6 +20,7 @@ const ROUTE_LABELS: Record<string, string> = {
   "/user-list": "유저 관리",
   "/notification": "푸시 알림",
   "/coupon": "쿠폰 관리",
+  "/content": "콘텐츠 관리",
 };
 
 function getRouteInfo(path: string) {
