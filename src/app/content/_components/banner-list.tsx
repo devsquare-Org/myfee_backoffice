@@ -117,13 +117,13 @@ export default function BannerList({ bannerList }: BannerListProps) {
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
-              size="lg"
+              size="sm"
               onClick={handleResetOrder}
               disabled={isExecuting}
             >
               취소
             </Button>
-            <Button size="lg" onClick={handleSaveOrder} disabled={isExecuting}>
+            <Button size="sm" onClick={handleSaveOrder} disabled={isExecuting}>
               {isExecuting ? <Loader2 className="" /> : "저장"}
             </Button>
           </div>

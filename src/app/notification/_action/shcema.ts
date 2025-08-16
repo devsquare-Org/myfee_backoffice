@@ -4,11 +4,11 @@ export const notificationFormSchema = z.object({
   title: z
     .string()
     .min(3, "3글자 이상 입력해주세요.")
-    .max(20, "20자 이하로 입력해주세요."),
+    .max(20, "20글자 이하로 입력해주세요."),
   content: z
     .string()
-    .min(5, "5자 이상 입력해주세요.")
-    .max(40, "40자 이하로 입력해주세요."),
+    .min(5, "5글자 이상 입력해주세요.")
+    .max(40, "40글자 이하로 입력해주세요."),
   isAd: z.boolean(),
 });
 

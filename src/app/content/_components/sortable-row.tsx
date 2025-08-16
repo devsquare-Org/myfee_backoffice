@@ -54,7 +54,7 @@ export function SortableRow({ banner }: { banner: Banner }) {
         </div>
       </TableCell>
       <TableCell>
-        <div className="w-16 h-12 bg-gray-200 rounded-md flex items-center justify-center overflow-hidden">
+        <div className="w-12 h-8 bg-gray-200 rounded-sm flex items-center justify-center overflow-hidden">
           <Image
             src={banner.image}
             alt={banner.title}

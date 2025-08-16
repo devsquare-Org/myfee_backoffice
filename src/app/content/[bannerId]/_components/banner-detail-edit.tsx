@@ -14,9 +14,10 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { bannerCreateAction } from "@/app/content/_action/action";
+import { bannerUpdateAction } from "@/app/content/_action/action";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { bannerDetailSchema } from "@/app/content/_action/schema";
 import BannerImagePreview from "@/app/content/_components/banner-image-preview";
 import BannerImageUploadButton from "@/app/content/_components/banner-image-upload-button";
 import ClipboardUrlPreview from "@/app/content/_components/clipboard-url-preview";
@@ -28,34 +29,43 @@ const clientSchema = z.object({
   title: z.string().min(3, "제목을 3글자 이상 입력해주세요."),
   imageFile: z
     .instanceof(File, { message: "이미지를 첨부해주세요." })
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
+    .optional()
+    .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
       message: "이미지 크기는 5MB 이하여야 합니다.",
     })
-    .refine((file) => file.type.startsWith("image/"), {
+    .refine((file) => !file || file.type.startsWith("image/"), {
       message: "이미지 파일만 업로드 가능합니다.",
     }),
   linkUrl: z.url({ message: "링크를 정확하게 입력해주세요." }),
 });
 
-export default function BannerCreateForm() {
+type Props = {
+  data: z.infer<typeof bannerDetailSchema>;
+};
+
+export default function BannerDetailEdit({ data }: Props) {
   const [isSubmit, setIsSubmit] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(data.image);
   const [clipboardUrl, setClipboardUrl] = useState<string | null>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { execute, isExecuting } = useAction(bannerCreateAction, {
+  const { execute, isExecuting } = useAction(bannerUpdateAction, {
     onSuccess: ({ data }) => {
       toast.success(data.message);
-      form.reset();
-
-      // 미리보기 초기화
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-        setPreviewUrl(null);
-      }
-
-      if (fileInputRef.current) fileInputRef.current.value = "";
       setIsSubmit(false);
+
+      // 폼 상태 초기화 (isDirty를 false로 만들기 위해)
+      const currentValues = form.getValues();
+      form.reset({
+        title: currentValues.title,
+        linkUrl: currentValues.linkUrl,
+        imageFile: undefined, // 파일은 항상 undefined로 초기화
+      });
+
+      // 파일 입력 초기화
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     },
     onError: ({ error: { serverError } }) => {
       toast.error(serverError?.message);
@@ -63,9 +73,9 @@ export default function BannerCreateForm() {
   });
 
   const defaultValues = {
-    title: "",
+    title: data.title,
     imageFile: undefined as File | undefined,
-    linkUrl: "",
+    linkUrl: data.linkUrl,
   };
 
   // 클립보드 URL을 input에 적용하는 함수
@@ -91,6 +101,7 @@ export default function BannerCreateForm() {
       const formData = new FormData();
       const values = form.getValues();
 
+      formData.append("id", data.id);
       formData.append("title", values.title);
       formData.append("linkUrl", values.linkUrl);
       if (values.imageFile) formData.append("imageFile", values.imageFile);
@@ -105,8 +116,10 @@ export default function BannerCreateForm() {
 
   function handleFileChange(file: File | undefined) {
     if (file) {
-      // 이전 미리보기 URL 정리
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      // 이전 미리보기 URL 정리 (기존 이미지가 아닌 경우)
+      if (previewUrl && previewUrl !== data.image) {
+        URL.revokeObjectURL(previewUrl);
+      }
 
       // 새 미리보기 URL 생성
       const objectUrl = URL.createObjectURL(file);
@@ -120,17 +133,22 @@ export default function BannerCreateForm() {
   }
 
   function handleRemoveImage() {
-    // 미리보기 URL 정리
-    if (previewUrl) {
+    // 미리보기 URL 정리 (기존 이미지가 아닌 경우)
+    if (previewUrl && previewUrl !== data.image) {
       URL.revokeObjectURL(previewUrl);
-      setPreviewUrl(null);
     }
+
+    // 미리보기 제거 (null로 설정하여 업로드 버튼 표시)
+    setPreviewUrl(null);
 
     // 폼 값 초기화
     form.resetField("imageFile");
 
     // 파일 입력 초기화
     if (fileInputRef.current) fileInputRef.current.value = "";
+
+    // 폼의 dirty 상태를 수동으로 설정 (이미지 제거도 변경사항으로 간주)
+    form.setValue("title", form.getValues("title"), { shouldDirty: true });
   }
 
   // 컴포넌트 마운트 시 클립보드 확인
@@ -154,9 +172,11 @@ export default function BannerCreateForm() {
   // 컴포넌트 언마운트 시 URL 정리
   useEffect(() => {
     return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      if (previewUrl && previewUrl !== data.image) {
+        URL.revokeObjectURL(previewUrl);
+      }
     };
-  }, [previewUrl]);
+  }, [previewUrl, data.image]);
 
   useEffect(() => {
     submitRef.current?.click();
@@ -265,34 +285,48 @@ export default function BannerCreateForm() {
               type="submit"
               disabled={!form.formState.isValid || isExecuting}
             >
-              배너 생성
+              배너 수정
             </Button>
           </form>
         </Form>
         <BannerConfirmDialog
           loading={isExecuting}
-          disabled={!form.formState.isValid}
+          disabled={!form.formState.isValid || !form.formState.isDirty}
           setIsSubmit={setIsSubmit}
           title={form.getValues("title")}
           link={form.getValues("linkUrl")}
           previewUrl={previewUrl!}
           onValidate={handleValidate}
+          mode="edit"
         />
       </div>
-      <CustomAlert
-        className="mb-4 col-span-1"
-        title="배너 추가 주의사항"
-        description={
-          <ul className="flex flex-col gap-1 mt-2 list-disc list-outside">
-            <li>배너는 추가 즉시 반영됩니다.</li>
-            <li>제목은 3글자 이상 입력해주세요.</li>
-            <li>배너 이미지는 5MB 이하여야 합니다.</li>
-            <li>이미지 파일만 업로드 가능합니다.</li>
-            <li>링크는 가급적 붙여넣기를 사용해주세요.</li>
-          </ul>
-        }
-        type="destructive"
-      />
+      <div>
+        <CustomAlert
+          className="mb-4 col-span-1"
+          title="배너 생성 및 수정 일시"
+          description={
+            <ul className="flex flex-col gap-1 mt-2 list-disc list-outside">
+              <li>최소 생성일: {data.createdAt}</li>
+              <li>마지막 수정일: {data.updatedAt}</li>
+            </ul>
+          }
+          type="default"
+        />
+        <CustomAlert
+          className="mb-4 col-span-1"
+          title="배너 수정 주의사항"
+          description={
+            <ul className="flex flex-col gap-1 mt-2 list-disc list-outside">
+              <li>배너는 추가 즉시 반영됩니다.</li>
+              <li>제목은 3글자 이상 입력해주세요.</li>
+              <li>배너 이미지는 5MB 이하여야 합니다.</li>
+              <li>이미지 파일만 업로드 가능합니다.</li>
+              <li>링크는 가급적 붙여넣기를 사용해주세요.</li>
+            </ul>
+          }
+          type="destructive"
+        />
+      </div>
     </div>
   );
 }

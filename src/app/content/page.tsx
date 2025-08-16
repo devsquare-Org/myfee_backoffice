@@ -21,7 +21,7 @@ export default async function Content() {
         <TabsContent value="banner">
           <BannerList bannerList={bannerList.data} />
         </TabsContent>
-        <TabsContent value="create" className="max-w-xl">
+        <TabsContent value="create">
           <BannerCreateForm />
         </TabsContent>
       </Tabs>

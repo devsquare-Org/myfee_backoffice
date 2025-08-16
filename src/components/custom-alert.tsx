@@ -2,10 +2,11 @@ import { AlertCircleIcon, Flag } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
+import { ReactNode } from "react";
 
 type AlerBaseProps = {
   title: string;
-  description?: string;
+  description?: ReactNode;
 };
 
 type CustomAlertProps = AlerBaseProps & {

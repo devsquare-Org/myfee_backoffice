@@ -18,10 +18,10 @@ export default async function Notification() {
           <TabsTrigger value="send">발송</TabsTrigger>
           <TabsTrigger value="history">발송 내역</TabsTrigger>
         </TabsList>
-        <TabsContent value="send" className="max-w-xl">
+        <TabsContent value="send">
           <NotificationSend />
         </TabsContent>
-        <TabsContent value="history" className="max-w-4xl">
+        <TabsContent value="history">
           <NotificationHistory notificationHistory={notificationHistory.data} />
         </TabsContent>
       </Tabs>

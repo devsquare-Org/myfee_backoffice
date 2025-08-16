@@ -20,8 +20,9 @@ type CreateDialogProps = {
   previewUrl: string;
   onValidate: () => Promise<boolean>;
   setIsSubmit: (isSubmit: boolean) => void;
+  mode?: "create" | "edit";
 };
-export default function CreateDialog({
+export default function BannerConfirmDialog({
   title,
   link,
   previewUrl,
@@ -29,8 +30,17 @@ export default function CreateDialog({
   disabled,
   onValidate,
   setIsSubmit,
+  mode = "create",
 }: CreateDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const isEdit = mode === "edit";
+  const buttonText = isEdit ? "배너 수정" : "배너 추가";
+  const dialogTitle = isEdit ? "배너 수정" : "배너 추가";
+  const alertTitle = isEdit
+    ? "배너 수정 전 내용을 다시 확인해주세요."
+    : "배너 추가 전 내용을 다시 확인해주세요.";
+  const submitButtonText = isEdit ? "수정" : "추가";
 
   function handleSend() {
     setIsSubmit(true);
@@ -50,16 +60,13 @@ export default function CreateDialog({
           if (await onValidate()) setIsOpen(true);
         }}
       >
-        {loading ? <LoaderCircle className="animate-spin" /> : "배너 추가"}
+        {loading ? <LoaderCircle className="animate-spin" /> : buttonText}
       </Button>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>배너 추가</DialogTitle>
+          <DialogTitle>{dialogTitle}</DialogTitle>
         </DialogHeader>
-        <CustomAlert
-          type="simple"
-          title="배너 추가 전 내용을 다시 확인해주세요."
-        />
+        <CustomAlert type="simple" title={alertTitle} />
         <Label>제목</Label>
         <Input value={title} disabled />
         <Label>링크</Label>
@@ -87,7 +94,7 @@ export default function CreateDialog({
             variant="default"
             onClick={handleSend}
           >
-            추가
+            {submitButtonText}
           </Button>
         </div>
       </DialogContent>

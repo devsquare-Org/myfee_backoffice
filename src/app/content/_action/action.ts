@@ -2,6 +2,7 @@
 
 import {
   bannerCreateSchema,
+  bannerUpdateSchema,
   changeOrderSchema,
 } from "@/app/content/_action/schema";
 import { actionClient } from "@/lib/utils";
@@ -20,4 +21,12 @@ export const bannerCreateAction = actionClient
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log("배너 생성:", parsedInput);
     return { message: "배너를 생성했습니다." };
+  });
+
+export const bannerUpdateAction = actionClient
+  .inputSchema(bannerUpdateSchema)
+  .action(async ({ parsedInput }) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("배너 수정:", parsedInput);
+    return { message: "배너를 수정했습니다." };
   });
