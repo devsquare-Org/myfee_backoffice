@@ -38,6 +38,7 @@ export default function NotificationSend() {
 
   const form = useForm<z.infer<typeof notificationFormSchema>>({
     resolver: zodResolver(notificationFormSchema),
+    mode: "onChange",
     defaultValues: {
       title: "",
       content: "",

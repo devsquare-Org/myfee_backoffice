@@ -23,7 +23,7 @@ import CreateDialog from "@/app/content/_components/create-dialog";
 
 // 클라이언트용 스키마 (리졸버용)
 const clientSchema = z.object({
-  title: z.string().min(1, "제목을 1자 이상 입력해주세요."),
+  title: z.string().min(3, "제목을 3자 이상 입력해주세요."),
   imageFile: z
     .instanceof(File, { message: "이미지를 첨부해주세요." })
     .refine((file) => file.size <= 5 * 1024 * 1024, {
@@ -146,7 +146,10 @@ export default function BannerCreateForm() {
                     <FormLabel>제목</FormLabel>
                   )}
                   <FormControl>
-                    <Input {...field} placeholder="제목을 입력해주세요." />
+                    <Input
+                      {...field}
+                      placeholder="제목을 3자 이상 입력해주세요."
+                    />
                   </FormControl>
                 </FormItem>
               </div>

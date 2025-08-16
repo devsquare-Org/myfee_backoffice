@@ -21,7 +21,7 @@ export const changeOrderSchema = z.array(
 );
 
 export const bannerCreateSchema = zfd.formData({
-  title: z.string().min(1, "제목을 1자 이상 입력해주세요."),
+  title: z.string().min(3, "제목을 3자 이상 입력해주세요."),
   imageFile: zfd
     .file()
     .refine((file) => file.size <= 5 * 1024 * 1024, {
