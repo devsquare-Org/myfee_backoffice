@@ -1,11 +1,11 @@
 type Props = {
-  params: {
+  params: Promise<{
     bannerId: string;
-  };
+  }>;
 };
 
-export default function BannerDetail({ params }: Props) {
-  const { bannerId } = params;
+export default async function BannerDetail({ params }: Props) {
+  const { bannerId } = await params;
 
   return <div>BannerDetail {bannerId}</div>;
 }
