@@ -23,6 +23,7 @@ import BannerImageUploadButton from "@/app/content/_components/banner-image-uplo
 import ClipboardUrlPreview from "@/app/content/_components/clipboard-url-preview";
 import BannerConfirmDialog from "@/app/content/_components/banner-confirm-dialog";
 import { CustomAlert } from "@/components/custom-alert";
+import { AnimatePresence, motion } from "framer-motion";
 
 // 클라이언트용 스키마 (리졸버용)
 const clientSchema = z.object({
@@ -247,13 +248,31 @@ export default function BannerDetailEdit({ data }: Props) {
                           {...field}
                           placeholder="링크를 입력해주세요. (http:// 또는 https:// 포함)"
                         />
-                        {clipboardUrl && (
-                          <ClipboardUrlPreview
-                            url={clipboardUrl}
-                            onApply={applyClipboardUrl}
-                            onDismiss={() => setClipboardUrl(null)}
-                          />
-                        )}
+                        <AnimatePresence>
+                          {clipboardUrl && (
+                            <motion.div
+                              layout
+                              initial={{ opacity: 1, y: 0, height: "auto" }}
+                              animate={{ opacity: 1, y: 0, height: "auto" }}
+                              exit={{
+                                opacity: 0,
+                                y: -20,
+                                height: 0,
+                                marginTop: 0,
+                                marginBottom: 0,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                              }}
+                              transition={{ duration: 0.1, ease: "easeOut" }}
+                            >
+                              <ClipboardUrlPreview
+                                url={clipboardUrl}
+                                onApply={applyClipboardUrl}
+                                onDismiss={() => setClipboardUrl(null)}
+                              />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </FormControl>
                   </FormItem>
@@ -271,7 +290,6 @@ export default function BannerDetailEdit({ data }: Props) {
                   ) : (
                     <FormLabel className="mb-2">배너 이미지</FormLabel>
                   )}
-
                   {previewUrl ? (
                     // 미리보기가 있을 때
                     <BannerImagePreview
