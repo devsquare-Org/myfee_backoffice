@@ -16,7 +16,7 @@ export function useBreakpoint({ is }: Props) {
       if (is === "mobile") {
         setResult(width < MOBILE_BREAKPOINT); // 768px 미만이면 true (모바일)
       } else if (is === "tablet") {
-        setResult(width >= MOBILE_BREAKPOINT && width < DESKTOP_BREAKPOINT); // 768px 이상 1280px 미만이면 true (태블릿)
+        setResult(MOBILE_BREAKPOINT <= width && width < DESKTOP_BREAKPOINT); // 768px 이상 1280px 미만이면 true (태블릿)
       } else {
         setResult(width >= DESKTOP_BREAKPOINT); // 1280px 이상이면 true (데스크탑)
       }
@@ -40,6 +40,5 @@ export function useBreakpoint({ is }: Props) {
     return () => mql.removeEventListener("change", onChange);
   }, [is]);
 
-  // 초기 로딩 시에는 데스크탑으로 가정 (대부분의 사용자가 데스크탑)
   return result ?? is === "desktop";
 }
