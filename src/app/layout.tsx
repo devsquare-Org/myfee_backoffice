@@ -26,7 +26,7 @@ export default function RootLayout({
         {user ? (
           <ThemeProvider defaultTheme="system" attribute="class">
             <SidebarProvider>
-              <DeviceBlocker supported="fromDesktop">
+              <DeviceBlocker supported="fromTablet">
                 <Toaster position="bottom-center" duration={2000} />
                 <Sidebar />
                 <main className="w-full">

@@ -1,6 +1,6 @@
 "use client";
 
-import { notificationHistorySchema } from "@/app/notification/_action/shcema";
+import { notificationHistoryResponse } from "@/app/notification/_action/shcema";
 import { CustomAlert } from "@/components/custom-alert";
 import {
   Table,
@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 export default function NotificationHistory({
   notificationHistory,
 }: {
-  notificationHistory: z.infer<typeof notificationHistorySchema>;
+  notificationHistory: z.infer<typeof notificationHistoryResponse>;
 }) {
   return (
     <div>

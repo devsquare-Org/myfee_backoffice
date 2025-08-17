@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { bannerUpdateAction } from "@/app/banner/_action/action";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { bannerDetailSchema } from "@/app/banner/_action/schema";
+import { bannerDetailResponse } from "@/app/banner/_action/schema";
 import BannerImagePreview from "@/app/banner/_components/banner-image-preview";
 import BannerConfirmDialog from "@/app/banner/_components/banner-confirm-dialog";
 import { CustomAlert } from "@/components/custom-alert";
@@ -33,7 +33,7 @@ const clientSchema = z.object({
 });
 
 type Props = {
-  data: z.infer<typeof bannerDetailSchema>;
+  data: z.infer<typeof bannerDetailResponse>;
 };
 
 export default function BannerDetailEdit({ data }: Props) {
@@ -225,7 +225,7 @@ export default function BannerDetailEdit({ data }: Props) {
   );
 }
 
-function AlertArea({ data }: { data: z.infer<typeof bannerDetailSchema> }) {
+function AlertArea({ data }: { data: z.infer<typeof bannerDetailResponse> }) {
   return (
     <div>
       <CustomAlert

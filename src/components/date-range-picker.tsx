@@ -131,7 +131,7 @@ export function DateRangePicker({
               id="date-range"
               variant="outline"
               className={cn(
-                "w-[280px] justify-between text-left font-normal shadow-[0_0_6px_rgba(0,0,0,0.06)]",
+                "w-[280px] justify-between text-left font-normal shadow-none",
                 !dateRange?.from && "text-muted-foreground"
               )}
             >
@@ -219,7 +219,7 @@ export function DateRangePicker({
         </Popover>
         {(dateRange?.from || dateRange?.to) && (
           <Button
-            className="h-9"
+            className="h-9 shadow-none"
             variant="outline"
             size="sm"
             onClick={handleClear}

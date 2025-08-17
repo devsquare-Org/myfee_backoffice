@@ -1,9 +1,9 @@
 "use server";
 
 import {
-  bannerDetailSchema,
-  bannerListSchema,
-  getBannerDetailSchema,
+  bannerDetailResponse,
+  bannerListResponse,
+  getBannerDetailParams,
 } from "@/app/banner/_action/schema";
 import z from "zod";
 
@@ -38,10 +38,10 @@ const bannerListMock = [
     createdAt: "2025-01-01 12:00:00",
     updatedAt: "2025-01-01 12:00:00",
   },
-] as z.infer<typeof bannerListSchema>;
+] as z.infer<typeof bannerListResponse>;
 
 export async function fetchBannerList(): Promise<{
-  data: z.infer<typeof bannerListSchema>;
+  data: z.infer<typeof bannerListResponse>;
   message: string;
 }> {
   return {
@@ -51,16 +51,15 @@ export async function fetchBannerList(): Promise<{
 }
 
 export async function getBannerDetail(
-  params: z.infer<typeof getBannerDetailSchema>
+  params: z.infer<typeof getBannerDetailParams>
 ): Promise<{
-  data: z.infer<typeof bannerDetailSchema>;
+  data: z.infer<typeof bannerDetailResponse>;
   message: string;
 }> {
-  console.log(params);
   const data = bannerListMock.find((item) => item.id === params.id);
 
   return {
-    data: data as z.infer<typeof bannerDetailSchema>,
+    data: data as z.infer<typeof bannerDetailResponse>,
     message: "배너 상세 정보를 성공적으로 조회하였습니다.",
   };
 }

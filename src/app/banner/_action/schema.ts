@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { zfd } from "zod-form-data";
 
-export const bannerListSchema = z.array(
+export const bannerListResponse = z.array(
   z.object({
     id: z.string(),
     title: z.string(),
@@ -13,14 +13,14 @@ export const bannerListSchema = z.array(
   })
 );
 
-export const changeOrderSchema = z.array(
+export const changeOrderParams = z.array(
   z.object({
     id: z.string(),
     order: z.number(),
   })
 );
 
-export const bannerCreateSchema = zfd.formData({
+export const bannerCreateParams = zfd.formData({
   title: z.string().min(3, "제목을 3글자 이상 입력해주세요."),
   imageFile: zfd
     .file()
@@ -33,11 +33,11 @@ export const bannerCreateSchema = zfd.formData({
   linkUrl: z.url({ message: "링크를 정확하게 입력해주세요." }),
 });
 
-export const getBannerDetailSchema = z.object({
+export const getBannerDetailParams = z.object({
   id: z.string(),
 });
 
-export const bannerDetailSchema = z.object({
+export const bannerDetailResponse = z.object({
   id: z.string(),
   title: z.string(),
   image: z.string(),
@@ -47,7 +47,7 @@ export const bannerDetailSchema = z.object({
   updatedAt: z.string(),
 });
 
-export const bannerUpdateSchema = zfd.formData({
+export const bannerUpdateParams = zfd.formData({
   id: z.string(),
   title: z.string().min(3, "제목을 3글자 이상 입력해주세요."),
   imageFile: zfd
@@ -62,6 +62,6 @@ export const bannerUpdateSchema = zfd.formData({
   linkUrl: z.url({ message: "링크를 정확하게 입력해주세요." }),
 });
 
-export const deleteBannerSchema = z.object({
+export const deleteBannerParams = z.object({
   id: z.string(),
 });

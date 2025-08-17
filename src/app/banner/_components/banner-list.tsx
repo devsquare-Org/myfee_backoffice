@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { bannerListSchema } from "@/app/banner/_action/schema";
+import { bannerListResponse } from "@/app/banner/_action/schema";
 import {
   Table,
   TableBody,
@@ -37,7 +37,7 @@ import { useAction } from "next-safe-action/hooks";
 import { AnimatePresence, motion } from "framer-motion";
 
 type BannerListProps = {
-  bannerList: z.infer<typeof bannerListSchema>;
+  bannerList: z.infer<typeof bannerListResponse>;
 };
 
 export default function BannerList({ bannerList }: BannerListProps) {

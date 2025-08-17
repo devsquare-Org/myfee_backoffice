@@ -1,10 +1,10 @@
 "use server";
 
-import { notificationHistorySchema } from "@/app/notification/_action/shcema";
+import { notificationHistoryResponse } from "@/app/notification/_action/shcema";
 import { z } from "zod";
 
 export async function fetchNotificationHistory(): Promise<{
-  data: z.infer<typeof notificationHistorySchema>;
+  data: z.infer<typeof notificationHistoryResponse>;
   message: string;
 }> {
   const data = [
@@ -24,7 +24,7 @@ export async function fetchNotificationHistory(): Promise<{
       adminId: "sole",
       isAd: false,
     },
-  ] as z.infer<typeof notificationHistorySchema>;
+  ] as z.infer<typeof notificationHistoryResponse>;
 
   return {
     data,

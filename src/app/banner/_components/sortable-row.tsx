@@ -1,6 +1,6 @@
 "use client";
 
-import { bannerListSchema } from "@/app/banner/_action/schema";
+import { bannerListResponse } from "@/app/banner/_action/schema";
 import { z } from "zod";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/tooltip";
 import { ROUTES } from "@/lib/routes-config";
 
-type Banner = z.infer<typeof bannerListSchema>[0];
+type Banner = z.infer<typeof bannerListResponse>[0];
 
 export function SortableRow({ banner }: { banner: Banner }) {
   const {

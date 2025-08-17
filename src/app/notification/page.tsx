@@ -3,6 +3,7 @@ import NotificationHistory from "@/app/notification/_components/notification-his
 import { fetchNotificationHistory } from "@/app/notification/_action/data";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { DateRangePicker } from "@/components/date-range-picker";
 
 export default async function Notification() {
   const notificationHistory = await fetchNotificationHistory();
@@ -18,6 +19,7 @@ export default async function Notification() {
           </Link>
         }
       />
+      <DateRangePicker placeholder="기간을 선택하세요" className="mb-4" />
       <NotificationHistory notificationHistory={notificationHistory.data} />
     </div>
   );

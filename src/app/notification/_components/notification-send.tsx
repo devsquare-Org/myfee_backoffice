@@ -1,8 +1,8 @@
 "use client";
 
 import { useAction } from "next-safe-action/hooks";
-import { notificationAction } from "@/app/notification/_action/action";
-import { notificationFormSchema } from "@/app/notification/_action/shcema";
+import { sendNotificationAction } from "@/app/notification/_action/action";
+import { sendNotificationParams } from "@/app/notification/_action/shcema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -25,7 +25,7 @@ import CustomFormLabel from "@/components/custom-form-label";
 export default function NotificationSend() {
   const [isSubmit, setIsSubmit] = useState(false);
   const submitRef = useRef<HTMLButtonElement>(null);
-  const { execute, isExecuting } = useAction(notificationAction, {
+  const { execute, isExecuting } = useAction(sendNotificationAction, {
     onSuccess: ({ data }) => {
       toast.success(data.message);
       form.reset();
@@ -36,8 +36,8 @@ export default function NotificationSend() {
     },
   });
 
-  const form = useForm<z.infer<typeof notificationFormSchema>>({
-    resolver: zodResolver(notificationFormSchema),
+  const form = useForm<z.infer<typeof sendNotificationParams>>({
+    resolver: zodResolver(sendNotificationParams),
     mode: "onChange",
     defaultValues: {
       title: "",

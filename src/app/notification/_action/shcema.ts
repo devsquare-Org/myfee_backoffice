@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const notificationFormSchema = z.object({
+export const sendNotificationParams = z.object({
   title: z
     .string()
     .min(3, "3글자 이상 입력해주세요.")
@@ -12,7 +12,7 @@ export const notificationFormSchema = z.object({
   isAd: z.boolean(),
 });
 
-export const notificationHistorySchema = z.array(
+export const notificationHistoryResponse = z.array(
   z.object({
     id: z.string(),
     title: z.string(),

@@ -8,6 +8,7 @@ export const ROUTES = {
   COUPON: "/coupon",
   BANNER: "/banner",
   BANNER_CREATE: "/banner/create",
+  USER: "/user",
 } as const;
 
 // 페이지 라벨 매핑 (경로별)
@@ -21,6 +22,7 @@ export const ROUTE_LABELS: Record<string, string> = {
   "/coupon": "쿠폰 관리",
   "/banner": "배너 관리",
   "/banner/create": "배너 추가",
+  "/user": "유저 관리",
 };
 
 // 하위 페이지 라벨 매핑 (세그먼트별)
