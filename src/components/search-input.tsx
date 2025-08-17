@@ -33,7 +33,7 @@ export default function SearchInput({
     setInputValue(
       decodeURIComponent(searchParams.get(searchParamsName)?.toString() || "")
     );
-  }, [searchParams, searchParamsName]);
+  }, [searchParams, searchParamsName, pathname]);
 
   // 정교한 캐시 무효화: 실제 검색어가 변경되었을 때만
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function SearchInput({
       revalidatePage(pathname);
       prevSearchValue.current = currentSearchValue;
     }
-  }, [searchParams.get(searchParamsName)]);
+  }, [pathname, revalidatePage, searchParams, searchParamsName]);
 
   const handleSearch = useDebouncedCallback(async (term: string) => {
     const params = new URLSearchParams(searchParams);

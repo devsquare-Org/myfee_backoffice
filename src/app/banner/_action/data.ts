@@ -58,6 +58,7 @@ export async function getBannerDetail(
 }> {
   const data = bannerListMock.find((item) => item.id === params.id);
 
+  console.log(params, data);
   return {
     data: data as z.infer<typeof bannerDetailResponse>,
     message: "배너 상세 정보를 성공적으로 조회하였습니다.",

@@ -4,6 +4,8 @@ import { fetchNotificationHistory } from "@/app/notification/_action/data";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { DateRangePicker } from "@/components/date-range-picker";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function Notification() {
   const notificationHistory = await fetchNotificationHistory();
@@ -19,7 +21,9 @@ export default async function Notification() {
           </Link>
         }
       />
-      <DateRangePicker placeholder="기간을 선택하세요" className="mb-4" />
+      <Suspense fallback={<Skeleton className="w-full h-10" />}>
+        <DateRangePicker placeholder="기간을 선택하세요" className="mb-4" />
+      </Suspense>
       <NotificationHistory notificationHistory={notificationHistory.data} />
     </div>
   );

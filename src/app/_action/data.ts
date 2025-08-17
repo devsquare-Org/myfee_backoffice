@@ -88,6 +88,7 @@ export async function fetchDashboardData(
     ],
   } as z.infer<typeof dashboardDataResponse>;
 
+  console.log(params, data);
   return {
     data,
     message: "대시보드 데이터를 성공적으로 조회하였습니다.",

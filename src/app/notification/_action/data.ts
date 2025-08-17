@@ -26,6 +26,8 @@ export async function fetchNotificationHistory(): Promise<{
     },
   ] as z.infer<typeof notificationHistoryResponse>;
 
+  console.log(data);
+
   return {
     data,
     message: "발송 내역을 성공적으로 조회하였습니다.",

@@ -3,6 +3,8 @@ import { UserList } from "@/app/user-list/_components/user-list";
 import { DateRangePicker } from "@/components/date-range-picker";
 import { PageHeader } from "@/components/page-header";
 import SearchInput from "@/components/search-input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 
 type Props = {
   searchParams: Promise<{
@@ -23,7 +25,9 @@ export default async function UserPage({ searchParams }: Props) {
       />
 
       <div className="flex items-center gap-2 mb-4 max-w-xl">
-        <SearchInput placeholder="이름으로 검색" searchParamsName="search" />
+        <Suspense fallback={<Skeleton className="w-full h-10" />}>
+          <SearchInput placeholder="이름으로 검색" searchParamsName="search" />
+        </Suspense>
         <DateRangePicker placeholder="기간을 선택하세요" />
       </div>
       <UserList userList={data} />
