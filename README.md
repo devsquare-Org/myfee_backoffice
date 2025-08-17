@@ -16,5 +16,5 @@ Deploy Url: https://myfee-backoffice.vercel.app
 - [ ] 쿠폰 관리
 - [x] 배너 관리
   - [x] 리스트(DnD)
-  - [x] 상세(수정)
+  - [x] 상세(수정, 삭제)
   - [x] 추가
