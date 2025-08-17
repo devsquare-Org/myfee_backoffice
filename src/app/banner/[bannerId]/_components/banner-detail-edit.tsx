@@ -7,15 +7,15 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { bannerUpdateAction } from "@/app/content/_action/action";
+import { bannerUpdateAction } from "@/app/banner/_action/action";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { bannerDetailSchema } from "@/app/content/_action/schema";
-import BannerImagePreview from "@/app/content/_components/banner-image-preview";
-import BannerConfirmDialog from "@/app/content/_components/banner-confirm-dialog";
+import { bannerDetailSchema } from "@/app/banner/_action/schema";
+import BannerImagePreview from "@/app/banner/_components/banner-image-preview";
+import BannerConfirmDialog from "@/app/banner/_components/banner-confirm-dialog";
 import { CustomAlert } from "@/components/custom-alert";
 import CustomFormLabel from "@/components/custom-form-label";
-import ClipboardUrlProposal from "@/app/content/_components/clipboard-url-proposal";
+import ClipboardUrlProposal from "@/app/banner/_components/clipboard-url-proposal";
 
 // 클라이언트용 스키마 (리졸버용)
 const clientSchema = z.object({

@@ -1,6 +1,6 @@
 "use client";
 
-import { bannerListSchema } from "@/app/content/_action/schema";
+import { bannerListSchema } from "@/app/banner/_action/schema";
 import { z } from "zod";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -24,6 +24,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ROUTES } from "@/lib/routes-config";
 
 type Banner = z.infer<typeof bannerListSchema>[0];
 
@@ -115,7 +116,7 @@ export function SortableRow({ banner }: { banner: Banner }) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link href={`/content/${banner.id}`}>
+              <Link href={`${ROUTES.BANNER}/${banner.id}`}>
                 <DropdownMenuItem className="w-full cursor-pointer text-xs">
                   <div className="mr-2">
                     <FileText size={16} />

@@ -4,8 +4,10 @@ import {
   bannerCreateSchema,
   bannerUpdateSchema,
   changeOrderSchema,
-} from "@/app/content/_action/schema";
+  deleteBannerSchema,
+} from "@/app/banner/_action/schema";
 import { actionClient } from "@/lib/utils";
+import { redirect } from "next/navigation";
 
 export const changeOrderAction = actionClient
   .inputSchema(changeOrderSchema)
@@ -29,4 +31,12 @@ export const bannerUpdateAction = actionClient
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log("배너 수정:", parsedInput);
     return { message: "배너를 수정했습니다." };
+  });
+
+export const deleteBannerAction = actionClient
+  .inputSchema(deleteBannerSchema)
+  .action(async ({ parsedInput }) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("배너 삭제:", parsedInput);
+    redirect("/banner");
   });

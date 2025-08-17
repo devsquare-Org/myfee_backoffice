@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { bannerListSchema } from "@/app/content/_action/schema";
+import { bannerListSchema } from "@/app/banner/_action/schema";
 import {
   Table,
   TableBody,
@@ -26,8 +26,8 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useState, useEffect } from "react";
-import { changeOrderAction } from "@/app/content/_action/action";
-import { SortableRow } from "@/app/content/_components/sortable-row";
+import { changeOrderAction } from "@/app/banner/_action/action";
+import { SortableRow } from "@/app/banner/_components/sortable-row";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { Alert } from "@/components/ui/alert";
@@ -158,7 +158,7 @@ export default function BannerList({ bannerList }: BannerListProps) {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <Table>
+        <Table className="text-xs">
           <TableHeader>
             <TableRow>
               <TableHead className="w-10">순서</TableHead>

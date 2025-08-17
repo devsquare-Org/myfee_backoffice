@@ -61,3 +61,7 @@ export const bannerUpdateSchema = zfd.formData({
     }),
   linkUrl: z.url({ message: "링크를 정확하게 입력해주세요." }),
 });
+
+export const deleteBannerSchema = z.object({
+  id: z.string(),
+});

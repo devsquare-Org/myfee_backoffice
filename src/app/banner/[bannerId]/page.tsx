@@ -1,5 +1,6 @@
-import BannerDetailEdit from "@/app/content/[bannerId]/_components/banner-detail-edit";
-import { getBannerDetail } from "@/app/content/_action/data";
+import BannerDelete from "@/app/banner/[bannerId]/_components/banner-delete";
+import BannerDetailEdit from "@/app/banner/[bannerId]/_components/banner-detail-edit";
+import { getBannerDetail } from "@/app/banner/_action/data";
 import { PageHeader } from "@/components/page-header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -21,10 +22,14 @@ export default async function BannerDetail({ params }: Props) {
       />
       <Tabs defaultValue="detail">
         <TabsList>
-          <TabsTrigger value="detail">배너 수정</TabsTrigger>
+          <TabsTrigger value="detail">수정</TabsTrigger>
+          <TabsTrigger value="delete">삭제</TabsTrigger>
         </TabsList>
         <TabsContent value="detail">
           <BannerDetailEdit data={data} />
+        </TabsContent>
+        <TabsContent value="delete">
+          <BannerDelete id={bannerId} />
         </TabsContent>
       </Tabs>
     </div>

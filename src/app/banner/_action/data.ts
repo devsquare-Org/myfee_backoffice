@@ -4,7 +4,7 @@ import {
   bannerDetailSchema,
   bannerListSchema,
   getBannerDetailSchema,
-} from "@/app/content/_action/schema";
+} from "@/app/banner/_action/schema";
 import z from "zod";
 
 const bannerListMock = [

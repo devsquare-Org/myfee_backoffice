@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -82,21 +81,12 @@ export default function ClipboardUrlProposal({
             <div className="flex gap-1">
               <Button
                 type="button"
-                size="sm"
+                size="default"
                 variant="outline"
                 onClick={applyClipboardUrl}
                 className="h-7 px-2 text-xs"
               >
                 사용
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                variant="ghost"
-                onClick={() => setClipboardUrl(null)}
-                className="h-7 w-7 p-0"
-              >
-                <X className="w-3 h-3" />
               </Button>
             </div>
           </div>

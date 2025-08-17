@@ -1,8 +1,8 @@
 import { PageHeader } from "@/components/page-header";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NotificationHistory from "@/app/notification/_components/notification-history";
-import NotificationSend from "@/app/notification/_components/notification-send";
 import { fetchNotificationHistory } from "@/app/notification/_action/data";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function Notification() {
   const notificationHistory = await fetchNotificationHistory();
@@ -10,21 +10,15 @@ export default async function Notification() {
   return (
     <div>
       <PageHeader
-        title="푸시 알림"
-        description="푸시 알림 발송과 발송 내역을 확인할 수 있습니다."
+        title="푸시 알림 발송 내역"
+        description="푸시 알림 발송 내역을 확인할 수 있습니다."
+        button={
+          <Link href="/notification/send">
+            <Button>푸시 알림 발송</Button>
+          </Link>
+        }
       />
-      <Tabs defaultValue="send">
-        <TabsList>
-          <TabsTrigger value="send">발송</TabsTrigger>
-          <TabsTrigger value="history">발송 내역</TabsTrigger>
-        </TabsList>
-        <TabsContent value="send">
-          <NotificationSend />
-        </TabsContent>
-        <TabsContent value="history">
-          <NotificationHistory notificationHistory={notificationHistory.data} />
-        </TabsContent>
-      </Tabs>
+      <NotificationHistory notificationHistory={notificationHistory.data} />
     </div>
   );
 }

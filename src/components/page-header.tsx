@@ -3,9 +3,10 @@ import { ReactNode } from "react";
 type BaseProps = {
   title: ReactNode;
   description: string;
+  button?: ReactNode;
 };
 
-export function PageHeader({ title, description }: BaseProps) {
+export function PageHeader({ title, description, button }: BaseProps) {
   return (
     <div className="mb-4 flex flex-col md:flex-row justify-between md:gap-0">
       <div className="flex flex-col gap-2">
@@ -14,6 +15,7 @@ export function PageHeader({ title, description }: BaseProps) {
           {description}
         </div>
       </div>
+      {button}
     </div>
   );
 }

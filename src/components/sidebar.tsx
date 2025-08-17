@@ -58,9 +58,9 @@ export function Sidebar() {
       path: ROUTES.COUPON,
     },
     {
-      label: "콘텐츠 관리",
+      label: "배너 관리",
       icon: SquareMousePointer,
-      path: ROUTES.CONTENT,
+      path: ROUTES.BANNER,
     },
   ];
 
