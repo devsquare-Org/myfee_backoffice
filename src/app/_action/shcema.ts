@@ -8,10 +8,10 @@ export const dashboardDataRequestParams = z.object({
 export const dashboardDataResponse = z.object({
   startDate: z.string(),
   endDate: z.string(),
+  postCount: z.number(),
+  challengeReviewtCount: z.number(),
   userCount: z.number(),
   pointCount: z.number(),
-  totalUserCount: z.number(),
-  totalPointCount: z.number(),
   userList: z.array(
     z.object({
       id: z.string(),

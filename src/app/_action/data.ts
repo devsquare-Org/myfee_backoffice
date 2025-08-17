@@ -16,10 +16,10 @@ export async function fetchDashboardData(
   const data = {
     startDate: params.startDate,
     endDate: params.endDate,
-    userCount: 10,
-    pointCount: 100000,
-    totalUserCount: 100,
-    totalPointCount: 1000000,
+    postCount: 210,
+    challengeReviewtCount: 3750,
+    userCount: 375,
+    pointCount: 2137000,
     userList: [
       {
         id: "1",

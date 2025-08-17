@@ -20,7 +20,7 @@ export async function Dashboard({ startDate, endDate }: Props) {
     endDate,
   });
 
-  const { userCount, pointCount, totalUserCount, totalPointCount, userList } =
+  const { postCount, challengeReviewtCount, pointCount, userList, userCount } =
     dashboardData.data;
 
   return (
@@ -28,9 +28,9 @@ export async function Dashboard({ startDate, endDate }: Props) {
       <DateRangePicker placeholder="기간을 선택하세요" className="mb-6" />
       <SectionCards
         userCount={userCount}
+        postCount={postCount}
+        challengeReviewtCount={challengeReviewtCount}
         pointCount={pointCount}
-        totalUserCount={totalUserCount}
-        totalPointCount={totalPointCount}
       />
       <div className="flex items-center gap-2 mt-12 mb-2">
         <p className="text-base font-semibold">가입 유저</p>
