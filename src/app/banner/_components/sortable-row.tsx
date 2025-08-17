@@ -50,12 +50,12 @@ export function SortableRow({ banner }: { banner: Banner }) {
       style={{ ...style, touchAction: "manipulation" }}
       {...attributes}
     >
-      <TableCell className="text-center align-middle">
-        <div
-          className="flex items-center justify-center cursor-grab active:cursor-grabbing touch-none select-none"
-          {...listeners}
-          style={{ touchAction: "none" }}
-        >
+      <TableCell
+        className="text-center align-middle  cursor-grab active:cursor-grabbing touch-none select-none"
+        {...listeners}
+        style={{ touchAction: "none" }}
+      >
+        <div className="flex items-center justify-center">
           <GripHorizontal className="w-4 h-4 text-gray-500" />
         </div>
       </TableCell>
