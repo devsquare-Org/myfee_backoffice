@@ -1,6 +1,6 @@
 {
   "permissions": {
-    "allow": ["/webFetch", "Bash(yarn build)", "Bash(git add:*)"],
+    "allow": ["/webFetch", "Bash(yarn build)", "Bash(git add:*)", "Bash(git push:*)"],
     "deny": [],
     "ask": []
   }
