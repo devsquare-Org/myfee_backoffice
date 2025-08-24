@@ -31,7 +31,7 @@ export default async function ShopByTestPage() {
         </TabsContent>
       </Tabs>
 
-      <div className="max-w-[380px] mx-auto border rounded-4xl shadow-[0_6px_12px_rgba(0,0,0,0.1)] h-[800px] flex flex-col sticky top-20 overflow-hidden">
+      <div className="max-w-[380px] mx-auto border-4 border-black rounded-4xl shadow-[4px_6px_12px_rgba(0,0,0,0.3)] h-[800px] flex flex-col sticky top-20 overflow-hidden">
         <div className="bg-secondary rounded-t-4xl p-4 text-xs font-semibold flex-shrink-0">
           Safe Area
         </div>
