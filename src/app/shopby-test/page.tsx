@@ -1,26 +1,69 @@
 import {
   fetchProductDetail,
   fetchProductOptions,
-} from '@/app/shopby-test/_action/data';
-import { ProductOptionsClient } from '@/app/shopby-test/_components/product-options-client';
+} from "@/app/shopby-test/_action/data";
+import { ProductOptionsClient } from "@/app/shopby-test/_components/product-options-client";
+import { ImageCarousel } from "@/app/shopby-test/_components/carousel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default async function ShopByTestPage() {
   const data = await fetchProductDetail();
   const optionData = await fetchProductOptions();
 
-  console.log('!!!Product Detail:!!!', data);
-  console.log('!!!Shopby Options:!!!', optionData);
   return (
-    <div className='container mx-auto p-6 space-y-8'>
-      <h1 className='text-2xl font-bold'>Shop By Test Page</h1>
+    <div className="grid grid-cols-2 gap-8 p-4">
+      <Tabs defaultValue="product">
+        <TabsList>
+          <TabsTrigger value="product">Product Detail</TabsTrigger>
+          <TabsTrigger value="options">Product Options</TabsTrigger>
+        </TabsList>
+        <TabsContent value="product">
+          <pre className="w-full overflow-scroll bg-secondary p-4 text-xs">
+            <p className="text-2xl font-medium mb-4">Shopby api response</p>
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        </TabsContent>
+        <TabsContent value="options">
+          <pre className="w-full overflow-scroll bg-secondary p-4 text-xs">
+            <p className="text-2xl font-medium mb-4">Shopby api response</p>
+            {JSON.stringify(optionData, null, 2)}
+          </pre>
+        </TabsContent>
+      </Tabs>
 
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
-        <div>
-          <h2 className='text-xl font-semibold mb-4'>상품 상세</h2>
-          <div dangerouslySetInnerHTML={{ __html: data.baseInfo.content }} />
+      <div className="max-w-[380px] mx-auto border rounded-4xl shadow-[0_6px_12px_rgba(0,0,0,0.1)] h-[800px] flex flex-col sticky top-20 overflow-hidden">
+        <div className="bg-secondary rounded-t-4xl p-4 text-xs font-semibold flex-shrink-0">
+          Safe Area
         </div>
 
-        <ProductOptionsClient optionData={optionData} productDetail={data} />
+        <div className="flex-1 overflow-auto">
+          <div className="p-4 pb-16">
+            {data.baseInfo.imageUrls.length > 0 && (
+              <ImageCarousel
+                imageUrls={data.baseInfo.imageUrls}
+                className="mb-4"
+              />
+            )}
+            <h1 className="text-2xl font-medium mb-2">
+              {data.baseInfo.productName}
+            </h1>
+            <p className="text-base font-medium mb-2">
+              {optionData.multiLevelOptions
+                .reduce((acc, curr) => acc + curr.addPrice, 0)
+                .toLocaleString()}
+              원
+            </p>
+            <div dangerouslySetInnerHTML={{ __html: data.baseInfo.content }} />
+            <ProductOptionsClient
+              optionData={optionData}
+              productDetail={data}
+            />
+          </div>
+        </div>
+
+        <div className="bg-secondary rounded-b-4xl p-4 text-xs font-semibold sticky bottom-0 left-0 right-0">
+          Safe Area
+        </div>
       </div>
     </div>
   );

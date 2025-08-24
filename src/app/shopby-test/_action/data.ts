@@ -77,7 +77,7 @@ export async function fetchProductDetail(): Promise<ProductDetailResponse> {
   }
 
   try {
-    const response = await fetch(`https://${baseUrl}/products/131485177`, {
+    const response = await fetch(`https://${baseUrl}/products/131485375`, {
       method: 'GET',
       headers: {
         Version: '1.0',
@@ -105,7 +105,7 @@ export async function fetchProductOptions(): Promise<ProductOptionsResponse> {
 
   try {
     const response = await fetch(
-      `https://${baseUrl}/products/131485177/options`,
+      `https://${baseUrl}/products/131485375/options`,
       {
         method: 'GET',
         headers: {
