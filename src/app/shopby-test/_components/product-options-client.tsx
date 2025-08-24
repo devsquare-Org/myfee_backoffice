@@ -147,7 +147,7 @@ export function ProductOptionsClient({
         onClick={handleBuyClick}
         disabled={isLoading || selectedOptions.some((option) => !option)}
       >
-        {isLoading ? "구매중..." : "구매하기"}
+        {isLoading ? "계산 중..." : "계산하기"}
       </Button>
       {calculatePriceInfo && (
         <div className="space-y-2">
