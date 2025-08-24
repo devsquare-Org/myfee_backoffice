@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
-import { dm_sans } from "@/style/fonts/fonts";
-import "../style/globals.css";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { Sidebar } from "@/components/sidebar";
-import { Header } from "@/components/header";
-import { ThemeProvider } from "next-themes";
-import { Toaster } from "sonner";
-import DeviceBlocker from "@/components/device-blocker";
+import type { Metadata } from 'next';
+import { dm_sans } from '@/style/fonts/fonts';
+import '../style/globals.css';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { Sidebar } from '@/components/sidebar';
+import { Header } from '@/components/header';
+import { ThemeProvider } from 'next-themes';
+import { Toaster } from 'sonner';
+import DeviceBlocker from '@/components/device-blocker';
 
 export const metadata: Metadata = {
-  title: "MyFee Backoffice",
-  description: "MyFee Backoffice",
+  title: 'MyFee Backoffice',
+  description: 'MyFee Backoffice',
 };
 
 export default function RootLayout({
@@ -21,17 +21,17 @@ export default function RootLayout({
   const user = true;
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <body className={`${dm_sans.className} antialiased`}>
         {user ? (
-          <ThemeProvider defaultTheme="system" attribute="class">
+          <ThemeProvider defaultTheme='system' attribute='class'>
             <SidebarProvider>
-              <DeviceBlocker supported="fromTablet">
-                <Toaster position="bottom-center" duration={2000} />
+              <DeviceBlocker supported='fromMobile'>
+                <Toaster position='bottom-center' duration={2000} />
                 <Sidebar />
-                <main className="w-full">
+                <main className='w-full'>
                   <Header />
-                  <div className="p-8">{children}</div>
+                  <div className='p-8'>{children}</div>
                 </main>
               </DeviceBlocker>
             </SidebarProvider>
