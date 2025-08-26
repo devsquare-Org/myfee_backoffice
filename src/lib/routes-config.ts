@@ -1,5 +1,5 @@
 export const ROUTES = {
-  DASHBOARD: "/",
+  DASHBOARD: "/dashboard",
   CHALLENGE_LIST: "/challenge-list",
   CHALLENGE_REVIEW_LIST: "/challenge-review-list",
   USER_LIST: "/user-list",
@@ -13,7 +13,7 @@ export const ROUTES = {
 
 // 페이지 라벨 매핑 (경로별)
 export const ROUTE_LABELS: Record<string, string> = {
-  "/": "대시보드",
+  "/dashboard": "대시보드",
   "/challenge-list": "챌린지 관리",
   "/challenge-review-list": "챌린지 리뷰 관리",
   "/user-list": "유저 관리",
