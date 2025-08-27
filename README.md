@@ -4,6 +4,9 @@ Deploy Url: https://myfee-backoffice.vercel.app
 
 ### Page
 
+- [x] 로그인
+  - [x] 로그인 시 쿠키에 토큰 세팅
+  - [x] 로그아웃 시 쿠키에서 토큰 삭제
 - [x] 대시보드(날짜 필터)
 - [ ] 챌린지 리스트
 - [ ] 챌린지 인증 관리
