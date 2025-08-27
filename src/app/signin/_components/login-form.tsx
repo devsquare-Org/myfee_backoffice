@@ -12,13 +12,15 @@ import { loginAction } from "@/app/signin/_action/action";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import { ROUTES } from "@/lib/routes-config";
 
 export function LoginForm() {
   const router = useRouter();
 
   const { execute, isExecuting } = useAction(loginAction, {
     onSuccess: () => {
-      router.push("/dashboard");
+      router.push(ROUTES.DASHBOARD);
     },
     onError: ({ error: { serverError } }) => {
       toast.error(serverError?.message);
@@ -82,7 +84,7 @@ export function LoginForm() {
             disabled={isExecuting || !form.formState.isValid}
             className="w-full"
           >
-            {isExecuting ? "로그인 중..." : "로그인"}
+            {isExecuting ? <Loader2 className="animate-spin" /> : "로그인"}
           </Button>
         </form>
       </Form>

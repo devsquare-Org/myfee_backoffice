@@ -78,7 +78,7 @@ export async function fetchUserList(
     },
   ];
 
-  console.log(params, data);
+  // console.log(params, data);
 
   return { data, message: "success" };
 }

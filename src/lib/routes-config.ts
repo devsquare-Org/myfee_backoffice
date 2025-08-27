@@ -9,6 +9,8 @@ export const ROUTES = {
   BANNER: "/banner",
   BANNER_CREATE: "/banner/create",
   USER: "/user",
+  SIGNIN: "/signin",
+  SHOPBY_TEST: "/shopby-test",
 } as const;
 
 // 페이지 라벨 매핑 (경로별)

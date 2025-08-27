@@ -3,6 +3,7 @@
 import {
   Sidebar as SahdcnSidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -18,13 +19,18 @@ import {
   CheckCircle,
   Home,
   List,
+  Loader2,
   SquareMousePointer,
   Tickets,
   User,
 } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useAction } from "next-safe-action/hooks";
+import { logoutAction } from "@/app/signin/_action/action";
 
 export function Sidebar() {
+  const { execute, isExecuting } = useAction(logoutAction);
   const pathname = usePathname();
   const menu = [
     {
@@ -94,6 +100,15 @@ export function Sidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <Button
+          variant="outline"
+          onClick={() => execute()}
+          disabled={isExecuting}
+        >
+          {isExecuting ? <Loader2 className="animate-spin" /> : "로그아웃"}
+        </Button>
+      </SidebarFooter>
     </SahdcnSidebar>
   );
 }
