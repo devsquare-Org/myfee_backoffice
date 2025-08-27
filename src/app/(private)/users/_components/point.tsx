@@ -28,8 +28,7 @@ export default function Point({ pointHistory }: Props) {
           <TableHead>유형</TableHead>
           <TableHead>포인트</TableHead>
           <TableHead>사유</TableHead>
-          <TableHead>수동 여부</TableHead>
-          <TableHead>관리자 아이디</TableHead>
+          <TableHead>발송 구분</TableHead>
           <TableHead>지급 / 차감일</TableHead>
         </TableRow>
       </TableHeader>
@@ -55,14 +54,7 @@ export default function Point({ pointHistory }: Props) {
             </TableCell>
             <TableCell>{item.point.toLocaleString()}</TableCell>
             <TableCell>{item.reason}</TableCell>
-            <TableCell>
-              {item.adminId ? (
-                <Badge variant='outline'>수동</Badge>
-              ) : (
-                <Badge variant='secondary'>자동</Badge>
-              )}
-            </TableCell>
-            <TableCell>{item.adminId ? item.adminId : '-'}</TableCell>
+            <TableCell>{item.adminId || 'system'}</TableCell>
             <TableCell>{item.createdAt}</TableCell>
           </TableRow>
         ))}

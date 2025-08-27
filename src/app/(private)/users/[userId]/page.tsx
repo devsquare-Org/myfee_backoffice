@@ -32,7 +32,6 @@ export default async function UserListPage({ params }: Props) {
       reason: '챌린지 중간 리워드',
       point: 1000,
       createdAt: '2023-10-04 12:00:00',
-      adminId: 'sole',
       type: '지급',
     },
     {
@@ -44,6 +43,14 @@ export default async function UserListPage({ params }: Props) {
     },
     {
       id: '4',
+      point: 500,
+      reason: 'CS 보상',
+      createdAt: '2023-10-03 12:00:00',
+      type: '지급',
+      adminId: 'sole',
+    },
+    {
+      id: '5',
       point: 2000,
       reason: '가입 축하 리워드',
       createdAt: '2023-10-02 12:00:00',
