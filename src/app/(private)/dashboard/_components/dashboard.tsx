@@ -1,6 +1,6 @@
 import { SectionCards } from "@/components/section-card";
 import { DateRangePicker } from "@/components/date-range-picker";
-import { UserList } from "@/app/(private)/user-list/_components/user-list";
+import { UserList } from "@/app/(private)/users/_components/user-list";
 import {
   Tooltip,
   TooltipContent,

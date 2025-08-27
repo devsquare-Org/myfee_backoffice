@@ -77,7 +77,7 @@ export function UserList({ userList }: Props) {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <Link href={`${ROUTES.USER}/${user.id}`}>
+                    <Link href={`${ROUTES.USERS}/${user.id}`}>
                       <DropdownMenuItem className="w-full cursor-pointer text-xs">
                         <div className="mr-2">
                           <FileText size={16} />

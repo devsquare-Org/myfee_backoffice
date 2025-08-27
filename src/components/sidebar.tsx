@@ -51,7 +51,7 @@ export function Sidebar() {
     {
       label: "유저 관리",
       icon: User,
-      path: ROUTES.USER_LIST,
+      path: ROUTES.USERS,
     },
     {
       label: "푸시 알림",

@@ -1,5 +1,5 @@
-import { fetchUserList } from "@/app/(private)/user-list/_action/data";
-import { UserList } from "@/app/(private)/user-list/_components/user-list";
+import { fetchUserList } from "@/app/(private)/users/_action/data";
+import { UserList } from "@/app/(private)/users/_components/user-list";
 import { DateRangePicker } from "@/components/date-range-picker";
 import { PageHeader } from "@/components/page-header";
 import SearchInput from "@/components/search-input";
