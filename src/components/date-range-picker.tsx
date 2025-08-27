@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
-import { Calendar as CalendarIcon, ChevronDown } from "lucide-react";
-import { DateRange } from "react-day-picker";
-import { useRouter, useSearchParams } from "next/navigation";
+import * as React from 'react';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import { Calendar as CalendarIcon, ChevronDown } from 'lucide-react';
+import { DateRange } from 'react-day-picker';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { X, RotateCcw } from "lucide-react";
+} from '@/components/ui/popover';
+import { X, RotateCcw } from 'lucide-react';
 
 interface DateRangePickerProps {
   placeholder?: string;
@@ -23,7 +23,7 @@ interface DateRangePickerProps {
 }
 
 export function DateRangePicker({
-  placeholder = "날짜를 선택하세요",
+  placeholder = '날짜를 선택하세요',
   className,
 }: DateRangePickerProps) {
   const router = useRouter();
@@ -38,8 +38,8 @@ export function DateRangePicker({
 
   // URL 쿼리스트링에서 날짜 범위 초기화
   React.useEffect(() => {
-    const startDate = searchParams.get("startDate");
-    const endDate = searchParams.get("endDate");
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
 
     if (startDate && endDate) {
       const newDateRange = {
@@ -70,12 +70,12 @@ export function DateRangePicker({
     }
 
     if (dateRange.to) {
-      return `${format(dateRange.from, "yyyy.MM.dd", {
+      return `${format(dateRange.from, 'yyyy.MM.dd', {
         locale: ko,
-      })} - ${format(dateRange.to, "yyyy.MM.dd", { locale: ko })}`;
+      })} - ${format(dateRange.to, 'yyyy.MM.dd', { locale: ko })}`;
     }
 
-    return format(dateRange.from, "yyyy.MM.dd", { locale: ko });
+    return format(dateRange.from, 'yyyy.MM.dd', { locale: ko });
   };
 
   const handleApply = () => {
@@ -83,14 +83,14 @@ export function DateRangePicker({
 
     if (tempDateRange?.from && tempDateRange?.to) {
       const params = new URLSearchParams(searchParams.toString());
-      params.set("startDate", format(tempDateRange.from, "yyyy-MM-dd"));
-      params.set("endDate", format(tempDateRange.to, "yyyy-MM-dd"));
+      params.set('startDate', format(tempDateRange.from, 'yyyy-MM-dd'));
+      params.set('endDate', format(tempDateRange.to, 'yyyy-MM-dd'));
       router.push(`?${params.toString()}`, { scroll: false });
     } else {
       // 날짜 범위가 모두 지워진 경우
       const params = new URLSearchParams(searchParams.toString());
-      params.delete("startDate");
-      params.delete("endDate");
+      params.delete('startDate');
+      params.delete('endDate');
       router.push(`?${params.toString()}`, { scroll: false });
     }
 
@@ -109,8 +109,8 @@ export function DateRangePicker({
   const handleClear = () => {
     setDateRange(undefined);
     const params = new URLSearchParams(searchParams.toString());
-    params.delete("startDate");
-    params.delete("endDate");
+    params.delete('startDate');
+    params.delete('endDate');
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
@@ -123,31 +123,31 @@ export function DateRangePicker({
   };
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
-      <div className="flex items-center gap-2">
+    <div className={cn(className)}>
+      <div className='flex items-center gap-2'>
         <Popover open={open} onOpenChange={handleOpenChange}>
           <PopoverTrigger asChild>
             <Button
-              id="date-range"
-              variant="outline"
+              id='date-range'
+              variant='outline'
               className={cn(
-                "w-[280px] justify-between text-left font-normal shadow-none",
-                !dateRange?.from && "text-muted-foreground"
+                'w-[280px] justify-between text-left font-normal shadow-none',
+                !dateRange?.from && 'text-muted-foreground'
               )}
             >
-              <div className="flex items-center gap-2">
-                <CalendarIcon className="h-4 w-4" />
+              <div className='flex items-center gap-2'>
+                <CalendarIcon className='h-4 w-4' />
                 {dateRange?.from
                   ? formatDateRange(dateRange)
-                  : "날짜를 선택하세요"}
+                  : '날짜를 선택하세요'}
               </div>
-              <ChevronDown className="h-4 w-4 opacity-50" />
+              <ChevronDown className='h-4 w-4 opacity-50' />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <div className="flex flex-col">
+          <PopoverContent className='w-auto p-0' align='start'>
+            <div className='flex flex-col'>
               <Calendar
-                mode="range"
+                mode='range'
                 month={month}
                 onMonthChange={setMonth}
                 selected={tempDateRange}
@@ -160,55 +160,57 @@ export function DateRangePicker({
                 }}
                 numberOfMonths={2}
                 locale={ko}
-                captionLayout="dropdown"
-                className="border-b"
+                captionLayout='dropdown'
+                className='border-b'
                 pagedNavigation
                 fixedWeeks
                 showOutsideDays={false}
+                disabled={(date) => date > new Date()}
+                toMonth={new Date()}
               />
-              <div className="flex items-center justify-between p-3 border-t bg-muted/50">
-                <div className="flex items-center gap-2">
-                  <div className="text-sm text-muted-foreground">
+              <div className='flex items-center justify-between p-3 border-t bg-muted/50'>
+                <div className='flex items-center gap-2'>
+                  <div className='text-sm text-muted-foreground'>
                     {tempDateRange?.from && tempDateRange?.to
-                      ? `${format(tempDateRange.from, "yyyy.MM.dd", {
+                      ? `${format(tempDateRange.from, 'yyyy.MM.dd', {
                           locale: ko,
-                        })} - ${format(tempDateRange.to, "yyyy.MM.dd", {
+                        })} - ${format(tempDateRange.to, 'yyyy.MM.dd', {
                           locale: ko,
                         })}`
                       : tempDateRange?.from
-                      ? `${format(tempDateRange.from, "yyyy.MM.dd", {
+                      ? `${format(tempDateRange.from, 'yyyy.MM.dd', {
                           locale: ko,
                         })} - 종료일 선택`
-                      : "날짜를 선택하세요"}
+                      : '날짜를 선택하세요'}
                   </div>
                   {tempDateRange?.from && (
                     <Button
-                      variant="ghost"
-                      size="sm"
+                      variant='ghost'
+                      size='sm'
                       onClick={handleReset}
-                      className="h-6 px-2 text-xs"
-                      title="다시 선택"
+                      className='h-6 px-2 text-xs'
+                      title='다시 선택'
                     >
-                      <RotateCcw className="h-3 w-3 mr-1" />
+                      <RotateCcw className='h-3 w-3 mr-1' />
                       다시선택
                     </Button>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
+                <div className='flex items-center gap-2'>
                   <Button
-                    variant="ghost"
-                    size="sm"
+                    variant='ghost'
+                    size='sm'
                     onClick={handleCancel}
-                    className="h-8 px-2"
+                    className='h-8 px-2'
                   >
-                    <X className="h-4 w-4" />
+                    <X className='h-4 w-4' />
                   </Button>
                   <Button
-                    variant="default"
-                    size="sm"
+                    variant='default'
+                    size='sm'
                     onClick={handleApply}
                     disabled={!tempDateRange?.from || !tempDateRange?.to}
-                    className="h-8 px-3"
+                    className='h-8 px-3'
                   >
                     적용
                   </Button>
@@ -219,9 +221,9 @@ export function DateRangePicker({
         </Popover>
         {(dateRange?.from || dateRange?.to) && (
           <Button
-            className="h-9 shadow-none"
-            variant="outline"
-            size="sm"
+            className='h-9 shadow-none'
+            variant='outline'
+            size='sm'
             onClick={handleClear}
           >
             전체 기간

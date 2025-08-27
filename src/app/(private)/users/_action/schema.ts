@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from 'zod';
 
 export const userListRequestParams = z.object({
   startDate: z.string().optional(),
@@ -13,5 +13,6 @@ export const userListResponse = z.array(
     email: z.string(),
     image: z.string(),
     createdAt: z.string(),
+    phone: z.string(),
   })
 );

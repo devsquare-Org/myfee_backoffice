@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from 'zod';
 
 export const dashboardDataRequestParams = z.object({
   startDate: z.string().optional(),
@@ -20,6 +20,7 @@ export const dashboardDataResponse = z.object({
       email: z.string(),
       image: z.string(),
       createdAt: z.string(),
+      phone: z.string(),
     })
   ),
 });

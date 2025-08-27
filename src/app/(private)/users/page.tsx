@@ -1,10 +1,9 @@
-import { fetchUserList } from "@/app/(private)/users/_action/data";
-import { UserList } from "@/app/(private)/users/_components/user-list";
-import { DateRangePicker } from "@/components/date-range-picker";
-import { PageHeader } from "@/components/page-header";
-import SearchInput from "@/components/search-input";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Suspense } from "react";
+import { fetchUserList } from '@/app/(private)/users/_action/data';
+import { UserList } from '@/app/(private)/users/_components/user-list';
+import { PageHeader } from '@/components/page-header';
+import SearchInput from '@/components/search-input';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Suspense } from 'react';
 
 type Props = {
   searchParams: Promise<{
@@ -20,16 +19,16 @@ export default async function UserPage({ searchParams }: Props) {
   return (
     <div>
       <PageHeader
-        title="유저 목록"
-        description="유저 목록을 확인할 수 있습니다."
+        title='유저 목록'
+        description='유저 목록을 확인할 수 있습니다.'
       />
-
-      <div className="flex items-center gap-2 mb-4 max-w-xl">
-        <Suspense fallback={<Skeleton className="w-full h-10" />}>
-          <SearchInput placeholder="이름으로 검색" searchParamsName="search" />
-        </Suspense>
-        <DateRangePicker placeholder="기간을 선택하세요" />
-      </div>
+      <Suspense fallback={<Skeleton className='w-full h-10' />}>
+        <SearchInput
+          placeholder='닉네임 또는 전화번호로 검색'
+          searchParamsName='search'
+          className='mb-4 max-w-[280px]'
+        />
+      </Suspense>
       <UserList userList={data} />
     </div>
   );
