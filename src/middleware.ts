@@ -39,16 +39,6 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Next.js 15 권장 matcher 설정
 export const config = {
-  matcher: [
-    /*
-     * 다음 경로들을 제외한 모든 요청 경로에 대해 실행:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };

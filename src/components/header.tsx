@@ -51,6 +51,9 @@ function getRouteInfo(path: string, pathIndex: number, allPaths: string[]) {
 export function Header() {
   const pathname = usePathname();
   const paths = pathname.split("/").filter(Boolean);
+  
+  // 대시보드 페이지인 경우 추가 경로 처리 생략
+  const isDashboard = pathname === ROUTES.DASHBOARD;
 
   return (
     <header className="sticky w-full bg-secondary/20 top-0 backdrop-blur-lg flex items-center justify-between border-b py-2 px-8 z-50">
@@ -62,17 +65,17 @@ export function Header() {
               <Link
                 href={ROUTES.DASHBOARD}
                 className={
-                  pathname === ROUTES.DASHBOARD
+                  isDashboard
                     ? "font-medium text-foreground"
                     : "text-muted-foreground hover:text-foreground transition-colors"
                 }
               >
                 {ROUTE_LABELS[ROUTES.DASHBOARD]}
               </Link>
-              {paths.length > 0 && <ChevronRight className="h-4 w-4 ml-1.5" />}
+              {!isDashboard && paths.length > 0 && <ChevronRight className="h-4 w-4 ml-1.5" />}
             </BreadcrumbItem>
 
-            {paths.map((path: string, index: number) => {
+            {!isDashboard && paths.map((path: string, index: number) => {
               const routeInfo = getRouteInfo(path, index, paths);
 
               return (
