@@ -11,14 +11,14 @@ type Props = {
   userCount: number;
   pointCount: number;
   postCount: number;
-  challengeReviewtCount: number;
+  challengeReviewCount: number;
 };
 
 export function SectionCards({
   userCount,
   pointCount,
   postCount,
-  challengeReviewtCount,
+  challengeReviewCount,
 }: Props) {
   return (
     <div className='grid grid-cols-4 gap-4'>
@@ -96,7 +96,7 @@ export function SectionCards({
           </Tooltip>
         </div>
         <p className='text-xl font-bold tabular-nums mb-2'>
-          {challengeReviewtCount.toLocaleString()}개
+          {challengeReviewCount.toLocaleString()}개
         </p>
         <p className='text-xs text-muted-foreground font-bold'>
           조회한 기간 누적 챌린지 인증 수

@@ -7,13 +7,14 @@ import { Suspense } from 'react';
 
 type Props = {
   searchParams: Promise<{
+    search: string;
     startDate: string;
     endDate: string;
   }>;
 };
 
 export default async function UserPage({ searchParams }: Props) {
-  const { startDate, endDate } = await searchParams;
+  const { startDate, endDate, search } = await searchParams;
   const { data } = await fetchUserList({ startDate, endDate });
 
   return (
@@ -29,7 +30,12 @@ export default async function UserPage({ searchParams }: Props) {
           className='mb-4 max-w-[280px]'
         />
       </Suspense>
-      <UserList userList={data} />
+      <UserList
+        userList={data}
+        search={search}
+        startDate={startDate}
+        endDate={endDate}
+      />
     </div>
   );
 }

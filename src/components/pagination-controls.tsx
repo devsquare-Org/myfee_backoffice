@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Pagination,
@@ -7,9 +7,9 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useMemo } from "react";
+} from '@/components/ui/pagination';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useMemo } from 'react';
 
 interface PaginationControlsProps {
   page: number;
@@ -43,19 +43,19 @@ export function PaginationControls({
 
     // 현재 검색 파라미터 유지
     Object.entries(searchParams).forEach(([key, value]) => {
-      if (value && key !== "page" && key !== "pageSize") {
+      if (value && key !== 'page' && key !== 'pageSize') {
         params.set(key, value);
       }
     });
 
     // 페이지네이션 파라미터 설정
-    params.set("page", pageNum.toString());
+    params.set('page', pageNum.toString());
 
     replace(`${pathname}?${params.toString()}`);
   }
 
   return (
-    <div className="mt-4">
+    <div className='mt-4'>
       <Pagination>
         <PaginationContent>
           <PaginationItem>
@@ -63,8 +63,8 @@ export function PaginationControls({
               onClick={() => page > 1 && handlePageChange(page - 1)}
               className={
                 page <= 1
-                  ? "pointer-events-none opacity-50 hover:bg-transparent md:hover:bg-secondary active:bg-secondary"
-                  : "cursor-pointer hover:bg-transparent md:hover:bg-secondary active:bg-secondary"
+                  ? 'pointer-events-none opacity-50 hover:bg-transparent md:hover:bg-secondary active:bg-secondary'
+                  : 'cursor-pointer hover:bg-transparent md:hover:bg-secondary active:bg-secondary'
               }
             />
           </PaginationItem>
@@ -98,7 +98,7 @@ export function PaginationControls({
                   <PaginationLink
                     onClick={() => handlePageChange(pageNumber)}
                     isActive={pageNumber === page}
-                    className="cursor-pointer hover:bg-transparent md:hover:bg-secondary active:bg-secondary"
+                    className='cursor-pointer hover:bg-transparent md:hover:bg-secondary active:bg-secondary'
                   >
                     {pageNumber}
                   </PaginationLink>
@@ -112,8 +112,8 @@ export function PaginationControls({
               onClick={() => page < totalPages && handlePageChange(page + 1)}
               className={
                 page >= totalPages
-                  ? "pointer-events-none opacity-50 hover:bg-transparent md:hover:bg-secondary active:bg-secondary"
-                  : "cursor-pointer hover:bg-transparent md:hover:bg-secondary active:bg-secondary"
+                  ? 'pointer-events-none opacity-50 hover:bg-transparent md:hover:bg-secondary active:bg-secondary'
+                  : 'cursor-pointer hover:bg-transparent md:hover:bg-secondary active:bg-secondary'
               }
             />
           </PaginationItem>

@@ -20,7 +20,7 @@ export async function Dashboard({ startDate, endDate }: Props) {
     endDate,
   });
 
-  const { postCount, challengeReviewtCount, pointCount, userList, userCount } =
+  const { postCount, challengeReviewCount, pointCount, userList, userCount } =
     dashboardData.data;
 
   return (
@@ -29,7 +29,7 @@ export async function Dashboard({ startDate, endDate }: Props) {
       <SectionCards
         userCount={userCount}
         postCount={postCount}
-        challengeReviewtCount={challengeReviewtCount}
+        challengeReviewCount={challengeReviewCount}
         pointCount={pointCount}
       />
       <div className='flex items-center gap-2 mt-12 mb-2'>
@@ -48,7 +48,7 @@ export async function Dashboard({ startDate, endDate }: Props) {
         조회한 기간에 가입한 유저 목록입니다.
       </p>
       <div className='border rounded-2xl p-6'>
-        <UserList userList={userList} />
+        <UserList userList={userList} startDate={startDate} endDate={endDate} />
       </div>
     </div>
   );
