@@ -28,7 +28,7 @@ export default function Point({ pointHistory }: Props) {
           <TableHead>유형</TableHead>
           <TableHead>포인트</TableHead>
           <TableHead>사유</TableHead>
-          <TableHead>발송 구분</TableHead>
+          <TableHead>실행 주체</TableHead>
           <TableHead>지급 / 차감일</TableHead>
         </TableRow>
       </TableHeader>

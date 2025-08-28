@@ -118,6 +118,10 @@ export default function BasicInfo({
               주문 내역이나 적립금, 쿠폰 등의 쇼핑 데이터는 쇼핑 어드민에서 확인
               가능합니다.
             </li>
+            <li>
+              유저의 쇼핑 데이터를 보기 위해서는 샵바이 관리자에 로그인
+              되어있어야 합니다.
+            </li>
           </ul>
         }
         type='default'
