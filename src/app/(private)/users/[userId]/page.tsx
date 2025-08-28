@@ -1,6 +1,7 @@
 import BasicInfo from '@/app/(private)/users/_components/basic-info';
 import Challenge from '@/app/(private)/users/_components/challenge';
 import Point from '@/app/(private)/users/_components/point';
+import UpdatePointForm from '@/app/(private)/users/_components/update-point-form';
 import { PageHeader } from '@/components/page-header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -17,6 +18,7 @@ export default async function UserListPage({ params }: Props) {
     name: 'name',
     phone: '01012345678',
     email: 'sole@lifeb.kr',
+    shopbyUserId: 'shopbyUserId',
   };
 
   const pointHistory = [
@@ -67,6 +69,7 @@ export default async function UserListPage({ params }: Props) {
       <Tabs defaultValue='detail'>
         <TabsList>
           <TabsTrigger value='detail'>기본 정보</TabsTrigger>
+          <TabsTrigger value='point-manage'>포인트 관리</TabsTrigger>
           <TabsTrigger value='point'>포인트 내역</TabsTrigger>
           <TabsTrigger value='challenge'>챌린지 내역</TabsTrigger>
         </TabsList>
@@ -77,8 +80,11 @@ export default async function UserListPage({ params }: Props) {
             nickname={userDetail.nickname}
             phone={userDetail.phone}
             point={15000}
-            shopbyUserId='122700946'
+            shopbyUserId={userDetail.shopbyUserId}
           />
+        </TabsContent>
+        <TabsContent value='point-manage'>
+          <UpdatePointForm />
         </TabsContent>
         <TabsContent value='point'>
           <Point pointHistory={pointHistory} />

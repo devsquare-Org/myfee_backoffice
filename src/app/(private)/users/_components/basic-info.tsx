@@ -1,6 +1,7 @@
 'use client';
 
 import { CustomAlert } from '@/components/custom-alert';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Copy, ExternalLink } from 'lucide-react';
@@ -37,7 +38,7 @@ export default function BasicInfo({
 
   return (
     <div className='grid grid-cols-4'>
-      <div className='col-span-3 max-w-xl'>
+      <Card className='col-span-3 max-w-xl'>
         <Label className='mb-2'>닉네임</Label>
         <div className='flex items-center gap-2 mb-6'>
           <Input value={nickname} readOnly />
@@ -107,7 +108,7 @@ export default function BasicInfo({
             <ExternalLink className='w-[14px] h-[14px]' />
           </button>
         </div>
-      </div>
+      </Card>
       <CustomAlert
         className='mb-4 col-span-1'
         title='유저 정보 안내'
