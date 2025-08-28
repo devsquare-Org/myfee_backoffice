@@ -58,7 +58,7 @@ export function UserList({ userList, search, startDate, endDate }: Props) {
           ))}
         </TableBody>
       </Table>
-      {startDate && endDate && search && (
+      {userList.length && (
         <PaginationControls
           page={1}
           pageSize={10}
