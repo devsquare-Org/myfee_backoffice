@@ -16,7 +16,7 @@ type Props = {
 
 export default async function UserPage({ searchParams }: Props) {
   const { startDate, endDate, search, page } = await searchParams;
-  const { data } = await fetchUserList({ startDate, endDate, page });
+  const { data } = await fetchUserList({ startDate, endDate, page, search });
 
   return (
     <div>

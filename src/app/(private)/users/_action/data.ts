@@ -20,6 +20,7 @@ export async function fetchUserList(
   data: z.infer<typeof userListResponse>;
   message: string;
 }> {
+  console.log(">>>>>>>>>>>", decodeURIComponent(params.search || ""));
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const data = [
