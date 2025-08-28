@@ -15,4 +15,5 @@ export const sendNotificationParams = z.object({
 export const notificationHistoryParams = z.object({
   startDate: z.string().optional(),
   endDate: z.string().optional(),
+  page: z.string().optional(),
 });
