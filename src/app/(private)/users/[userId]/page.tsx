@@ -1,5 +1,6 @@
 import BasicInfo from '@/app/(private)/users/_components/basic-info';
 import Challenge from '@/app/(private)/users/_components/challenge';
+
 import Point from '@/app/(private)/users/_components/point';
 import UpdatePointForm from '@/app/(private)/users/_components/update-point-form';
 import { PageHeader } from '@/components/page-header';
@@ -60,6 +61,30 @@ export default async function UserListPage({ params }: Props) {
     },
   ];
 
+  const challengeHistory = [
+    {
+      id: '1',
+      name: '10월 챌린지',
+      reviewCount: 15,
+      result: '성공',
+      createdAt: '2023-10-05 12:00:00',
+    },
+    {
+      id: '2',
+      name: '9월 챌린지',
+      reviewCount: 8,
+      result: '실패',
+      createdAt: '2023-09-30 12:00:00',
+    },
+    {
+      id: '3',
+      name: '8월 챌린지',
+      reviewCount: 12,
+      result: '성공',
+      createdAt: '2023-10-03 12:00:00',
+    },
+  ];
+
   return (
     <div>
       <PageHeader
@@ -90,7 +115,7 @@ export default async function UserListPage({ params }: Props) {
           <Point pointHistory={pointHistory} />
         </TabsContent>
         <TabsContent value='challenge'>
-          <Challenge />
+          <Challenge challengeHistory={challengeHistory} />
         </TabsContent>
       </Tabs>
     </div>
