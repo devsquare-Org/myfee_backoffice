@@ -19,7 +19,7 @@ export default async function UserListPage({ params }: Props) {
     name: 'name',
     phone: '01012345678',
     email: 'sole@lifeb.kr',
-    shopbyUserId: 'shopbyUserId',
+    shopbyUserId: '122700946',
   };
 
   const pointHistory = [
