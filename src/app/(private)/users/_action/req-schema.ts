@@ -5,6 +5,10 @@ export const userListParams = z.object({
   endDate: z.string().optional(),
 });
 
+export const userDetailParams = z.object({
+  userId: z.string(),
+});
+
 export const updateUserPointParams = z.object({
   userId: z.string(),
   points: z.number().positive({ message: "1 이상의 숫자를 입력해주세요." }),
@@ -13,4 +17,12 @@ export const updateUserPointParams = z.object({
     .string()
     .min(3, { message: "3글자 이상 입력해주세요." })
     .max(50, { message: "50글자 이하로 입력해주세요." }),
+});
+
+export const userPointHistoryParams = z.object({
+  userId: z.string(),
+});
+
+export const userChallengeHistoryParams = z.object({
+  userId: z.string(),
 });
