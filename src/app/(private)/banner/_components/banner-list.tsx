@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { z } from 'zod';
-import { bannerListResponse } from '@/app/(private)/banner/_action/schema';
+import { z } from "zod";
+import { bannerListResponse } from "@/app/(private)/banner/_action/res-schema";
 import {
   Table,
   TableBody,
@@ -9,8 +9,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import {
   DndContext,
   closestCenter,
@@ -19,22 +19,22 @@ import {
   useSensors,
   DragEndEvent,
   TouchSensor,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { useState, useEffect } from 'react';
-import { changeOrderAction } from '@/app/(private)/banner/_action/action';
-import { SortableRow } from '@/app/(private)/banner/_components/sortable-row';
-import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
-import { Alert } from '@/components/ui/alert';
-import { Flag } from 'lucide-react';
-import { AlertTitle } from '@/components/ui/alert';
-import { useAction } from 'next-safe-action/hooks';
-import { AnimatePresence, motion } from 'framer-motion';
+} from "@dnd-kit/sortable";
+import { useState, useEffect } from "react";
+import { changeOrderAction } from "@/app/(private)/banner/_action/action";
+import { SortableRow } from "@/app/(private)/banner/_components/sortable-row";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import { Alert } from "@/components/ui/alert";
+import { Flag } from "lucide-react";
+import { AlertTitle } from "@/components/ui/alert";
+import { useAction } from "next-safe-action/hooks";
+import { AnimatePresence, motion } from "framer-motion";
 
 type BannerListProps = {
   bannerList: z.infer<typeof bannerListResponse>;
@@ -106,13 +106,13 @@ export default function BannerList({ bannerList }: BannerListProps) {
   }
 
   return (
-    <div className='space-y-4'>
+    <div className="space-y-4">
       <AnimatePresence>
         {hasChanges && (
           <motion.div
             layout
             initial={{ opacity: 0, y: 0, height: 20 }}
-            animate={{ opacity: 1, y: 0, height: 'auto' }}
+            animate={{ opacity: 1, y: 0, height: "auto" }}
             exit={{
               opacity: 0,
               y: -20,
@@ -122,30 +122,30 @@ export default function BannerList({ bannerList }: BannerListProps) {
               paddingTop: 0,
               paddingBottom: 0,
             }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            <Alert className='flex items-center gap-2 justify-between'>
-              <div className='flex items-center gap-2'>
+            <Alert className="flex items-center gap-2 justify-between">
+              <div className="flex items-center gap-2">
                 <Flag size={16} />
                 <AlertTitle>
                   배너 순서가 변경되었습니다. 저장하시겠습니까?
                 </AlertTitle>
               </div>
-              <div className='flex items-center gap-2'>
+              <div className="flex items-center gap-2">
                 <Button
-                  variant='outline'
-                  size='sm'
+                  variant="outline"
+                  size="sm"
                   onClick={handleResetOrder}
                   disabled={isExecuting}
                 >
                   취소
                 </Button>
                 <Button
-                  size='sm'
+                  size="sm"
                   onClick={handleSaveOrder}
                   disabled={isExecuting}
                 >
-                  {isExecuting ? <Loader2 className='' /> : '저장'}
+                  {isExecuting ? <Loader2 className="" /> : "저장"}
                 </Button>
               </div>
             </Alert>
@@ -158,22 +158,22 @@ export default function BannerList({ bannerList }: BannerListProps) {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <Table className='text-xs'>
+        <Table className="text-xs">
           <TableHeader>
             <TableRow>
-              <TableHead className='w-10'>순서</TableHead>
+              <TableHead className="w-10">순서</TableHead>
               <TableHead>이미지</TableHead>
               <TableHead>제목</TableHead>
               <TableHead>링크</TableHead>
               <TableHead>등록일</TableHead>
               <TableHead>수정일</TableHead>
-              <TableHead className='sr-only'>Action</TableHead>
+              <TableHead className="sr-only">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className='text-center'>
+                <TableCell colSpan={6} className="text-center">
                   배너가 없습니다.
                 </TableCell>
               </TableRow>

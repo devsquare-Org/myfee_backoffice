@@ -1,6 +1,6 @@
 "use server";
 
-import { sendNotificationParams } from "@/app/(private)/notification/_action/schema";
+import { sendNotificationParams } from "@/app/(private)/notification/_action/req-schema";
 import { actionClient } from "@/lib/utils";
 
 export const sendNotificationAction = actionClient

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { notificationHistoryResponse } from '@/app/(private)/notification/_action/schema';
-import { CustomAlert } from '@/components/custom-alert';
+import { notificationHistoryResponse } from "@/app/(private)/notification/_action/res-schema";
+import { CustomAlert } from "@/components/custom-alert";
 import {
   Table,
   TableBody,
@@ -9,10 +9,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import * as z from 'zod';
-import { Badge } from '@/components/ui/badge';
-import { PaginationControls } from '@/components/pagination-controls';
+} from "@/components/ui/table";
+import * as z from "zod";
+import { Badge } from "@/components/ui/badge";
+import { PaginationControls } from "@/components/pagination-controls";
 
 type Props = {
   notificationHistory: z.infer<typeof notificationHistoryResponse>;
@@ -28,11 +28,11 @@ export default function NotificationHistory({
   return (
     <div>
       {notificationHistory.length === 0 ? (
-        <CustomAlert type='simple' title='발송 내역이 없습니다.' />
+        <CustomAlert type="simple" title="발송 내역이 없습니다." />
       ) : (
-        <Table className='text-xs'>
+        <Table className="text-xs">
           <TableHeader>
-            <TableRow className='font-semibold'>
+            <TableRow className="font-semibold">
               <TableHead>관리자 아이디</TableHead>
               <TableHead>제목</TableHead>
               <TableHead>내용</TableHead>
@@ -49,10 +49,10 @@ export default function NotificationHistory({
                 <TableCell>{notification.createdAt}</TableCell>
                 <TableCell>
                   <Badge
-                    variant={notification.isAd ? 'secondary' : 'outline'}
-                    className='text-xs'
+                    variant={notification.isAd ? "secondary" : "outline"}
+                    className="text-xs"
                   >
-                    {notification.isAd ? '광고' : '일반'}
+                    {notification.isAd ? "광고" : "일반"}
                   </Badge>
                 </TableCell>
               </TableRow>

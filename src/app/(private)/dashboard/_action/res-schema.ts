@@ -1,9 +1,4 @@
-import * as z from 'zod';
-
-export const dashboardDataRequestParams = z.object({
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
-});
+import * as z from "zod";
 
 export const dashboardDataResponse = z.object({
   startDate: z.string(),

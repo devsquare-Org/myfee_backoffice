@@ -3,8 +3,8 @@
 import {
   bannerDetailResponse,
   bannerListResponse,
-  getBannerDetailParams,
-} from "@/app/(private)/banner/_action/schema";
+} from "@/app/(private)/banner/_action/res-schema";
+import { getBannerDetailParams } from "@/app/(private)/banner/_action/req-schema";
 import z from "zod";
 
 const bannerListMock = [

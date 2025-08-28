@@ -1,27 +1,28 @@
-'use client';
+"use client";
 
-import { useAction } from 'next-safe-action/hooks';
-import { sendNotificationAction } from '@/app/(private)/notification/_action/action';
-import { sendNotificationParams } from '@/app/(private)/notification/_action/schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useAction } from "next-safe-action/hooks";
+import { sendNotificationAction } from "@/app/(private)/notification/_action/action";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { toast } from 'sonner';
-import * as z from 'zod';
-import { CustomAlert } from '@/components/custom-alert';
-import SendDialog from '@/app/(private)/notification/_components/send-dialog';
-import { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import CustomFormLabel from '@/components/custom-form-label';
-import { Card } from '@/components/ui/card';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import * as z from "zod";
+import { CustomAlert } from "@/components/custom-alert";
+import SendDialog from "@/app/(private)/notification/_components/send-dialog";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import CustomFormLabel from "@/components/custom-form-label";
+import { Card } from "@/components/ui/card";
+import { sendNotificationParams } from "@/app/(private)/notification/_action/req-schema";
 
 export default function NotificationSend() {
   const [isSubmit, setIsSubmit] = useState(false);
@@ -39,10 +40,10 @@ export default function NotificationSend() {
 
   const form = useForm<z.infer<typeof sendNotificationParams>>({
     resolver: zodResolver(sendNotificationParams),
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues: {
-      title: '',
-      content: '',
+      title: "",
+      content: "",
       isAd: false,
     },
   });
@@ -61,15 +62,15 @@ export default function NotificationSend() {
   }, [isSubmit]);
 
   return (
-    <div className='grid grid-cols-4'>
-      <Card className='col-span-3 max-w-xl'>
+    <div className="grid grid-cols-4">
+      <Card className="col-span-3 max-w-xl">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name='title'
+              name="title"
               render={({ field }) => (
-                <div className='mb-4'>
+                <div className="mb-4">
                   <FormItem>
                     <CustomFormLabel error={form.formState.errors.title}>
                       제목
@@ -78,7 +79,7 @@ export default function NotificationSend() {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder='3글자 이상 20글자 이하로 입력해주세요.'
+                        placeholder="3글자 이상 20글자 이하로 입력해주세요."
                       />
                     </FormControl>
                   </FormItem>
@@ -88,9 +89,9 @@ export default function NotificationSend() {
 
             <FormField
               control={form.control}
-              name='content'
+              name="content"
               render={({ field }) => (
-                <div className='mb-4'>
+                <div className="mb-4">
                   <FormItem>
                     <CustomFormLabel error={form.formState.errors.content}>
                       내용
@@ -99,7 +100,7 @@ export default function NotificationSend() {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder='5글자 이상 40글자 이하로 입력해주세요.'
+                        placeholder="5글자 이상 40글자 이하로 입력해주세요."
                       />
                     </FormControl>
                   </FormItem>
@@ -109,12 +110,12 @@ export default function NotificationSend() {
 
             <FormField
               control={form.control}
-              name='isAd'
+              name="isAd"
               render={({ field }) => (
-                <FormItem className='mb-6'>
+                <FormItem className="mb-6">
                   <FormLabel>광고 알림 여부</FormLabel>
-                  <FormLabel className='border bg-background px-3 py-1 h-9 rounded-md dark:bg-input/30 flex items-center justify-between gap-2 cursor-pointer'>
-                    <FormLabel className='text-xs text-muted-foreground cursor-pointer'>
+                  <FormLabel className="border bg-background px-3 py-1 h-9 rounded-md dark:bg-input/30 flex items-center justify-between gap-2 cursor-pointer">
+                    <FormLabel className="text-xs text-muted-foreground cursor-pointer">
                       이 옵션을 체크하면 광고 알림으로 발송됩니다.
                     </FormLabel>
                     <FormControl>
@@ -130,9 +131,9 @@ export default function NotificationSend() {
 
             <Button
               ref={submitRef}
-              className='sr-only'
-              variant='default'
-              type='submit'
+              className="sr-only"
+              variant="default"
+              type="submit"
               disabled={!form.formState.isValid || isExecuting}
             >
               push notification
@@ -143,18 +144,18 @@ export default function NotificationSend() {
           loading={isExecuting}
           disabled={!form.formState.isValid}
           setIsSubmit={setIsSubmit}
-          title={form.getValues('title')}
-          content={form.getValues('content')}
-          isAd={form.getValues('isAd')}
+          title={form.getValues("title")}
+          content={form.getValues("content")}
+          isAd={form.getValues("isAd")}
           onValidate={handleValidate}
         />
       </Card>
       <CustomAlert
-        className='mb-4 col-span-1'
-        type='destructive'
-        title='푸시 알림 발송 주의사항'
+        className="mb-4 col-span-1"
+        type="destructive"
+        title="푸시 알림 발송 주의사항"
         description={
-          <ul className='flex flex-col gap-1 mt-2 list-disc list-outside'>
+          <ul className="flex flex-col gap-1 mt-2 list-disc list-outside">
             <li>푸시 알림은 즉시 발송됩니다.</li>
             <li>전체 유저를 대상으로 발송됩니다.</li>
             <li>알림 발송 후 수정이 불가능합니다.</li>

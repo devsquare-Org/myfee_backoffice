@@ -12,7 +12,7 @@ type Props = {
 
 export default async function BannerDetail({ params }: Props) {
   const { bannerId } = await params;
-  const { data } = await getBannerDetail({ id: bannerId.toString() });
+  const { data } = await getBannerDetail({ id: bannerId });
 
   return (
     <div>

@@ -1,18 +1,6 @@
 import * as z from "zod";
 import { zfd } from "zod-form-data";
 
-export const bannerListResponse = z.array(
-  z.object({
-    id: z.string(),
-    title: z.string(),
-    image: z.string(),
-    linkUrl: z.string(),
-    order: z.number(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-  })
-);
-
 export const changeOrderParams = z.array(
   z.object({
     id: z.string(),
@@ -35,16 +23,6 @@ export const bannerCreateParams = zfd.formData({
 
 export const getBannerDetailParams = z.object({
   id: z.string(),
-});
-
-export const bannerDetailResponse = z.object({
-  id: z.string(),
-  title: z.string(),
-  image: z.string(),
-  linkUrl: z.string(),
-  order: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
 });
 
 export const bannerUpdateParams = zfd.formData({
