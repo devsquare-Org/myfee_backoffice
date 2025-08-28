@@ -170,7 +170,7 @@ export function DateRangePicker({
               />
               <div className='flex items-center justify-between p-3 border-t bg-muted/50'>
                 <div className='flex items-center gap-2'>
-                  <div className='text-sm text-muted-foreground'>
+                  <div className='text-xs text-muted-foreground'>
                     {tempDateRange?.from && tempDateRange?.to
                       ? `${format(tempDateRange.from, 'yyyy.MM.dd', {
                           locale: ko,

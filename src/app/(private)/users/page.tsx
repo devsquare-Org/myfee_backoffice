@@ -35,6 +35,7 @@ export default async function UserPage({ searchParams }: Props) {
         search={search}
         startDate={startDate}
         endDate={endDate}
+        isPaging={true}
       />
     </div>
   );

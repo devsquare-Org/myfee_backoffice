@@ -24,9 +24,16 @@ type Props = {
     createdAt: string;
     phone: string;
   }[];
+  isPaging?: boolean;
 };
 
-export function UserList({ userList, search, startDate, endDate }: Props) {
+export function UserList({
+  userList,
+  search,
+  startDate,
+  endDate,
+  isPaging,
+}: Props) {
   return (
     <>
       <Table className='text-xs'>
@@ -58,7 +65,7 @@ export function UserList({ userList, search, startDate, endDate }: Props) {
           ))}
         </TableBody>
       </Table>
-      {userList.length && (
+      {userList.length && isPaging && (
         <PaginationControls
           page={1}
           pageSize={10}

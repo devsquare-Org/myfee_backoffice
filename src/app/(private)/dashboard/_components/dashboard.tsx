@@ -48,7 +48,7 @@ export async function Dashboard({ startDate, endDate }: Props) {
         조회한 기간에 가입한 유저 목록입니다.
       </p>
       <div className='border rounded-2xl p-6'>
-        <UserList userList={userList} startDate={startDate} endDate={endDate} />
+        <UserList userList={userList} />
       </div>
     </div>
   );
