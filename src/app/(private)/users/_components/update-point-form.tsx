@@ -83,7 +83,7 @@ export default function UpdatePointForm({ className, userId }: Props) {
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      value={field.value || ''}
                     >
                       <SelectTrigger className='w-full bg-background'>
                         <SelectValue placeholder='유형을 선택해주세요.' />
