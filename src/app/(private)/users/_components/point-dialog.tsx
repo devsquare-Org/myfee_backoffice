@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CustomAlert } from '@/components/custom-alert';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LoaderCircle } from 'lucide-react';
 
 type PointDialogProps = {
@@ -30,6 +30,9 @@ export default function PointDialog({
   setIsSubmit,
 }: PointDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [typeText, setTypeText] = useState(
+    type === 'add' ? '지급하기' : '차감하기'
+  );
 
   function handleSend() {
     setIsSubmit(true);
@@ -40,7 +43,10 @@ export default function PointDialog({
     setIsSubmit(false);
     setIsOpen(false);
   }
-  const typeText = type === 'add' ? '지급하기' : '차감하기';
+
+  useEffect(() => {
+    setTypeText(type === 'add' ? '지급하기' : '차감하기');
+  }, [type]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -50,7 +56,7 @@ export default function PointDialog({
           if (await onValidate()) setIsOpen(true);
         }}
       >
-        {loading ? <LoaderCircle className='animate-spin' /> : `${typeText}`}
+        {loading ? <LoaderCircle className='animate-spin' /> : '적용하기'}
       </Button>
       <DialogContent>
         <DialogHeader>
