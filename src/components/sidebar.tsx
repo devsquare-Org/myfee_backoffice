@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Sidebar as SahdcnSidebar,
@@ -10,10 +10,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
-import { cn } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
-import { ROUTES } from '@/lib/routes-config';
+} from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
+import { ROUTES } from "@/lib/routes-config";
 import {
   Bell,
   CheckCircle,
@@ -22,43 +22,43 @@ import {
   Loader2,
   SquareMousePointer,
   User,
-} from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { useAction } from 'next-safe-action/hooks';
-import { logoutAction } from '@/app/signin/_action/action';
+} from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useAction } from "next-safe-action/hooks";
+import { logoutAction } from "@/app/signin/_action/action";
 
 export function Sidebar() {
   const { execute, isExecuting } = useAction(logoutAction);
   const pathname = usePathname();
   const menu = [
     {
-      label: '대시보드',
+      label: "대시보드",
       icon: Home,
       path: ROUTES.DASHBOARD,
     },
     {
-      label: '챌린지 관리',
+      label: "챌린지 관리",
       icon: List,
       path: ROUTES.CHALLENGE_LIST,
     },
     {
-      label: '챌린지 인증 관리',
+      label: "챌린지 인증",
       icon: CheckCircle,
-      path: ROUTES.CHALLENGE_REVIEW_LIST,
+      path: `${ROUTES.CHALLENGE_REVIEW_LIST}?status=pending`,
     },
     {
-      label: '유저 관리',
+      label: "유저 관리",
       icon: User,
       path: ROUTES.USERS,
     },
     {
-      label: '푸시 알림',
+      label: "푸시 알림",
       icon: Bell,
       path: ROUTES.NOTIFICATION,
     },
     {
-      label: '배너 관리',
+      label: "배너 관리",
       icon: SquareMousePointer,
       path: ROUTES.BANNER,
     },
@@ -76,16 +76,16 @@ export function Sidebar() {
                   <SidebarMenuButton
                     asChild
                     className={cn(
-                      'transition-colors rounded-md hover:bg-border hover:text-primary text-sm',
+                      "transition-colors rounded-md hover:bg-border hover:text-primary text-sm",
                       (value.path === ROUTES.DASHBOARD
                         ? pathname === value.path
                         : pathname.includes(value.path)) &&
-                        'bg-border text-primary'
+                        "bg-border text-primary"
                     )}
                   >
                     <Link href={value.path}>
-                      <value.icon className='w-4 h-4 mr-2' />
-                      <span className='font-medium'>{value.label}</span>
+                      <value.icon className="w-4 h-4 mr-2" />
+                      <span className="font-medium">{value.label}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -96,11 +96,11 @@ export function Sidebar() {
       </SidebarContent>
       <SidebarFooter>
         <Button
-          variant='outline'
+          variant="outline"
           onClick={() => execute()}
           disabled={isExecuting}
         >
-          {isExecuting ? <Loader2 className='animate-spin' /> : '로그아웃'}
+          {isExecuting ? <Loader2 className="animate-spin" /> : "로그아웃"}
         </Button>
       </SidebarFooter>
     </SahdcnSidebar>
