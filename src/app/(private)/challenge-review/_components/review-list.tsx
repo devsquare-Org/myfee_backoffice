@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 type Props = {
   reviewList: {
@@ -17,6 +17,7 @@ export function ReviewList({ reviewList }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [reviewItemId, setReviewItemId] = useState(
     searchParams.get("reviewItemId")?.toString() || ""
   );
@@ -25,6 +26,12 @@ export function ReviewList({ reviewList }: Props) {
     searchParams.get("status")?.toString() || "pending"
   );
 
+  // 스크롤 리셋용 파라미터들
+  const statusParam = searchParams.get("status");
+  const pageParam = searchParams.get("page");
+  const startDateParam = searchParams.get("startDate");
+  const endDateParam = searchParams.get("endDate");
+
   useEffect(() => {
     setReviewItemId(searchParams.get("reviewItemId")?.toString() || "");
   }, [searchParams, pathname]);
@@ -32,6 +39,13 @@ export function ReviewList({ reviewList }: Props) {
   useEffect(() => {
     setStatus(searchParams.get("status")?.toString() || "pending");
   }, [searchParams, pathname]);
+
+  // reviewItemId 외 파라미터 변경 시 스크롤 최상단 이동
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [statusParam, pageParam, startDateParam, endDateParam]);
 
   function handleReviewItemIdChange(value: string) {
     setReviewItemId(value);
@@ -56,7 +70,10 @@ export function ReviewList({ reviewList }: Props) {
   }
 
   return (
-    <div className="h-[calc(100vh-280px)] overflow-y-auto">
+    <div
+      ref={scrollContainerRef}
+      className="h-[calc(100vh-280px)] overflow-y-auto"
+    >
       {reviewList.length === 0 ? (
         <EmptyReview />
       ) : (
