@@ -121,8 +121,6 @@ const reviewList = [
 export async function fetchChallengeReviewList(
   params: z.infer<typeof challengeReviewListParams>
 ) {
-  await new Promise((resolve) => setTimeout(resolve, 200));
-
   return {
     data: reviewList,
     message: "챌린지 인증 목록을 성공적으로 조회하였습니다.",
@@ -132,7 +130,6 @@ export async function fetchChallengeReviewList(
 export async function fetchChallengeReviewDetail(
   params: z.infer<typeof challengeReviewDetailParams>
 ) {
-  await new Promise((resolve) => setTimeout(resolve, 800));
   const review = reviewList.find((item) => item.id === Number(params.id));
 
   return {

@@ -39,6 +39,9 @@ export function ApprovedDialog({
     onError: ({ error: { serverError } }) => {
       toast.error(serverError?.message);
       setIsActionExecuting(isExecuting);
+      fetchReviewList();
+      setIsActionExecuting(isExecuting);
+      setIsOpen(false);
     },
   });
 

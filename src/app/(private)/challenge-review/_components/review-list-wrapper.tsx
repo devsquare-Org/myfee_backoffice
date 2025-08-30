@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { ReviewList } from "@/app/(private)/challenge-review/_components/review-list";
-import ReviewContainerFooter from "@/app/(private)/challenge-review/_components/review-container-footer";
 import { useFetchReviewList } from "@/app/(private)/challenge-review/_hooks/use-fetch-review-list";
+import PaginationWrapper from "@/app/(private)/challenge-review/_components/pagination-wrapper";
 
 export function ReviewListWrapper() {
   const searchParams = useSearchParams();
@@ -23,7 +23,7 @@ export function ReviewListWrapper() {
   return (
     <>
       <ReviewList reviewList={reviewList} />
-      <ReviewContainerFooter
+      <PaginationWrapper
         length={reviewList.length}
         page={parseInt(page)}
         pageSize={10}

@@ -58,6 +58,10 @@ export function RejectDialog({
     onError: ({ error: { serverError } }) => {
       toast.error(serverError?.message);
       setIsActionExecuting(isExecuting);
+      fetchReviewList();
+      setIsActionExecuting(isExecuting);
+      setIsOpen(false);
+      form.reset();
     },
   });
 

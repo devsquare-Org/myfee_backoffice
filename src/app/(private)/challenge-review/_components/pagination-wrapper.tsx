@@ -6,7 +6,7 @@ type Props = {
   pageSize: number;
   totalItems: number;
 };
-export default function ReviewContainerFooter({
+export default function PaginationWrapper({
   length,
   page,
   pageSize,
