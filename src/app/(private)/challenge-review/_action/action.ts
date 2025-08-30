@@ -10,7 +10,7 @@ export const approveChallengeReviewAction = actionClient
   .inputSchema(approveChallengeReviewParams)
   .action(async ({ parsedInput }) => {
     console.log(parsedInput);
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 600));
 
     // TODO: 서버 에러코드 받아서 메세지 구성
     if (Math.random() > 0.5) throw new Error("실패!");

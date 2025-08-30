@@ -14,7 +14,6 @@ import {
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchChallengeReviewDetail } from "@/app/(private)/challenge-review/_action/data";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ApprovedDialog } from "@/app/(private)/challenge-review/_components/approved-dialog";
 import { motion } from "framer-motion";
 import { RejectDialog } from "@/app/(private)/challenge-review/_components/reject-dialog";
@@ -40,13 +39,11 @@ export function PreviewCard() {
   const searchParams = useSearchParams();
   const [reviewDetail, setReviewDetail] = useState<ReviewItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isApprovedDialogOpen, setIsApprovedDialogOpen] = useState(false);
-  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState<'approve' | 'reject' | null>(null);
 
   const reviewItemId = searchParams.get("reviewItemId")?.toString() || "";
   const [isActionExecuting, setIsActionExecuting] = useState(false);
 
-  console.log(isActionExecuting);
   useEffect(() => {
     async function fetchReviewDetail() {
       if (!reviewItemId) return;
@@ -72,117 +69,105 @@ export function PreviewCard() {
     <ContextMenu>
       <ContextMenuTrigger disabled={isActionExecuting}>
         <div className="flex flex-col bg-border h-full">
-          <>
-            <motion.div
-              className="flex-1 flex items-center justify-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div
-                className="
+          <motion.div
+            className="flex-1 flex items-center justify-center relative"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div
+              className="
             w-[375px] mx-auto shadow-[0_0_10px_0_rgba(0,0,0,0.1)] dark:shadow-[0_0_10px_0_rgba(255,255,255,0.1)] rounded-xl bg-background max-h-[564px] overflow-y-auto
           "
-              >
-                <div className="flex items-center justify-between px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src={reviewDetail?.profileImage} />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <div className="text-[10px]">
-                      <p className="font-semibold">{reviewDetail?.nickname}</p>
-                      <p>1분 전</p>
-                    </div>
+            >
+              <div className="flex items-center justify-between px-4 py-3">
+                <div className="flex items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src={reviewDetail?.profileImage} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <div className="text-[10px]">
+                    <p className="font-semibold">{reviewDetail?.nickname}</p>
+                    <p>1분 전</p>
                   </div>
-                  <SquareArrowOutUpRight size={16} />
                 </div>
-                <div>
-                  <div className="relative">
-                    <Image
-                      src={reviewDetail?.image || ""}
-                      alt="preview"
-                      width={320}
-                      height={320}
-                      className="aspect-square w-full"
-                    />
-                    <div className="absolute bottom-2 left-2 flex items-center gap-1 justify-center bg-primary/50 rounded-full px-2 py-1">
-                      <Heart fill="red" stroke="red" className="w-4 h-4" />
-                      <p className="text-[13px] text-primary-foreground">
-                        1,046
-                      </p>
-                    </div>
-                    <div className="absolute bottom-2 right-2 flex items-center justify-center bg-primary/50 rounded-full p-2">
-                      <Bookmark
-                        className="w-4 h-4"
-                        fill="white"
-                        stroke="white"
-                      />
-                    </div>
+                <SquareArrowOutUpRight size={16} />
+              </div>
+              <div>
+                <div className="relative">
+                  <Image
+                    src={reviewDetail?.image || ""}
+                    alt="preview"
+                    width={320}
+                    height={320}
+                    className="aspect-square w-full"
+                  />
+                  <div className="absolute bottom-2 left-2 flex items-center gap-1 justify-center bg-primary/50 rounded-full px-2 py-1">
+                    <Heart fill="red" stroke="red" className="w-4 h-4" />
+                    <p className="text-[13px] text-primary-foreground">1,046</p>
                   </div>
-                  <div className="bg-[#046A63] px-4 py-3 flex items-center justify-between text-white">
-                    <div className="flex items-center gap-2">
-                      <BadgeCheck className="min-w-[24px] min-h-[24px]" />
-                      <p className="text-sm font-semibold line-clamp-1">
-                        {reviewDetail?.title}
-                      </p>
-                    </div>
-                    <ChevronRight />
+                  <div className="absolute bottom-2 right-2 flex items-center justify-center bg-primary/50 rounded-full p-2">
+                    <Bookmark className="w-4 h-4" fill="white" stroke="white" />
                   </div>
-                  <div className="py-3 px-4">
-                    <p className="text-xs leading-[140%]">
-                      {reviewDetail?.body}
+                </div>
+                <div className="bg-[#046A63] px-4 py-3 flex items-center justify-between text-white">
+                  <div className="flex items-center gap-2">
+                    <BadgeCheck className="min-w-[24px] min-h-[24px]" />
+                    <p className="text-sm font-semibold line-clamp-1">
+                      {reviewDetail?.title}
                     </p>
-                    <div className="flex items-center gap-1 mt-2">
-                      <MessageCircle
-                        size={14}
-                        className="text-muted-foreground"
-                      />
-                      <p className="text-xs text-muted-foreground">
-                        첫번째 댓글을 남겨보세요!
-                      </p>
-                    </div>
+                  </div>
+                  <ChevronRight />
+                </div>
+                <div className="py-3 px-4">
+                  <p className="text-xs leading-[140%]">{reviewDetail?.body}</p>
+                  <div className="flex items-center gap-1 mt-2">
+                    <MessageCircle
+                      size={14}
+                      className="text-muted-foreground"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      첫번째 댓글을 남겨보세요!
+                    </p>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </>
+            </div>
+          </motion.div>
         </div>
       </ContextMenuTrigger>
-      <ContextMenuContent className="w-52">
+      <ContextMenuContent>
         <ContextMenuItem
-          inset
-          className="cursor-pointer"
+          className="cursor-pointer text-xs font-medium "
           disabled={isActionExecuting}
           onSelect={() => {
-            setIsApprovedDialogOpen(true);
+            setOpenDialog('approve');
           }}
         >
-          승인
+          승인 처리하기
         </ContextMenuItem>
         <ContextMenuSeparator />
         <ContextMenuItem
-          inset
-          className="cursor-pointer"
+          className="cursor-pointer text-destructive text-xs font-medium"
           disabled={isActionExecuting}
           onSelect={() => {
-            setIsRejectDialogOpen(true);
+            setOpenDialog('reject');
           }}
         >
-          반려
+          반려 처리하기
         </ContextMenuItem>
       </ContextMenuContent>
       <ApprovedDialog
         setIsActionExecuting={setIsActionExecuting}
         reviewId={reviewItemId}
-        isOpen={isApprovedDialogOpen}
-        setIsOpen={setIsApprovedDialogOpen}
+        isOpen={openDialog === 'approve'}
+        setIsOpen={(isOpen) => setOpenDialog(isOpen ? 'approve' : null)}
       />
       <RejectDialog
         setIsActionExecuting={setIsActionExecuting}
         reviewId={reviewItemId}
-        isOpen={isRejectDialogOpen}
-        setIsOpen={setIsRejectDialogOpen}
+        isOpen={openDialog === 'reject'}
+        setIsOpen={(isOpen) => setOpenDialog(isOpen ? 'reject' : null)}
       />
     </ContextMenu>
   );
@@ -202,17 +187,10 @@ function EmptyPreviewCard() {
 
 function ReviewDetailSkeleton() {
   return (
-    <>
-      <div className="flex items-center justify-between gap-2 px-4 py-3 border-b bg-background h-[57px]">
-        <Skeleton className="w-52 h-6" />
-        <Skeleton className="w-0 h-6" />
-        <Skeleton className="w-0 h-6" />
+    <div className="flex items-center justify-center h-[calc(100vh-228px)] bg-border">
+      <div className="text-sm text-muted-foreground">
+        <Loader2 className="animate-spin" />
       </div>
-      <div className="flex items-center justify-center h-[calc(100vh-285px)] bg-border">
-        <div className="text-sm text-muted-foreground">
-          <Loader2 className="animate-spin" />
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
