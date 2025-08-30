@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "picsum.photos",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "shopby-images.cdn-nhncommerce.com",
         port: "",
         pathname: "/**",

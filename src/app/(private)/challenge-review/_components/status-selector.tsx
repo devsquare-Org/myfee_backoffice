@@ -38,13 +38,19 @@ export default function StatusSelector({ className }: { className?: string }) {
 
   return (
     <Select value={selectedValue} onValueChange={handleStatusChange}>
-      <SelectTrigger className={cn(className)}>
+      <SelectTrigger className={cn(className, "w-[80px]")}>
         <SelectValue placeholder="상태 선택" />
       </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="pending">대기</SelectItem>
-        <SelectItem value="approved">완료</SelectItem>
-        <SelectItem value="rejected">반려</SelectItem>
+      <SelectContent className="min-w-[80px]">
+        <SelectItem className="cursor-pointer" value="pending">
+          대기
+        </SelectItem>
+        <SelectItem className="cursor-pointer" value="approved">
+          승인
+        </SelectItem>
+        <SelectItem className="cursor-pointer" value="rejected">
+          반려
+        </SelectItem>
       </SelectContent>
     </Select>
   );
