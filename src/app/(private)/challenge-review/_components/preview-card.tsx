@@ -4,7 +4,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import {
   BadgeCheck,
+  Bookmark,
   ChevronRight,
+  Heart,
   Loader2,
   MessageCircle,
   SquareArrowOutUpRight,
@@ -63,6 +65,7 @@ export function PreviewCard() {
     <div className="flex flex-col bg-border h-full">
       <>
         <div className="flex items-center justify-between gap-2 px-4 py-3 border-b bg-background h-[57px]">
+          <p className="text-xs font-semibold">{reviewDetail?.title}</p>
           {status === "pending" && (
             <div className="flex items-center gap-2">
               <RejectDialog
@@ -72,11 +75,6 @@ export function PreviewCard() {
                 isOpen={isRejectDialogOpen}
                 setIsOpen={setIsRejectDialogOpen}
               />
-            </div>
-          )}
-          <p className="text-xs font-semibold">{reviewDetail?.title}</p>
-          {status === "pending" && (
-            <div className="flex items-center gap-2">
               <ApprovedDialog
                 isActionExecuting={isActionExecuting}
                 setIsActionExecuting={setIsActionExecuting}
@@ -96,7 +94,7 @@ export function PreviewCard() {
         >
           <div
             className="
-            max-w-[320px] mx-auto shadow-[0_0_10px_0_rgba(0,0,0,0.1)] dark:shadow-[0_0_10px_0_rgba(255,255,255,0.1)] rounded-xl bg-background max-h-[610px] overflow-y-auto
+            w-[375px] mx-auto shadow-[0_0_10px_0_rgba(0,0,0,0.1)] dark:shadow-[0_0_10px_0_rgba(255,255,255,0.1)] rounded-xl bg-background max-h-[564px] overflow-y-auto
           "
           >
             <div className="flex items-center justify-between px-4 py-3">
@@ -107,18 +105,28 @@ export function PreviewCard() {
                 </Avatar>
                 <div className="text-[10px]">
                   <p className="font-semibold">{reviewDetail?.nickname}</p>
-                  <p>{reviewDetail?.createdAt}</p>
+                  <p>1분 전</p>
                 </div>
               </div>
               <SquareArrowOutUpRight size={16} />
             </div>
             <div>
-              <Image
-                src={reviewDetail?.image || ""}
-                alt="preview"
-                width={320}
-                height={427}
-              />
+              <div className="relative">
+                <Image
+                  src={reviewDetail?.image || ""}
+                  alt="preview"
+                  width={320}
+                  height={320}
+                  className="aspect-square w-full"
+                />
+                <div className="absolute bottom-2 left-2 flex items-center gap-1 justify-center bg-primary/50 rounded-full px-2 py-1">
+                  <Heart fill="red" stroke="red" className="w-4 h-4" />
+                  <p className="text-[13px] text-primary-foreground">1,046</p>
+                </div>
+                <div className="absolute bottom-2 right-2 flex items-center justify-center bg-primary/50 rounded-full p-2">
+                  <Bookmark className="w-4 h-4" fill="white" stroke="white" />
+                </div>
+              </div>
               <div className="bg-[#046A63] px-4 py-3 flex items-center justify-between text-white">
                 <div className="flex items-center gap-2">
                   <BadgeCheck className="min-w-[24px] min-h-[24px]" />
@@ -129,7 +137,7 @@ export function PreviewCard() {
                 <ChevronRight />
               </div>
               <div className="py-3 px-4">
-                <p className="text-xs leading-[1.2]">{reviewDetail?.body}</p>
+                <p className="text-xs leading-[140%]">{reviewDetail?.body}</p>
                 <div className="flex items-center gap-1 mt-2">
                   <MessageCircle size={14} className="text-muted-foreground" />
                   <p className="text-xs text-muted-foreground">
@@ -161,8 +169,8 @@ function ReviewDetailSkeleton() {
   return (
     <>
       <div className="flex items-center justify-between gap-2 px-4 py-3 border-b bg-background h-[57px]">
-        <Skeleton className="w-0 h-6" />
         <Skeleton className="w-52 h-6" />
+        <Skeleton className="w-0 h-6" />
         <Skeleton className="w-0 h-6" />
       </div>
       <div className="flex items-center justify-center h-[calc(100vh-285px)] bg-border">

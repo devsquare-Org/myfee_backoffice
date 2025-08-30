@@ -5,7 +5,7 @@ export function ChallengeReviewContainer() {
   return (
     <div className="flex border-t">
       {/* left side */}
-      <div className="w-[372px] border-r pr-4">
+      <div className="w-1/4 border-r pr-4">
         <ReviewListWrapper />
       </div>
 

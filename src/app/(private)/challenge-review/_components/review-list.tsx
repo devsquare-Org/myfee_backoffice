@@ -103,6 +103,9 @@ export function ReviewList({ reviewList }: Props) {
               <p className="text-[10px] text-muted-foreground font-semibold">
                 {review.createdAt}
               </p>
+              <p className="text-[10px] text-muted-foreground/50 font-medium">
+                ID: {review.id}
+              </p>
             </div>
           </div>
         ))}
