@@ -1,6 +1,5 @@
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -34,7 +33,6 @@ type Props = {
   reviewId: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  isActionExecuting: boolean;
   setIsActionExecuting: (isActionExecuting: boolean) => void;
 };
 
@@ -42,7 +40,6 @@ export function RejectDialog({
   reviewId,
   isOpen,
   setIsOpen,
-  isActionExecuting,
   setIsActionExecuting,
 }: Props) {
   const [isDirectInput, setIsDirectInput] = useState(false);
@@ -59,7 +56,6 @@ export function RejectDialog({
       toast.error(serverError?.message);
       setIsActionExecuting(isExecuting);
       fetchReviewList();
-      setIsActionExecuting(isExecuting);
       setIsOpen(false);
       form.reset();
     },
@@ -90,15 +86,6 @@ export function RejectDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="default"
-          disabled={isExecuting || isActionExecuting}
-        >
-          반려
-        </Button>
-      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>인증 반려</DialogTitle>
@@ -168,7 +155,7 @@ export function RejectDialog({
           <Button
             variant="outline"
             size="sm"
-            disabled={isExecuting || isActionExecuting}
+            disabled={isExecuting}
             onClick={() => setIsOpen(false)}
           >
             취소
@@ -177,9 +164,7 @@ export function RejectDialog({
             variant="default"
             size="sm"
             onClick={handleReject}
-            disabled={
-              isExecuting || !form.formState.isValid || isActionExecuting
-            }
+            disabled={isExecuting || !form.formState.isValid}
           >
             {isExecuting ? <Loader2 className="animate-spin" /> : "반려"}
           </Button>

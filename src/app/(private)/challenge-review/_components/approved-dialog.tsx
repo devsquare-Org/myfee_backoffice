@@ -1,6 +1,5 @@
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -17,7 +16,6 @@ type Props = {
   reviewId: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  isActionExecuting: boolean;
   setIsActionExecuting: (isActionExecuting: boolean) => void;
 };
 
@@ -25,7 +23,6 @@ export function ApprovedDialog({
   reviewId,
   isOpen,
   setIsOpen,
-  isActionExecuting,
   setIsActionExecuting,
 }: Props) {
   const { fetchReviewList } = useFetchReviewList();
@@ -40,7 +37,6 @@ export function ApprovedDialog({
       toast.error(serverError?.message);
       setIsActionExecuting(isExecuting);
       fetchReviewList();
-      setIsActionExecuting(isExecuting);
       setIsOpen(false);
     },
   });
@@ -61,15 +57,6 @@ export function ApprovedDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="default"
-          size="default"
-          disabled={isExecuting || isActionExecuting}
-        >
-          승인
-        </Button>
-      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>인증 승인</DialogTitle>
@@ -79,7 +66,7 @@ export function ApprovedDialog({
           <Button
             variant="outline"
             size="sm"
-            disabled={isExecuting || isActionExecuting}
+            disabled={isExecuting}
             onClick={handleCancel}
           >
             취소
@@ -88,7 +75,7 @@ export function ApprovedDialog({
             variant="default"
             size="sm"
             onClick={handleApprove}
-            disabled={isExecuting || isActionExecuting}
+            disabled={isExecuting}
           >
             {isExecuting ? <Loader2 className="animate-spin" /> : "승인"}
           </Button>
