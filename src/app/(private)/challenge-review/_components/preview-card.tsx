@@ -28,6 +28,7 @@ import { ContextMenuSeparator } from "@/components/ui/context-menu";
 import { Tooltip } from "@/components/ui/tooltip";
 import { TooltipTrigger } from "@/components/ui/tooltip";
 import { TooltipContent } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 type ReviewItem = {
   id: number;
@@ -75,19 +76,39 @@ export function PreviewCard() {
     <ContextMenu>
       <ContextMenuTrigger disabled={isActionExecuting || status !== "pending"}>
         <div className="flex flex-col bg-border h-full">
-          <div className="bg-background text-xs font-medium  text-center py-4 flex items-center justify-center gap-2">
-            <p className="font-semibold">미리보기 화면</p>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <InfoIcon className="w-4 h-4 text-muted-foreground" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>
-                  대기 중인 인증인 경우 미리보기 영역 내에서 우클릭하여 승인
-                  또는 반려 처리 할 수 있습니다.
-                </p>
-              </TooltipContent>
-            </Tooltip>
+          <div className="bg-background  text-center py-2 px-4 flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs font-medium">
+              <p className="font-semibold">미리보기 화면</p>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <InfoIcon className="w-4 h-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    대기 중인 인증인 경우 미리보기 영역 내에서 우클릭하여 승인
+                    또는 반려 처리 할 수 있습니다.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                disabled={isActionExecuting || status !== "pending"}
+                variant="outline"
+                size="sm"
+                onClick={() => setOpenDialog("reject")}
+              >
+                반려
+              </Button>
+              <Button
+                disabled={isActionExecuting || status !== "pending"}
+                variant="default"
+                size="sm"
+                onClick={() => setOpenDialog("approve")}
+              >
+                승인
+              </Button>
+            </div>
           </div>
           <motion.div
             className="flex-1 flex items-center justify-center relative"
@@ -208,9 +229,29 @@ function EmptyPreviewCard() {
 function ReviewDetailSkeleton() {
   return (
     <div className="flex bg-border h-full flex-col">
-      <div className="bg-background text-xs font-medium text-center py-4 flex items-center justify-center gap-2">
-        <p className="font-semibold">미리보기 화면</p>
-        <InfoIcon className="w-4 h-4 text-muted-foreground" />
+      <div className="bg-background  text-center py-2 px-4 flex items-center justify-between">
+        <div className="flex items-center gap-2 text-xs font-medium">
+          <p className="font-semibold">미리보기 화면</p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InfoIcon className="w-4 h-4 text-muted-foreground" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                대기 중인 인증인 경우 미리보기 영역 내에서 우클릭하여 승인 또는
+                반려 처리 할 수 있습니다.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" disabled>
+            반려
+          </Button>
+          <Button variant="default" size="sm" disabled>
+            승인
+          </Button>
+        </div>
       </div>
       <div className="flex-1 flex items-center justify-center">
         <div className="text-sm text-muted-foreground">
