@@ -7,6 +7,7 @@ import {
   Bookmark,
   ChevronRight,
   Heart,
+  InfoIcon,
   Loader2,
   MessageCircle,
   SquareArrowOutUpRight,
@@ -24,6 +25,9 @@ import {
   ContextMenuItem,
 } from "@/components/ui/context-menu";
 import { ContextMenuSeparator } from "@/components/ui/context-menu";
+import { Tooltip } from "@/components/ui/tooltip";
+import { TooltipTrigger } from "@/components/ui/tooltip";
+import { TooltipContent } from "@/components/ui/tooltip";
 
 type ReviewItem = {
   id: number;
@@ -39,10 +43,12 @@ export function PreviewCard() {
   const searchParams = useSearchParams();
   const [reviewDetail, setReviewDetail] = useState<ReviewItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [openDialog, setOpenDialog] = useState<'approve' | 'reject' | null>(null);
-
-  const reviewItemId = searchParams.get("reviewItemId")?.toString() || "";
+  const [openDialog, setOpenDialog] = useState<"approve" | "reject" | null>(
+    null
+  );
   const [isActionExecuting, setIsActionExecuting] = useState(false);
+  const reviewItemId = searchParams.get("reviewItemId")?.toString() || "";
+  const status = searchParams.get("status")?.toString() || "pending";
 
   useEffect(() => {
     async function fetchReviewDetail() {
@@ -67,8 +73,22 @@ export function PreviewCard() {
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger disabled={isActionExecuting}>
+      <ContextMenuTrigger disabled={isActionExecuting || status !== "pending"}>
         <div className="flex flex-col bg-border h-full">
+          <div className="bg-background text-xs font-medium  text-center py-4 flex items-center justify-center gap-2">
+            <p className="font-semibold">미리보기 화면</p>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <InfoIcon className="w-4 h-4 text-muted-foreground" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  대기 중인 인증인 경우 미리보기 영역 내에서 우클릭하여 승인
+                  또는 반려 처리 할 수 있습니다.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
           <motion.div
             className="flex-1 flex items-center justify-center relative"
             initial={{ opacity: 0, y: 20 }}
@@ -141,7 +161,7 @@ export function PreviewCard() {
           className="cursor-pointer text-xs font-medium "
           disabled={isActionExecuting}
           onSelect={() => {
-            setOpenDialog('approve');
+            setOpenDialog("approve");
           }}
         >
           승인 처리하기
@@ -151,7 +171,7 @@ export function PreviewCard() {
           className="cursor-pointer text-destructive text-xs font-medium"
           disabled={isActionExecuting}
           onSelect={() => {
-            setOpenDialog('reject');
+            setOpenDialog("reject");
           }}
         >
           반려 처리하기
@@ -160,14 +180,14 @@ export function PreviewCard() {
       <ApprovedDialog
         setIsActionExecuting={setIsActionExecuting}
         reviewId={reviewItemId}
-        isOpen={openDialog === 'approve'}
-        setIsOpen={(isOpen) => setOpenDialog(isOpen ? 'approve' : null)}
+        isOpen={openDialog === "approve"}
+        setIsOpen={(isOpen) => setOpenDialog(isOpen ? "approve" : null)}
       />
       <RejectDialog
         setIsActionExecuting={setIsActionExecuting}
         reviewId={reviewItemId}
-        isOpen={openDialog === 'reject'}
-        setIsOpen={(isOpen) => setOpenDialog(isOpen ? 'reject' : null)}
+        isOpen={openDialog === "reject"}
+        setIsOpen={(isOpen) => setOpenDialog(isOpen ? "reject" : null)}
       />
     </ContextMenu>
   );
@@ -187,9 +207,15 @@ function EmptyPreviewCard() {
 
 function ReviewDetailSkeleton() {
   return (
-    <div className="flex items-center justify-center h-[calc(100vh-228px)] bg-border">
-      <div className="text-sm text-muted-foreground">
-        <Loader2 className="animate-spin" />
+    <div className="flex bg-border h-full flex-col">
+      <div className="bg-background text-xs font-medium text-center py-4 flex items-center justify-center gap-2">
+        <p className="font-semibold">미리보기 화면</p>
+        <InfoIcon className="w-4 h-4 text-muted-foreground" />
+      </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-sm text-muted-foreground">
+          <Loader2 className="animate-spin" />
+        </div>
       </div>
     </div>
   );

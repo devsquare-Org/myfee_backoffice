@@ -21,14 +21,18 @@ export function ReviewListWrapper() {
   }, [status, startDate, endDate, page]);
 
   return (
-    <>
-      <ReviewList reviewList={reviewList} />
-      <PaginationWrapper
-        length={reviewList.length}
-        page={parseInt(page)}
-        pageSize={10}
-        totalItems={reviewList.length}
-      />
-    </>
+    <div className="flex flex-col h-full">
+      <div className="flex-1 overflow-auto">
+        <ReviewList reviewList={reviewList} />
+      </div>
+      <div>
+        <PaginationWrapper
+          length={reviewList.length}
+          page={parseInt(page)}
+          pageSize={10}
+          totalItems={reviewList.length}
+        />
+      </div>
+    </div>
   );
 }

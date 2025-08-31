@@ -71,10 +71,7 @@ export function ReviewList({ reviewList }: Props) {
   }
 
   return (
-    <div
-      ref={scrollContainerRef}
-      className="h-[calc(100vh-280px)] overflow-y-auto"
-    >
+    <div ref={scrollContainerRef}>
       <>
         <p className="text-xs text-muted-foreground font-medium my-5">
           {getStatusText(status)} {reviewList.length}건

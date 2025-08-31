@@ -7,7 +7,7 @@ import StatusSelector from "@/app/(private)/challenge-review/_components/status-
 
 export default function ChallengeReview() {
   return (
-    <div>
+    <div className="flex flex-col">
       <PageHeader
         title="챌린지 인증"
         description="챌린지 인증 관리 페이지입니다."
@@ -18,9 +18,7 @@ export default function ChallengeReview() {
           <DateRangePicker />
         </div>
       </Suspense>
-      <Suspense
-        fallback={<Skeleton className="w-full h-[calc(100vh-230px)] mb-4" />}
-      >
+      <Suspense fallback={<Skeleton className="w-full flex-1 mb-4" />}>
         <ChallengeReviewContainer />
       </Suspense>
     </div>
