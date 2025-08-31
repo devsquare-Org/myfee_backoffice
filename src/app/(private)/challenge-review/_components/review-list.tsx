@@ -43,9 +43,7 @@ export function ReviewList({ reviewList }: Props) {
 
   // reviewItemId 외 파라미터 변경 시 스크롤 최상단 이동
   useEffect(() => {
-    console.log("IS REVIEW LIST RENDERED?");
     if (scrollContainerRef.current) {
-      console.log("RESET SCROLL");
       scrollContainerRef.current.scrollTop = 0;
     }
   }, [statusParam, pageParam, startDateParam, endDateParam]);
