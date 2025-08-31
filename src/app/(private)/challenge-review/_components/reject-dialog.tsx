@@ -78,6 +78,7 @@ export function RejectDialog({
 
   useEffect(() => {
     setIsDirectInput(false);
+    form.reset();
   }, [isOpen]);
 
   useEffect(() => {
