@@ -43,7 +43,9 @@ export function ReviewList({ reviewList }: Props) {
 
   // reviewItemId 외 파라미터 변경 시 스크롤 최상단 이동
   useEffect(() => {
+    console.log("IS REVIEW LIST RENDERED?");
     if (scrollContainerRef.current) {
+      console.log("RESET SCROLL");
       scrollContainerRef.current.scrollTop = 0;
     }
   }, [statusParam, pageParam, startDateParam, endDateParam]);
@@ -71,39 +73,35 @@ export function ReviewList({ reviewList }: Props) {
   }
 
   return (
-    <div ref={scrollContainerRef}>
-      <>
-        <p className="text-xs text-muted-foreground font-medium my-5">
-          {getStatusText(status)} {reviewList.length}건
-        </p>
-        {reviewList.map((review) => (
+    <div ref={scrollContainerRef} className="h-full overflow-y-auto">
+      <p className="text-xs text-muted-foreground font-medium my-5">
+        {getStatusText(status)} {reviewList.length}건
+      </p>
+      {reviewList.map((review) => (
+        <div
+          key={review.id}
+          onClick={() => selectReviewItem(review.id.toString())}
+          className={cn(
+            "flex items-start gap-2 border rounded-md px-4 py-3 cursor-pointer bg-accent/20 hover:bg-accent transition-colors mb-2 relative",
+            reviewItemId === review.id.toString() && "bg-accent "
+          )}
+        >
           <div
-            key={review.id}
-            onClick={() => selectReviewItem(review.id.toString())}
-            className={cn(
-              "flex items-start gap-2 border rounded-md px-4 py-3 cursor-pointer bg-accent/20 hover:bg-accent transition-colors mb-2 relative",
-              reviewItemId === review.id.toString() && "bg-accent "
-            )}
-          >
-            <div
-              className={`min-w-1.5 min-h-1.5 mt-1 rounded-full ${getStatusColor(
-                status
-              )}`}
-            />
-            <div className="flex flex-col gap-1">
-              <p className="text-xs font-semibold line-clamp-1">
-                {review.title}
-              </p>
-              <p className="text-xs text-muted-foreground font-medium line-clamp-1">
-                {review.body}
-              </p>
-              <p className="text-[10px] text-muted-foreground font-semibold">
-                {review.createdAt}
-              </p>
-            </div>
+            className={`min-w-1.5 min-h-1.5 mt-1 rounded-full ${getStatusColor(
+              status
+            )}`}
+          />
+          <div className="flex flex-col gap-1">
+            <p className="text-xs font-semibold line-clamp-1">{review.title}</p>
+            <p className="text-xs text-muted-foreground font-medium line-clamp-1">
+              {review.body}
+            </p>
+            <p className="text-[10px] text-muted-foreground font-semibold">
+              {review.createdAt}
+            </p>
           </div>
-        ))}
-      </>
+        </div>
+      ))}
     </div>
   );
 }
