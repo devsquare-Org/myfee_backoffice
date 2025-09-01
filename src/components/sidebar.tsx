@@ -28,41 +28,42 @@ import { Button } from "@/components/ui/button";
 import { useAction } from "next-safe-action/hooks";
 import { logoutAction } from "@/app/signin/_action/action";
 
+export const menu = [
+  {
+    label: "대시보드",
+    icon: Home,
+    path: ROUTES.DASHBOARD,
+  },
+  {
+    label: "챌린지 관리",
+    icon: List,
+    path: ROUTES.CHALLENGE_LIST,
+  },
+  {
+    label: "챌린지 인증",
+    icon: CheckCircle,
+    path: `${ROUTES.CHALLENGE_REVIEW_LIST}?status=pending`,
+  },
+  {
+    label: "유저 관리",
+    icon: User,
+    path: ROUTES.USERS,
+  },
+  {
+    label: "푸시 알림",
+    icon: Bell,
+    path: ROUTES.NOTIFICATION,
+  },
+  {
+    label: "배너 관리",
+    icon: SquareMousePointer,
+    path: ROUTES.BANNER,
+  },
+];
+
 export function Sidebar() {
   const { execute, isExecuting } = useAction(logoutAction);
   const pathname = usePathname();
-  const menu = [
-    {
-      label: "대시보드",
-      icon: Home,
-      path: ROUTES.DASHBOARD,
-    },
-    {
-      label: "챌린지 관리",
-      icon: List,
-      path: ROUTES.CHALLENGE_LIST,
-    },
-    {
-      label: "챌린지 인증",
-      icon: CheckCircle,
-      path: `${ROUTES.CHALLENGE_REVIEW_LIST}?status=pending`,
-    },
-    {
-      label: "유저 관리",
-      icon: User,
-      path: ROUTES.USERS,
-    },
-    {
-      label: "푸시 알림",
-      icon: Bell,
-      path: ROUTES.NOTIFICATION,
-    },
-    {
-      label: "배너 관리",
-      icon: SquareMousePointer,
-      path: ROUTES.BANNER,
-    },
-  ];
 
   return (
     <SahdcnSidebar>
