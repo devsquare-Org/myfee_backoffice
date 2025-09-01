@@ -27,6 +27,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAction } from "next-safe-action/hooks";
 import { logoutAction } from "@/app/signin/_action/action";
+import { openGlobalCommand } from "@/hooks/use-global-command";
 
 export const menu = [
   {
@@ -70,6 +71,14 @@ export function Sidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>MyFee Backoffice</SidebarGroupLabel>
+          <Button
+            variant="outline"
+            onClick={openGlobalCommand}
+            className="w-full mt-1 mb-3"
+          >
+            빠른 접근
+            <span className="ml-auto text-muted-foreground">⌘J</span>
+          </Button>
           <SidebarGroupContent>
             <SidebarMenu>
               {menu.map((value) => (
@@ -78,8 +87,8 @@ export function Sidebar() {
                     asChild
                     className={cn(
                       "transition-colors rounded-md hover:bg-border hover:text-primary text-sm",
-                      (value.path === ROUTES.DASHBOARD
-                        ? pathname === value.path
+                      (value.path.includes("?")
+                        ? pathname.includes(value.path.split("?")[0])
                         : pathname.includes(value.path)) &&
                         "bg-border text-primary"
                     )}
@@ -95,7 +104,7 @@ export function Sidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="space-y-2">
         <Button
           variant="outline"
           onClick={() => execute()}

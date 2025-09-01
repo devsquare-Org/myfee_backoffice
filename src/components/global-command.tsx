@@ -1,7 +1,13 @@
 "use client";
 
-import * as React from "react";
-import { Smile, SunIcon, MoonIcon } from "lucide-react";
+import {
+  SunIcon,
+  MoonIcon,
+  Send,
+  Plus,
+  CheckCircle,
+  LogOut,
+} from "lucide-react";
 
 import {
   CommandDialog,
@@ -12,15 +18,16 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { menu } from "@/components/sidebar";
 import { useTheme } from "next-themes";
 import { logoutAction } from "@/app/signin/_action/action";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { ROUTES } from "@/lib/routes-config";
+import { useGlobalCommand } from "@/hooks/use-global-command";
 
 export function GlobalCommand() {
   const { setTheme, theme } = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const { open, setOpen } = useGlobalCommand();
   const router = useRouter();
 
   useEffect(() => {
@@ -33,7 +40,7 @@ export function GlobalCommand() {
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, []);
+  }, [setOpen]);
 
   function toggleTheme() {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -50,24 +57,37 @@ export function GlobalCommand() {
     setOpen(false);
   }
 
+  const commandMenu = [
+    {
+      label: "대기중인 챌린지 인증 리스트",
+      icon: CheckCircle,
+      path: `${ROUTES.CHALLENGE_REVIEW_LIST}?status=pending`,
+    },
+    {
+      label: "승인된 챌린지 인증 리스트",
+      icon: CheckCircle,
+      path: `${ROUTES.CHALLENGE_REVIEW_LIST}?status=approved`,
+    },
+    {
+      label: "반려된 챌린지 인증 리스트",
+      icon: CheckCircle,
+      path: `${ROUTES.CHALLENGE_REVIEW_LIST}?status=rejected`,
+    },
+    {
+      label: "푸시 알림 발송",
+      icon: Send,
+      path: ROUTES.NOTIFICATION_SEND,
+    },
+    { label: "배너 추가", icon: Plus, path: ROUTES.BANNER_CREATE },
+  ];
+
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder="검색어를 입력하세요." />
+      <CommandInput className="text-xs" placeholder="검색어를 입력하세요." />
       <CommandList>
         <CommandEmpty>결과가 없습니다.</CommandEmpty>
-        <CommandGroup heading="Actions">
-          <CommandItem onSelect={toggleTheme}>
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-            <span className="text-xs font-medium">테마 변경</span>
-          </CommandItem>
-          <CommandItem onSelect={logout}>
-            <Smile />
-            <span className="text-xs font-medium">로그아웃</span>
-          </CommandItem>
-        </CommandGroup>
-        <CommandSeparator />
-        <CommandGroup heading="Pages">
-          {menu.map((value) => (
+        <CommandGroup heading="Quick Access">
+          {commandMenu.map((value) => (
             <CommandItem
               key={value.path}
               onSelect={() => goToRoute(value.path)}
@@ -76,6 +96,17 @@ export function GlobalCommand() {
               <span className="text-xs font-medium">{value.label}</span>
             </CommandItem>
           ))}
+          <CommandSeparator />
+          <CommandGroup heading="Quick Actions">
+            <CommandItem onSelect={toggleTheme}>
+              {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+              <span className="text-xs font-medium">테마 변경</span>
+            </CommandItem>
+            <CommandItem onSelect={logout}>
+              <LogOut />
+              <span className="text-xs font-medium">로그아웃</span>
+            </CommandItem>
+          </CommandGroup>
         </CommandGroup>
       </CommandList>
     </CommandDialog>
