@@ -1,19 +1,9 @@
 "use client";
 
-import { fetchItemsData } from "@/app/(private)/challenge-review/_action/data";
-import createClientOnBrowser from "@/module/wip-manager/supabase/client";
 import { getUserIdClient } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-
-type WipItem = {
-  id: string;
-  reviewItemId: number;
-  adminId: string;
-  status: "viewing" | "reviewed";
-  createdAt: string | null;
-  completedAt: string | null;
-};
+import { useWipItems } from "@/module/wip-manager/hooks/use-wip-items";
 
 type Props = {
   reviewList: {
@@ -29,7 +19,7 @@ export function ReviewList({ reviewList }: Props) {
   const pathname = usePathname();
   const { replace } = useRouter();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [wipItemList, setWipItemList] = useState<WipItem[]>([]);
+  const { findWipItem } = useWipItems();
   const [reviewItemId, setReviewItemId] = useState(
     searchParams.get("reviewItemId")?.toString() || ""
   );
@@ -65,93 +55,6 @@ export function ReviewList({ reviewList }: Props) {
     const params = new URLSearchParams(searchParams);
     params.set("reviewItemId", value);
     replace(`${pathname}?${params.toString()}`);
-  }
-
-  // wipItemList 실시간 업데이트
-  useEffect(() => {
-    const channel = createClientOnBrowser()
-      .channel("wip-items")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "wip_items",
-        },
-        (payload) => {
-          // 새로운 아이템 추가 시
-          if (payload.eventType === "INSERT") {
-            const newItem = payload.new;
-            setWipItemList((prev) => [
-              ...prev,
-              {
-                id: newItem.id,
-                reviewItemId: newItem.review_item_id,
-                adminId: newItem.admin_id,
-                status: newItem.status as "viewing" | "reviewed",
-                createdAt: newItem.created_at,
-                completedAt: newItem.completed_at,
-              },
-            ]);
-          }
-
-          // 아이템 업데이트 시
-          if (payload.eventType === "UPDATE") {
-            const updatedItem = payload.new;
-            setWipItemList((prev) =>
-              prev.map((item) =>
-                item.id === updatedItem.id
-                  ? {
-                      id: updatedItem.id,
-                      reviewItemId: updatedItem.review_item_id,
-                      adminId: updatedItem.admin_id,
-                      status: updatedItem.status as "viewing" | "reviewed",
-                      createdAt: updatedItem.created_at,
-                      completedAt: updatedItem.completed_at,
-                    }
-                  : item
-              )
-            );
-          }
-
-          // 아이템 삭제 시
-          if (payload.eventType === "DELETE") {
-            const deletedItem = payload.old;
-            setWipItemList((prev) =>
-              prev.filter((item) => item.id !== deletedItem.id)
-            );
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      channel.unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    async function fetchWipItemList() {
-      const { data } = await fetchItemsData();
-      if (data) {
-        setWipItemList(
-          data.map((item) => ({
-            id: item.id,
-            reviewItemId: item.review_item_id,
-            adminId: item.admin_id,
-            status: item.status! as "viewing" | "reviewed",
-            createdAt: item.created_at,
-            completedAt: item.completed_at,
-          }))
-        );
-      }
-    }
-    fetchWipItemList();
-  }, []);
-
-  // wipItemList에서 특정 reviewItemId의 아이템 찾기
-  function findWipItem(reviewItemId: number) {
-    return wipItemList.find((item) => item.reviewItemId === reviewItemId);
   }
 
   // 검수 상태 텍스트 반환 (자신의 아이템은 제외)
