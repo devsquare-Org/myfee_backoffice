@@ -57,124 +57,132 @@ export function ReviewList({ reviewList }: Props) {
     replace(`${pathname}?${params.toString()}`);
   }
 
-  // 검수 상태 텍스트 반환 (자신의 아이템은 제외)
-  function getWipStatusText(reviewItemId: number) {
-    const item = findWipItem(reviewItemId);
-    if (!item) return null;
+  // 리뷰 아이템의 UI 상태를 한 번에 계산하는 함수
+  function getReviewItemUIState(itemId: number) {
+    const wipItem = findWipItem(itemId);
+    const isSelected = reviewItemId === itemId.toString();
 
-    const currentUserId = getUserIdClient();
-    // 자신의 아이템인데 검수 중인 경우 표시하지 않음(검수 완료는 표시)
-    if (item.admin_id === currentUserId && item.status === "viewing")
-      return null;
-
-    if (item.status === "viewing") return "보는중";
-    if (item.status === "reviewed") return "검수 완료";
-    return null;
-  }
-
-  // 검수 상태 색상 반환 (자신의 아이템은 제외)
-  function getWipStatusColor(reviewItemId: number) {
-    const item = findWipItem(reviewItemId);
-    if (!item) return null;
-
-    const currentUserId = getUserIdClient();
-    // 자신의 아이템인데 검수 중인 경우 표시하지 않음(검수 완료는 표시)
-    if (item.admin_id === currentUserId && item.status === "viewing")
-      return null;
-
-    if (item.status === "viewing") return "bg-orange-100 text-orange-800";
-    if (item.status === "reviewed") return "bg-green-100 text-green-800";
-    return null;
-  }
-
-  // 클릭 가능 여부 확인 (자신의 아이템은 클릭 가능)
-  function isClickable(reviewItemId: number) {
-    const item = findWipItem(reviewItemId);
-    if (!item) return true;
-
-    const currentUserId = getUserIdClient();
-    // 자신의 아이템인 경우 클릭 가능 (단, 검수 완료된 것은 제외)
-    if (item.admin_id === currentUserId && item.status === "viewing")
-      return true;
-
-    // 다른 사람의 진행중인 아이템인 경우 클릭 불가
-    return item.status !== "viewing" && item.status !== "reviewed";
-  }
-
-  function getStatusColor(status: string) {
-    if (status === "pending") return "bg-yellow-500";
-    if (status === "approved") return "bg-blue-500";
-    if (status === "rejected") return "bg-red-500";
-  }
-
-  function getStatusText(status: string) {
-    if (status === "pending") return "대기";
-    if (status === "approved") return "완료";
-    if (status === "rejected") return "반려";
-  }
-
-  function generateBtnStyle(reviewId: number) {
-    const isSelected = reviewItemId === reviewId.toString();
-    const clickable = isClickable(reviewId);
-
-    let baseClass =
-      "flex items-start gap-2 border rounded-md px-4 py-3 transition-colors mb-2 relative";
-
-    if (isSelected) {
-      baseClass += " bg-accent";
-    } else if (clickable) {
-      baseClass += " cursor-pointer bg-accent/20 hover:bg-accent";
-    } else {
-      baseClass += " cursor-not-allowed bg-accent/20 opacity-50";
+    if (!wipItem) {
+      return {
+        statusText: null,
+        statusColor: null,
+        isClickable: true,
+        buttonStyle: isSelected
+          ? "flex items-start gap-2 border rounded-md px-4 py-3 transition-colors mb-2 relative bg-accent"
+          : "flex items-start gap-2 border rounded-md px-4 py-3 transition-colors mb-2 relative cursor-pointer bg-accent/20 hover:bg-accent",
+      };
     }
 
-    return baseClass;
+    const currentUserId = getUserIdClient();
+    const isOwnItem = wipItem.admin_id === currentUserId;
+    const isViewing = wipItem.status === "viewing";
+    const isReviewed = wipItem.status === "reviewed";
+    const shouldShowStatus = !(isOwnItem && isViewing);
+    const clickable = (isOwnItem && isViewing) || (!isViewing && !isReviewed);
+
+    // 상태 텍스트
+    let statusText = null;
+    if (shouldShowStatus) {
+      if (isViewing) statusText = "보는중";
+      else if (isReviewed) statusText = "검수 완료";
+    }
+
+    // 상태 색상
+    let statusColor = null;
+    if (shouldShowStatus) {
+      if (isViewing) statusColor = "bg-orange-100 text-orange-800";
+      else if (isReviewed) statusColor = "bg-green-100 text-green-800";
+    }
+
+    // 버튼 스타일
+    const baseClass =
+      "flex items-start gap-2 border rounded-md px-4 py-3 transition-colors mb-2 relative";
+    let buttonStyle = baseClass;
+    if (isSelected) {
+      buttonStyle += " bg-accent";
+    } else if (clickable) {
+      buttonStyle += " cursor-pointer bg-accent/20 hover:bg-accent";
+    } else {
+      buttonStyle += " cursor-not-allowed bg-accent/20 opacity-50";
+    }
+
+    return {
+      statusText,
+      statusColor,
+      isClickable: clickable,
+      buttonStyle,
+    };
   }
   return (
     <div ref={scrollContainerRef} className="h-full overflow-y-auto">
-      <p className="text-xs text-muted-foreground font-medium my-5">
-        {getStatusText(status)} {reviewList.length}건
-      </p>
-      {reviewList.map((review) => (
-        <div key={review.id} className="relative">
-          <div
-            onClick={() => {
-              if (isClickable(review.id)) {
-                selectReviewItem(review.id.toString());
-              }
-            }}
-            className={generateBtnStyle(review.id)}
-          >
+      <StatusLabel status={status} length={reviewList.length} />
+      {reviewList.map((review) => {
+        const uiState = getReviewItemUIState(review.id);
+
+        return (
+          <div key={review.id} className="relative">
             <div
-              className={`min-w-1.5 min-h-1.5 mt-1 rounded-full ${getStatusColor(
-                status
-              )}`}
-            />
-            <div className="flex flex-col gap-1 flex-1">
-              <div className="flex items-center justify-between">
-                <p className="text-xs font-semibold line-clamp-1">
-                  {review.title}
+              onClick={() => {
+                if (uiState.isClickable) selectReviewItem(review.id.toString());
+              }}
+              className={uiState.buttonStyle}
+            >
+              <div className="flex flex-col gap-1 flex-1">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-semibold line-clamp-1">
+                    {review.title}
+                  </p>
+                </div>
+                <p className="text-xs text-muted-foreground font-medium line-clamp-1">
+                  {review.body}
+                </p>
+                <p className="text-[10px] text-muted-foreground font-semibold">
+                  {review.createdAt}
                 </p>
               </div>
-              <p className="text-xs text-muted-foreground font-medium line-clamp-1">
-                {review.body}
-              </p>
-              <p className="text-[10px] text-muted-foreground font-semibold">
-                {review.createdAt}
-              </p>
             </div>
+            {uiState.statusText && (
+              <div
+                className={`absolute top-2 right-2 text-[10px] px-2 py-1 rounded-full font-medium ${uiState.statusColor}`}
+              >
+                {uiState.statusText}
+              </div>
+            )}
           </div>
-          {getWipStatusText(review.id) && (
-            <div
-              className={`absolute top-2 right-2 text-[10px] px-2 py-1 rounded-full font-medium ${getWipStatusColor(
-                review.id
-              )}`}
-            >
-              {getWipStatusText(review.id)}
-            </div>
-          )}
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
+}
+
+function StatusLabel({ status, length }: { status: string; length: number }) {
+  switch (status) {
+    case "pending":
+      return (
+        <div className="flex items-center gap-2 my-4">
+          <div className="min-w-2 min-h-2 max-w-2 max-h-2 rounded-full bg-yellow-500" />
+          <p className="text-xs text-muted-foreground font-medium">
+            대기중인 인증 {length}건
+          </p>
+        </div>
+      );
+    case "approved":
+      return (
+        <div className="flex items-center gap-2 my-4">
+          <div className="min-w-2 min-h-2 max-w-2 max-h-2 rounded-full bg-blue-500" />
+          <p className="text-xs text-muted-foreground font-medium">
+            완료된 인증 {length}건
+          </p>
+        </div>
+      );
+    case "rejected":
+      return (
+        <div className="flex items-center gap-2 my-4">
+          <div className="min-w-2 min-h-2 max-w-2 max-h-2 rounded-full bg-red-500" />
+          <p className="text-xs text-muted-foreground font-medium">
+            반려된 인증 {length}건
+          </p>
+        </div>
+      );
+  }
 }
