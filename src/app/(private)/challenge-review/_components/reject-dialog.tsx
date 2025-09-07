@@ -28,6 +28,7 @@ import { REJECT_REASON } from "../constant";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import { CustomAlert } from "@/components/custom-alert";
 
 type Props = {
   reviewId: string;
@@ -92,6 +93,7 @@ export function RejectDialog({
           <DialogTitle>인증 반려</DialogTitle>
         </DialogHeader>
         <p className="text-sm font-medium">인증 반려 사유를 입력해주세요.</p>
+
         <div
           className="border bg-background px-3 py-1 h-9 rounded-md dark:bg-input/30 flex items-center justify-between gap-2 cursor-pointer"
           onClick={() => {
@@ -151,6 +153,11 @@ export function RejectDialog({
             )}
           />
         </Form>
+
+        <CustomAlert
+          type="destructive"
+          title="요청이 완료될 때까지 모달을 닫지마세요."
+        />
 
         <div className="grid grid-cols-2 gap-2">
           <Button

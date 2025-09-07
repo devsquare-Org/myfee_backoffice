@@ -25,3 +25,7 @@ export const rejectChallengeReviewParams = z.object({
       message: "100글자 이하로 직접 입력 또는 사유를 선택해주세요.",
     }),
 });
+
+export const deleteWipItemsParams = z.object({
+  reviewItemId: z.number(),
+});

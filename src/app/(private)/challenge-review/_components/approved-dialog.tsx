@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { useFetchReviewList } from "@/app/(private)/challenge-review/_hooks/use-fetch-review-list";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { CustomAlert } from "@/components/custom-alert";
 
 type Props = {
   reviewId: string;
@@ -62,6 +63,10 @@ export function ApprovedDialog({
           <DialogTitle>인증 승인</DialogTitle>
         </DialogHeader>
         <p className="text-sm font-medium">인증 요청을 승인 하시겠습니까?</p>
+        <CustomAlert
+          type="destructive"
+          title="요청이 완료될 때까지 모달을 닫지마세요."
+        />
         <div className="grid grid-cols-2 gap-2">
           <Button
             variant="outline"

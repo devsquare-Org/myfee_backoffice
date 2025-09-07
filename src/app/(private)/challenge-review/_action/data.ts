@@ -4,6 +4,8 @@ import {
   challengeReviewDetailParams,
   challengeReviewListParams,
 } from "@/app/(private)/challenge-review/_action/req-schema";
+import { getUserIdServer } from "@/lib/server-utils";
+import { fetchWipItems, insertWipItems } from "@/module/wip-indicator";
 import z from "zod";
 
 const reviewList = [
@@ -132,8 +134,29 @@ export async function fetchChallengeReviewDetail(
 ) {
   const review = reviewList.find((item) => item.id === Number(params.id));
 
+  const userId = await getUserIdServer();
+
+  if (!userId) throw new Error("userId가 없습니다.");
+
+  await insertWipItems({
+    reviewItemId: Number(params.id),
+    adminId: userId,
+    status: "viewing",
+  });
+
   return {
     data: review,
     message: "챌린지 인증 상세 정보를 성공적으로 조회하였습니다.",
+  };
+}
+
+export async function fetchWipItemsData() {
+  const { data, error } = await fetchWipItems();
+
+  if (error) throw new Error("챌린지 인증 세션을 조회하는데 실패했습니다.");
+
+  return {
+    data,
+    message: "챌린지 인증 세션을 성공적으로 조회하였습니다.",
   };
 }
