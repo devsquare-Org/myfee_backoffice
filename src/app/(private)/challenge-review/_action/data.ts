@@ -141,20 +141,10 @@ export async function fetchChallengeReviewDetail(
   await wipManager.addItem({
     reviewItemId: Number(params.id),
     adminId: userId,
-    status: "viewing",
   });
 
   return {
     data: review,
     message: "챌린지 인증 상세 정보를 성공적으로 조회하였습니다.",
-  };
-}
-
-export async function fetchItemsData() {
-  const { data } = await wipManager.getItems();
-
-  return {
-    data,
-    message: "챌린지 인증 세션을 성공적으로 조회하였습니다.",
   };
 }

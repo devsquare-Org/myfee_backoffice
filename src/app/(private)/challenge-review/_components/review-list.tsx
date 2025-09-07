@@ -64,7 +64,7 @@ export function ReviewList({ reviewList }: Props) {
 
     const currentUserId = getUserIdClient();
     // 자신의 아이템인데 검수 중인 경우 표시하지 않음(검수 완료는 표시)
-    if (item.adminId === currentUserId && item.status === "viewing")
+    if (item.admin_id === currentUserId && item.status === "viewing")
       return null;
 
     if (item.status === "viewing") return "보는중";
@@ -79,7 +79,7 @@ export function ReviewList({ reviewList }: Props) {
 
     const currentUserId = getUserIdClient();
     // 자신의 아이템인데 검수 중인 경우 표시하지 않음(검수 완료는 표시)
-    if (item.adminId === currentUserId && item.status === "viewing")
+    if (item.admin_id === currentUserId && item.status === "viewing")
       return null;
 
     if (item.status === "viewing") return "bg-orange-100 text-orange-800";
@@ -94,7 +94,7 @@ export function ReviewList({ reviewList }: Props) {
 
     const currentUserId = getUserIdClient();
     // 자신의 아이템인 경우 클릭 가능 (단, 검수 완료된 것은 제외)
-    if (item.adminId === currentUserId && item.status === "viewing")
+    if (item.admin_id === currentUserId && item.status === "viewing")
       return true;
 
     // 다른 사람의 진행중인 아이템인 경우 클릭 불가

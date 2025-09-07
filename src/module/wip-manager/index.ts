@@ -2,25 +2,26 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { createClientOnServer } from "./supabase/server";
 import { Database } from "./supabase/types";
 
+type WipItemStatus = "viewing" | "reviewed";
+
 export interface WipItem {
   id: string;
   reviewItemId: number;
   adminId: string;
-  status: "viewing" | "reviewed";
-  createdAt: string | null;
+  status: WipItemStatus;
+  createdAt: string;
   completedAt: string | null;
 }
 
 export interface AddItemParams {
   reviewItemId: number;
   adminId: string;
-  status?: "viewing" | "reviewed";
 }
 
 export interface UpdateItemParams {
   reviewItemId: number;
   adminId: string;
-  status: "viewing" | "reviewed";
+  status: WipItemStatus;
   completedAt?: string | null;
 }
 
@@ -30,10 +31,10 @@ export interface RemoveItemParams {
 
 class WipManager {
   private static instance: WipManager;
-  private supabaseServer: SupabaseClient<Database>;
+  private supabase: SupabaseClient<Database>;
 
   private constructor() {
-    this.supabaseServer = createClientOnServer();
+    this.supabase = createClientOnServer();
   }
 
   static getInstance(): WipManager {
@@ -44,10 +45,10 @@ class WipManager {
   }
 
   async addItem(params: AddItemParams) {
-    const { data, error } = await this.supabaseServer.from("wip_items").insert({
+    const { data, error } = await this.supabase.from("wip_items").insert({
       review_item_id: params.reviewItemId,
       admin_id: params.adminId,
-      status: params.status || "viewing",
+      status: "viewing",
     });
 
     if (error) {
@@ -58,7 +59,7 @@ class WipManager {
   }
 
   async updateItem(params: UpdateItemParams) {
-    const { data, error } = await this.supabaseServer
+    const { data, error } = await this.supabase
       .from("wip_items")
       .update({
         review_item_id: params.reviewItemId,
@@ -76,7 +77,7 @@ class WipManager {
   }
 
   async removeItem(params: RemoveItemParams) {
-    const { data, error } = await this.supabaseServer
+    const { data, error } = await this.supabase
       .from("wip_items")
       .delete()
       .eq("review_item_id", params.reviewItemId)
@@ -91,9 +92,7 @@ class WipManager {
   }
 
   async getItems() {
-    const { data, error } = await this.supabaseServer
-      .from("wip_items")
-      .select("*");
+    const { data, error } = await this.supabase.from("wip_items").select("*");
 
     if (error) {
       throw new Error(`WIP 아이템 조회 실패: ${error.message}`);
