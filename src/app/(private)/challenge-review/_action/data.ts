@@ -5,7 +5,7 @@ import {
   challengeReviewListParams,
 } from "@/app/(private)/challenge-review/_action/req-schema";
 import { getUserIdServer } from "@/lib/server-utils";
-import { fetchWipItems, insertWipItems } from "@/module/wip-indicator";
+import wipManager from "@/module/wip-manager";
 import z from "zod";
 
 const reviewList = [
@@ -138,7 +138,7 @@ export async function fetchChallengeReviewDetail(
 
   if (!userId) throw new Error("userId가 없습니다.");
 
-  await insertWipItems({
+  await wipManager.addItem({
     reviewItemId: Number(params.id),
     adminId: userId,
     status: "viewing",
@@ -150,10 +150,8 @@ export async function fetchChallengeReviewDetail(
   };
 }
 
-export async function fetchWipItemsData() {
-  const { data, error } = await fetchWipItems();
-
-  if (error) throw new Error("챌린지 인증 세션을 조회하는데 실패했습니다.");
+export async function fetchItemsData() {
+  const { data } = await wipManager.getItems();
 
   return {
     data,

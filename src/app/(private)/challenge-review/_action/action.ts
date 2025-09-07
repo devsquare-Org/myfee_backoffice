@@ -7,7 +7,7 @@ import {
 } from "@/app/(private)/challenge-review/_action/req-schema";
 import { getUserIdServer } from "@/lib/server-utils";
 import { actionClient } from "@/lib/utils";
-import { deleteWipItems, updateWipItems } from "@/module/wip-indicator";
+import wipManager from "@/module/wip-manager";
 
 export const approveChallengeReviewAction = actionClient
   .inputSchema(approveChallengeReviewParams)
@@ -16,7 +16,7 @@ export const approveChallengeReviewAction = actionClient
     if (!userId) throw new Error("userId가 없습니다.");
 
     // myfee server 요청 전 세션 상태 업데이트
-    await updateWipItems({
+    await wipManager.updateItem({
       reviewItemId: Number(parsedInput.id),
       adminId: userId,
       status: "reviewed",
@@ -34,7 +34,7 @@ export const approveChallengeReviewAction = actionClient
       //     return { message: "이미 처리된 인증입니다." };
       //   case "서버 에러":
       //     // 서버 에러인 경우 wip-indicator에서 삭제 처리
-      //     await deleteChallengeReviewSession({
+      //     await wipManager.removeItem({
       //       reviewItemId: Number(parsedInput.id),
       //     });
       //     return { message: "서버 에러가 발생했습니다." };
@@ -53,7 +53,7 @@ export const rejectChallengeReviewAction = actionClient
     if (!userId) throw new Error("userId가 없습니다.");
 
     // myfee server 요청 전 세션 상태 업데이트
-    await updateWipItems({
+    await wipManager.updateItem({
       reviewItemId: Number(parsedInput.id),
       adminId: userId,
       status: "reviewed",
@@ -71,7 +71,7 @@ export const rejectChallengeReviewAction = actionClient
       //     return { message: "이미 처리된 인증입니다." };
       //   case "서버 에러":
       //     // 서버 에러인 경우 wip-indicator에서 삭제 처리
-      //     await deleteWipItems({
+      //     await wipManager.removeItem({
       //       reviewItemId: Number(parsedInput.id),
       //     });
       //     return { message: "서버 에러가 발생했습니다." };
@@ -86,5 +86,5 @@ export const rejectChallengeReviewAction = actionClient
 export const deleteWipItemsAction = actionClient
   .inputSchema(deleteWipItemsParams)
   .action(async ({ parsedInput }) => {
-    await deleteWipItems(parsedInput);
+    await wipManager.removeItem(parsedInput);
   });

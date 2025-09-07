@@ -1,7 +1,7 @@
 "use client";
 
-import { fetchWipItemsData } from "@/app/(private)/challenge-review/_action/data";
-import createClientOnBrowser from "@/lib/supabase/supabase-client";
+import { fetchItemsData } from "@/app/(private)/challenge-review/_action/data";
+import createClientOnBrowser from "@/module/wip-manager/supabase/client";
 import { getUserIdClient } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
@@ -132,7 +132,7 @@ export function ReviewList({ reviewList }: Props) {
 
   useEffect(() => {
     async function fetchWipItemList() {
-      const { data } = await fetchWipItemsData();
+      const { data } = await fetchItemsData();
       if (data) {
         setWipItemList(
           data.map((item) => ({
@@ -191,7 +191,8 @@ export function ReviewList({ reviewList }: Props) {
 
     const currentUserId = getUserIdClient();
     // 자신의 아이템인 경우 클릭 가능 (단, 검수 완료된 것은 제외)
-    if (item.adminId === currentUserId && item.status === "viewing") return true;
+    if (item.adminId === currentUserId && item.status === "viewing")
+      return true;
 
     // 다른 사람의 진행중인 아이템인 경우 클릭 불가
     return item.status !== "viewing" && item.status !== "reviewed";
